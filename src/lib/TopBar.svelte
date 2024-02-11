@@ -6,7 +6,8 @@
 </script>
 
 
-<div class="fixed flex flex-row text-white justify-between top-0 left-0 w-full bg-transparent z-30 p-4">
+
+<div class="fixed flex flex-row text-white justify-between top-0 left-0 w-full z-30 p-4 bg-gradient-to-b from-black to-transparent">
     <div>
         <div class="text-3xl">
             <!-- Alfaritos (logo) -->
@@ -18,3 +19,10 @@
         {/each}    
     </div>
 </div>
+
+<style> 
+  /* Custom class for the top inner shadow */
+  .top-inner-shadow {
+    box-shadow: inset 0 8px 16px -8px rgba(0, 0, 0, 1);
+  }
+</style>

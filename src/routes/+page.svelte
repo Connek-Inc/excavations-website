@@ -13,6 +13,8 @@
 	import drainfrancais from "$lib/images/drainfrancais.jpg"
 	import fissure from "$lib/images/fissure.jpg"
 
+	const bannerImages = [banner, fissure]
+
 	const aboutUsText = "Niché sur la rue St-Denis, notre charmant bar à cocktails est un refuge chaleureux où des cocktails exquis rencontrent de délicieux fruits de mer. Dans une ambiance intime, nos mixologues qualifiés élaborent de délicieux cocktails. Offrez-vous des huîtres fraîches, de succulents cocktails de crevettes et bien plus encore. Rejoignez-nous pour une expérience délicieuse où convergent charme, chaleur et excellence culinaire, créant une soirée inoubliable pour vous et vos compagnons."
 
 	const services = [
@@ -42,7 +44,8 @@
 
 	<HomeBanner mainTitle={'Mini Excavations Erable'} 
 		subtitle={'The finest with our state-of-the-art projects.'}
-		bannerImage={banner}/>
+		bannerImage={banner}
+		bannerImages={bannerImages}/>
 	
 	<Services services={services}/>
 	
