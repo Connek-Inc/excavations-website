@@ -13,7 +13,7 @@
         const x =
             elemCarousel.scrollLeft === 0
                 ? elemCarousel.clientWidth * elemCarousel.childElementCount // loop
-                : elemCarousel.scrollLeft - elemCarousel.clientWidth; // step left
+                : elemCarousel.scrollLeft - elemCarousel.clientWidth/2; // step left
         elemCarousel.scroll(x, 0);
         // console.log(elemCarousel)
 
@@ -27,7 +27,7 @@
         const x =
             elemCarousel.scrollLeft === elemCarousel.scrollWidth - elemCarousel.clientWidth
                 ? 0 // loop
-                : elemCarousel.scrollLeft + elemCarousel.clientWidth; // step right
+                : elemCarousel.scrollLeft + elemCarousel.clientWidth/2; // step right
         elemCarousel.scroll(x, 0);
     }
 

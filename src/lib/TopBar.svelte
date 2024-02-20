@@ -7,13 +7,13 @@
 
 
 
-<div class="fixed flex flex-row text-white justify-between top-0 left-0 w-full z-30 p-4 bg-gradient-to-b from-black to-transparent">
+<div class="fixed flex text-white justify-between top-0 left-0 w-full z-30 p-4 bg-gradient-to-b from-black to-transparent">
     <div>
         <div class="text-3xl">
             <!-- Alfaritos (logo) -->
         </div>
     </div>
-    <div class="flex flex-row space-x-16 text-3xl font-bold">
+    <div class="flex flex-row md:space-x-16 md:text-3xl space-x-8 sm:text-lg font-bold">
         {#each menuOptions as opt}
             <div>{opt}</div>
         {/each}    

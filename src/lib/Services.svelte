@@ -1,8 +1,9 @@
 <script>
 
-export let services;
+    export let services;
 
-import demolition from "$lib/images/demolition.jpg"
+    import demolition from "$lib/images/demolition.jpg"
+    import construction from "$lib/icons/construction.svg"
 
 </script>
 
@@ -18,13 +19,29 @@ import demolition from "$lib/images/demolition.jpg"
 
             {#each services as serv}
                 
-                <div class='card flex flex-col items-center justify-center rounded-lg shadow-md p-8'>
-                    <h2 class="h2 font-bold mb-2">{serv.name}</h2>
+
+                <div class='card card-hover flex flex-col items-center justify-center rounded-lg shadow-md'>
+
+                    <div class="bg-blue-500 h-[50%]">
+                        Image
+                    </div>
+                    <div class="bg-blue-200 h-[50%] flex flex-col items-center">
+                        <img src={construction} alt="">
+                        Bottom
+
+                    </div>
+
+
+                    <!-- <h2 class="h2 font-bold mb-2">{serv.name}</h2>
                     <img src="{demolition}" alt="Descriptive Alt Text" class="h-64 object-cover">
                     <p class='text-center'>
                         {serv.description}
-                    </p>
+                    </p> -->
+
+
                 </div>
+
+
 
             {/each}
             
