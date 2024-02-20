@@ -2,8 +2,8 @@
 
     export let mainTitle;
     export let subtitle;
-    export let logo
-    export let bannerImage
+    export let logo;
+    export let bannerImage;
 
     // Animation
     export let bannerImages;
@@ -31,20 +31,25 @@
             
             <div class="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 space-y-4">
                 {#if logo}
-                    <div id="logo">
-                        Logo
-                    </div>
+                      <div id="logo">
+                          Logo
+                      </div>
                 {/if}
                 <div class="">
-                    <h1 class="h1 font-bold">
-                        {mainTitle}
-                    </h1>
+                      <h1 class="h1 font-bold">
+                          {mainTitle}
+                      </h1>
                 </div>
                 <div>
-                    {subtitle}
+                      {subtitle}
                 </div>
                 
+                <div class="mt-8">
+                    <button class="rounded-md bg-[#febd17] text-black text-lg font-semibold py-4 px-16">Contact us</button>
+                </div>
+
             </div>
+
             
         </div>
         

@@ -12,7 +12,7 @@
 
     </div>
     <div class='form-section'>
-        <div class="md:w-[1024px] w-[90%]">
+        <div class="">
             <form class="mt-6">
               <div class="mb-5">
                 <label for="name" class="mb-2 text-sm text-gray-600">Name*</label>

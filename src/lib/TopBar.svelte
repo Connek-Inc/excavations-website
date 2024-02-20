@@ -6,16 +6,16 @@
 </script>
 
 
-
-<div class="fixed flex text-white justify-between top-0 left-0 w-full z-30 p-4 bg-gradient-to-b from-black to-transparent">
+<!-- bg-gradient-to-b from-black to-[#ffff00] -->
+<div class="fixed flex text-white justify-between top-0 left-0 w-full z-30 bg-[#febd17]">
     <div>
         <div class="text-3xl">
-            <!-- Alfaritos (logo) -->
+            (logo)
         </div>
     </div>
-    <div class="flex flex-row md:space-x-16 md:text-3xl space-x-8 sm:text-lg font-bold">
+    <div class="flex flex-row md:text-2xl sm:text-lg font-bold">
         {#each menuOptions as opt}
-            <div>{opt}</div>
+            <div class="text-black p-4 px-8 rounded hover:bg-black hover:text-white">{opt}</div>
         {/each}    
     </div>
 </div>

@@ -13,26 +13,33 @@
 	import drainfrancais from "$lib/images/drainfrancais.jpg"
 	import fissure from "$lib/images/fissure.jpg"
 
+	const bannerTitle = 'Mini Excavations Erable'
+	const bannerSubtitle = 'Avec 15+ annees d’experience.'
 	const bannerImages = [banner, fissure]
 
-	const aboutUsText = "Niché sur la rue St-Denis, notre charmant bar à cocktails est un refuge chaleureux où des cocktails exquis rencontrent de délicieux fruits de mer. Dans une ambiance intime, nos mixologues qualifiés élaborent de délicieux cocktails. Offrez-vous des huîtres fraîches, de succulents cocktails de crevettes et bien plus encore. Rejoignez-nous pour une expérience délicieuse où convergent charme, chaleur et excellence culinaire, créant une soirée inoubliable pour vous et vos compagnons."
+	const aboutUsMidText = "Fort de plus de 15 ans d’expérience, Mini Excavation Érables est reconnu comme un leader au Québec dans les domaines de la construction et de la restauration de drains français, de la démolition, de la réparation de fissures et des inspections par caméra. Notre longue histoire et notre expertise approfondie témoignent de notre engagement envers l’excellence et la qualité de service, soutenus par l’ensemble des certifications et qualifications nécessaires. Notre équipe d’experts est dédiée à offrir des solutions sur mesure et efficaces, répondant précisément aux besoins spécifiques de chaque projet. En choisissant Mini Excavation Érables, vous optez pour une entreprise dont la fiabilité et l’excellence sont éprouvées par des décennies d’expérience."
+
 
 	const services = [
 		{
 			name: 'Excavations',
-			description: "Our comprehensive residential excavation services include site preparation, land clearing, soil removal, grading, and trenching for utility installations. We prioritize environmental sustainability and work meticulously to minimize disruption to your property and surrounding areas. With a focus on safety, quality, and customer satisfaction, we're dedicated to transforming your vision into reality, ensuring your project is on a solid foundation from the ground up."
+			description: "Services d’excavation complets avec un engagement envers la sécurité et l’environnement pour chaque projet."
 		},
 		{
-			name: 'French drain',
-			description: "Our French drain service includes a comprehensive assessment of your property to identify optimal drainage solutions, followed by the careful excavation and installation of a custom-designed system. We use durable, high-performing materials to ensure longevity and efficiency, effectively redirecting water away from your home and preventing moisture-related issues."
+			name: 'DRAINS FRANÇAIS',
+			description: "Solutions expertes en drains français pour une protection durable contre l’humidité."
 		},
 		{
-			name: 'Wall fissure repairs',
-			description: "Our comprehensive fissure repair service begins with a detailed assessment of your home to identify the root causes of wall cracks, whether due to foundation settling, moisture, or other factors. We employ state-of-the-art techniques and materials to effectively seal and reinforce affected areas, preventing further damage and restoring your walls to their original condition.",
+			name: 'RÉPARATION DE FISSURES',
+			description: "Réparations de fissures efficaces, garantissant la sécurité et l’intégrité des fondations.",
 		},
 		{
 			name: 'Demolition',
-			description: "Our residential demolition service encompasses a thorough assessment of your property to plan the safest and most effective demolition strategy. We manage all aspects of the process, from obtaining necessary permits to the final cleanup, ensuring a hassle-free experience for our clients. Our state-of-the-art equipment and techniques allow us to demolish structures safely, minimizing disruption to surrounding properties and the environment."
+			description: "Démolition sécurisée et respectueuse de l’environnement, adaptée à tous types de projets."
+		},
+		{
+			name: 'Inspection par camera',
+			description: "Diagnostic précis de canalisations avec technologie de pointe pour inspections non invasives."
 		}
 	]
 
@@ -42,16 +49,22 @@
 
 <div class="page-content flex flex-col">
 
-	<HomeBanner mainTitle={'Mini Excavations Erable'} 
-		subtitle={'The finest with our state-of-the-art projects.'}
+	<HomeBanner mainTitle={bannerTitle} 
+		subtitle={bannerSubtitle}
 		bannerImage={banner}
 		bannerImages={bannerImages}/>
+
+	<div class='h-44 bg-black flex justify-center items-center text-white font-bold'> 
+		<h1 class="h1 text-center">
+			MEILLEUR SERVICE GARANTI. 
+		</h1>
+	</div>
 	
 	<Services services={services}/>
 	
-	<AboutUs aboutUsText={aboutUsText}/>
+	<AboutUs midText={aboutUsMidText} leftText={''} rightText={''}/>
 
-	<ImageSlideshow slideShowImages={slideShowImages}/>
+	<!-- <ImageSlideshow slideShowImages={slideShowImages}/> -->
 	
 	<ContactUs />
 

@@ -40,8 +40,6 @@
 <div class="flex flex-col justify-center items-center">
 
 
-    <h2 class="h2 font-bold">Gallery</h2>
-
 
     <div class="card p-4 grid grid-cols-[auto_1fr_auto] gap-16 items-center">
         <!-- Button: Left -->
