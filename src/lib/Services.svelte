@@ -29,13 +29,13 @@
                     {countServices==i+1? 'md:col-span-2 md:justify-self-center md:w-1/2': ''}">
 
                     <div class="bg-blue-500 h-[350px] w-full">
-                        Image
+                        <img src="{serv.image}" class="object-cover w-full h-full" alt="">
                     </div>
                     <div class="bg-black flex flex-col items-center p-4 rounded-md w-full h-[60%]">
                         <div class="-translate-y-16 -mb-8">
                             <img src={construction} class="bg-white p-4 rounded-full h-24" alt="">
                         </div>
-                        <div class="flex flex-col items-center">
+                        <div class="flex flex-col items-center pb-8">
                             <h2 class="h2 text-3xl font-bold text-[#febd17] mb-6">{serv.name.toUpperCase()}</h2>
                             <p class="lg:px-12 text-xl">{serv.description}</p>
                         </div>

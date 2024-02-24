@@ -45,7 +45,7 @@
                 </div>
                 
                 <div class="mt-8">
-                    <button class="rounded-md bg-[#febd17] text-black text-lg font-semibold py-4 px-16">Contact us</button>
+                    <button class="rounded-md bg-[#febd17] text-black text-lg font-semibold p-4 md:px-16">Contact us</button>
                 </div>
 
             </div>

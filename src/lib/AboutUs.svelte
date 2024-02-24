@@ -7,16 +7,17 @@
 </script>
     
     
-<div class='flex justify-center items-center my-24'>
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] w-full">
-        <div>h1</div>
-
-        <div class='flex flex-col justify-center items-center gap-16'>
-            <h1 class="h1 font-bold">ABOUT US</h1>
-            <p class='text-center px-8 lg:px-0'>{midText}</p>
-        </div>
+<div class='flex justify-center items-center md:p-24 p-8'>
+    <div class="grid grid-cols-1 lg:grid-cols-[2fr_3fr] w-full">
         
-        <div>h1</div>
+
+        <div class='flex flex-col md:gap-16 gap-8'>
+            <h1 class="h1 font-bold">About us</h1>
+            <p class='lg:px-0'>{midText}</p>
+        </div>
+
+        <div>Gallery</div>
+
     </div>
 </div>
 
