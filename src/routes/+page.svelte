@@ -93,7 +93,7 @@
 
 
 	
-	<ContactUs nDays={10}/>
+	<ContactUs nDays={9}/>
 
 	<Partners partners={partners}/>
 

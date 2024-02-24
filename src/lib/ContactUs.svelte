@@ -1,7 +1,7 @@
 <script>
 
     const today = new Date()
-    export let nDays = 10;
+    export let nDays = 7;
 
     function getTwoWeeksFromDate(inputDate, n) {
         let result = [];
@@ -173,9 +173,9 @@
                 </div>
                 
                 <div class="flex flex-col justify-center items-center w-full gap-y-8">
-                    <div class="grid md:grid-cols-{nDays/2} w-full">
+                    <div class="grid grid-cols-3 md:grid-cols-5 w-full">
                     
-                        {#each calendarWeeks.slice(0,nDays/2) as day}
+                        {#each calendarWeeks.slice(0, nDays) as day}
 
                             <div class="bg-gray-50 border-4 p-2 border-gray-100 hover:bg-white">
                                 <div class="pb-4">
@@ -201,34 +201,7 @@
                         {/each}
 
                     </div>
-                    <div class="grid md:grid-cols-{nDays/2} w-full">
-                        
-                        {#each calendarWeeks.slice(nDays/2,14) as day}
-                        
-                            <div class="bg-gray-50 border-4 p-2 border-gray-100 hover:bg-white">
-                                <div class="pb-4">
-                                    <p class="text-sm font-bold">{day.day}</p>
-                                    <p class="text-xs text-gray opacity-60">{day.date}</p>
-                                </div>
-                                <div class="">
-                                    <button id='{day.date}_noon'
-                                        on:click={onClickDay} 
-                                        class="{buttonColor(day.date+'_noon')}" 
-                                    >
-                                        {blockedDays.includes(day.date+'_noon')? 'Not Available' : 'Noon'}
-                                        </button>
-                                    <button id='{day.date}_afternoon' 
-                                        on:click={onClickDay} 
-                                        class="{buttonColor(day.date+'_afternoon')}" 
-                                    >
-                                        {blockedDays.includes(day.date+'_afternoon')? 'Not Available' : 'Afternoon'}
-                                    </button>    
-                                </div>
-                            </div>
-    
-                        {/each}
-    
-                    </div>
+                    
 
                     <!-- <div class="flex w-full">
                         Selected: {#each bookedTimes as sel} {`${formatDateId(sel)} ; `} {/each} 
