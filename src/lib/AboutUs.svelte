@@ -1,4 +1,7 @@
 <script>
+    import ImageSlideshow from '$lib/ImageSlideshow.svelte';
+
+    export let galleryImages;
 
     export let midText;
     export let leftText;
@@ -17,9 +20,7 @@
         </div>
 
         <div>
-            <div>
-
-            </div>
+            <ImageSlideshow slideShowImages={galleryImages}/>
         </div>
 
     </div>

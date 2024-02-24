@@ -11,6 +11,7 @@
 	import Partners from '$lib/Partners.svelte';
 
 	import realmadrid from "$lib/images/real madrid.png"
+	import partner1 from "$lib/images/partner1.jpg"
 	import demolition from "$lib/images/demolition.jpg"
 	import drainfrancais from "$lib/images/drainfrancais.jpg"
 	import fissure from "$lib/images/fissure.jpg"
@@ -58,13 +59,13 @@
 	]
 
 	// Gallery
-	const slideShowImages = [demolition, drainfrancais, fissure, banner]
+	const galleryImages = [demolition, drainfrancais, fissure, banner]
 
 	// Partners
 	const partners = [
 		{
-			logo: realmadrid,
-			name: 'Real Madrid'
+			logo: partner1,
+			name: 'APCHQ'
 		}
 	]
 
@@ -88,7 +89,7 @@
 	
 	<Services services={services}/>
 	
-	<AboutUs midText={aboutUsMidText} leftText={''} rightText={''}/>
+	<AboutUs midText={aboutUsMidText} leftText={''} rightText={''} galleryImages={galleryImages}/>
 
 	
 	
