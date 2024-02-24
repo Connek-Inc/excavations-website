@@ -68,6 +68,9 @@
 		}
 	]
 
+
+	// #febd17
+
 </script>
 
 <div class="page-content flex flex-col">
@@ -78,8 +81,8 @@
 		bannerImages={bannerImages}/>
 
 	<div class='h-44 bg-black flex justify-center items-center text-white font-bold'> 
-		<h1 class="h1 text-center">
-			MEILLEUR SERVICE GARANTI. 
+		<h1 class="h1 text-center text-[#febd17] px-16 md:p-0">
+			MEILLEUR SERVICE GARANTI 
 		</h1>
 	</div>
 	

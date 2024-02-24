@@ -4,13 +4,22 @@
 	import TopBar from '$lib/TopBar.svelte';
 
 
-	const menuOptions = ['Services', 'About Us', 'Contact']
+	const menuOptions = [{
+		text: 'Services',
+		link: '#services' 
+	}, {
+		text: 'About Us',
+		link: '#about-us' 
+	}, {
+		text: 'Contact',
+		link: '#contact' 
+	}]
 
 	// Font Afacad sans-serif
 </script>
 
 
-<TopBar menuOptions={menuOptions}/>
+<TopBar menuOptions={menuOptions} />
 
 <slot />
 

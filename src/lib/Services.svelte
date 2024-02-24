@@ -13,7 +13,7 @@
 </script>
 
 
-<div class="flex w-full bg-gray-200 px-16 py-12 justify-center items-center m-auto">
+<div id="services" class="flex w-full bg-gray-200 px-6 md:px-16 py-12 justify-center items-center m-auto">
     <!-- <div class="text-black md:w-[70%] w-[90%] m-auto">
         hi
     </div> -->
@@ -35,9 +35,9 @@
                         <div class="-translate-y-16 -mb-8">
                             <img src={construction} class="bg-white p-4 rounded-full h-24" alt="">
                         </div>
-                        <div class="flex flex-col items-center pb-8">
-                            <h2 class="h2 text-3xl font-bold text-[#febd17] mb-6">{serv.name.toUpperCase()}</h2>
-                            <p class="lg:px-12 text-xl">{serv.description}</p>
+                        <div class="flex flex-col items-center md:pb-8">
+                            <h2 class="h2 text-3xl font-bold text-[#febd17] text-center mb-6">{serv.name.toUpperCase()}</h2>
+                            <p class="lg:px-12 text-xl text-center">{serv.description}</p>
                         </div>
 
                     </div>

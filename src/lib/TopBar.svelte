@@ -15,7 +15,9 @@
     </div>
     <div class="flex flex-row md:text-2xl sm:text-lg font-bold">
         {#each menuOptions as opt}
-            <div class="text-black sm:p-4 p-2 sm:px-8 rounded hover:bg-black hover:text-white">{opt}</div>
+            <a href="{opt.link}">
+                <div class="text-black sm:p-4 p-2 sm:px-8 rounded hover:bg-black hover:text-white">{opt.text}</div>
+            </a>
         {/each}    
     </div>
 </div>

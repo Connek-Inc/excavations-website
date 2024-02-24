@@ -97,7 +97,7 @@
 
 
 
-<div class="flex flex-col items-center justify-center bg-gray-200 py-16">
+<div id="contact" class="flex flex-col items-center justify-center bg-gray-200 py-16">
 
 
     <div class="grid grid-cols md:grid-cols-[5fr_6fr] w-full">
@@ -135,7 +135,7 @@
 
 
 
-        <div id='contact-form' class="px-16">
+        <div id='contact-form' class="md:px-16 px-4">
 
             <div class="flex justify-center items-center">
                 <form class="w-full">
