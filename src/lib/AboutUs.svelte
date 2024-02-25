@@ -20,7 +20,7 @@
         </div>
 
         <div>
-            <ImageSlideshow slideShowImages={galleryImages}/>
+            <ImageSlideshow slideShowImages={galleryImages} intervalSeconds={2}/>
         </div>
 
     </div>

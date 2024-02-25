@@ -25,13 +25,13 @@
             {#each services as serv, i}
                 
 
-                <div class="card card-hover flex flex-col items-center justify-center rounded-lg shadow-md text-white 
+                <div class="card card-hover flex flex-col items-center justify-center shadow-md text-white 
                     {countServices==i+1? 'md:col-span-2 md:justify-self-center md:w-1/2': ''}">
 
-                    <div class="bg-blue-500 h-[350px] w-full">
-                        <img src="{serv.image}" class="object-cover w-full h-full" alt="">
+                    <div class="h-[350px] w-full">
+                        <img src="{serv.image}" class="object-cover w-full h-full rounded-t-md" alt="">
                     </div>
-                    <div class="bg-black flex flex-col items-center p-4 rounded-md w-full h-[60%]">
+                    <div class="bg-black flex flex-col items-center p-4 rounded-b-md w-full h-[60%]">
                         <div class="-translate-y-16 -mb-8">
                             <img src={construction} class="bg-white p-4 rounded-full h-24" alt="">
                         </div>

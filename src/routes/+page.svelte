@@ -8,7 +8,7 @@
 	import ImageSlideshow from '$lib/ImageSlideshow.svelte';
 	import ContactUs from '$lib/ContactUs.svelte';
 	import Footer from '$lib/Footer.svelte';
-	import Partners from '$lib/Partners.svelte';
+	import Logos from '$lib/Logos.svelte';
 
 	import realmadrid from "$lib/images/real madrid.png"
 	import partner1 from "$lib/images/partner1.jpg"
@@ -27,7 +27,8 @@
 	const bannerImages = [banner, fissure]
 
 	// About Us
-	const aboutUsMidText = "Fort de plus de 15 ans d’expérience, Mini Excavation Érables est reconnu comme un leader au Québec dans les domaines de la construction et de la restauration de drains français, de la démolition, de la réparation de fissures et des inspections par caméra. Notre longue histoire et notre expertise approfondie témoignent de notre engagement envers l’excellence et la qualité de service, soutenus par l’ensemble des certifications et qualifications nécessaires. Notre équipe d’experts est dédiée à offrir des solutions sur mesure et efficaces, répondant précisément aux besoins spécifiques de chaque projet. En choisissant Mini Excavation Érables, vous optez pour une entreprise dont la fiabilité et l’excellence sont éprouvées par des décennies d’expérience."
+	const aboutUsMidText = `Fort de plus de 15 ans d’expérience, Mini Excavation Érables est reconnu comme un leader au Québec dans les domaines de la construction et de la restauration de drains français, de la démolition, de la réparation de fissures et des inspections par caméra.	
+	Notre longue histoire et notre expertise approfondie témoignent de notre engagement envers l’excellence et la qualité de service, soutenus par l’ensemble des certifications et qualifications nécessaires. Notre équipe d’experts est dédiée à offrir des solutions sur mesure et efficaces, répondant précisément aux besoins spécifiques de chaque projet. En choisissant Mini Excavation Érables, vous optez pour une entreprise dont la fiabilité et l’excellence sont éprouvées par des décennies d’expérience.`
 
 	// Services
 	const services = [
@@ -65,6 +66,14 @@
 	const partners = [
 		{
 			logo: partner1,
+			// name: 'APCHQ',
+			name: ''
+		}
+	]
+	// Certifications
+	const certifications = [
+		{
+			logo: partner1,
 			name: 'APCHQ'
 		}
 	]
@@ -92,14 +101,14 @@
 	<AboutUs midText={aboutUsMidText} leftText={''} rightText={''} galleryImages={galleryImages}/>
 
 	
-	
 	<!-- <ImageSlideshow slideShowImages={slideShowImages}/> -->
 
 
+	<Logos logos={partners} title={'Partenaires'}/>
 	
 	<ContactUs nDays={9}/>
 
-	<Partners partners={partners}/>
+	<Logos logos={certifications} title={'Certifications'}/>
 
 	<Footer />
 
