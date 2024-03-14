@@ -1,7 +1,18 @@
 <script>
+    import { enhance } from "$app/forms";
+    import AboutUs from "./AboutUs.svelte";
+
 
     const today = new Date()
     export let nDays = 7;
+    // let bookedTimes = []
+    let formData = {
+        name: '',
+        email: '',
+        phone: '',
+        messageText: '',
+        bookedTimes: []
+    }
 
     function getTwoWeeksFromDate(inputDate, n) {
         let result = [];
@@ -24,8 +35,7 @@
             });
         }
         return result;
-        }
-
+    }
     function getNextFourteenDays(inputDate, n) {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let datesArray = [];
@@ -42,44 +52,44 @@
         
         return datesArray;
     }
-
-    
     function formatDateId(dateString) {
         return dateString.replace('_', ' - ').replace('afternoon', 'Afternoon').replace('noon', 'Noon');
     }
-
-
     // const calendarWeeks = getTwoWeeksFromDate(today)
     const calendarWeeks = getNextFourteenDays(today, nDays)
-    const blockedDays = ['February 27_noon']
+    const blockedDays = ['March 19_noon']
 
 
     console.log(calendarWeeks.slice(0,7))
 
 
-    let bookedTimes = []
+    
 
+    // Handle calendar time click
     const onClickDay = (e) => {
 
-        if (bookedTimes.includes(e.target.id) | blockedDays.includes(e.target.id)) {
-            console.log('Nope')
-            return
+        if (formData.bookedTimes.includes(e.target.id) | blockedDays.includes(e.target.id)) {
+            // Remove form bookedTimes
+            formData.bookedTimes = formData.bookedTimes.filter(x => x !== e.target.id)
+        } else {
+            // Add time to bookedTimes
+            formData.bookedTimes = [...formData.bookedTimes, e.target.id]
         }
         
-        bookedTimes = [...bookedTimes, e.target.id]
         
         console.log('days', nDays)
     }
 
+    // Change button color with clicks 
     $: buttonColor = (id) => {
 
         const first = 'text-left h-6 w-full max-w-24 p-1 mb-1 text-sm rounded-md '
 
-        if (bookedTimes.includes(id)) {
+        if (formData.bookedTimes.includes(id)) {  //Seleccionado
             
             return first + 'bg-yellow-500 text-white'
 
-        } else if (blockedDays.includes(id)) {
+        } else if (blockedDays.includes(id)) { //Grey, not selectable
 
             return first + 'bg-gray-500 cursor-default active:shadow-inner transform active:-translate-y-1 transition duration-150 ease-in-out'
 
@@ -91,14 +101,38 @@
         
     }
 
-    $: console.log(bookedTimes)
+
+    // Send notification of contact
+
+    $: console.log(formData)
+
+    const sendContactForm = async (formData) => {
+
+        const response = await fetch('?/sendContactForm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+
+        return response.body
+        
+
+    }
+
+
+
 
 </script>
 
 
-
 <div id="contact" class="flex flex-col items-center justify-center bg-gray-200 py-16">
 
+
+    
+
+    
 
     <div class="grid grid-cols md:grid-cols-[5fr_6fr] w-full">
 
@@ -132,30 +166,42 @@
 
 
 
+    
 
 
 
         <div id='contact-form' class="md:px-16 px-4">
 
             <div class="flex justify-center items-center">
-                <form class="w-full">
+                
+                <div class="flex flex-col w-full">
+                    
                     <div class="mb-5">
                         <label for="name" class="mb-2 text-sm text-gray-600">Name*</label>
-                        <input type="text" name="name" id="name" placeholder="Name" required class="w-full p-4 text-gray-700 bg-gray-100 rounded border border-gray-300">
+                        <input type="text" name="name" id="name" placeholder="Name" required 
+                            bind:value={formData.name}
+                            class="w-full p-4 text-gray-700 bg-gray-100 rounded border border-gray-300">
                     </div>
                     <div class="mb-5">
                         <label for="email" class="mb-2 text-sm text-gray-600">Email*</label>
-                        <input type="email" name="email" id="email" placeholder="Email" required class="w-full p-4 text-gray-700 bg-gray-100 rounded border border-gray-300">
+                        <input type="email" name="email" id="email" placeholder="Email" required 
+                            bind:value={formData.email}    
+                            class="w-full p-4 text-gray-700 bg-gray-100 rounded border border-gray-300">
                     </div>
                     <div class="mb-5">
                         <label for="phone" class="mb-2 text-sm text-gray-600">Phone*</label>
-                        <input type="tel" name="phone" id="phone" placeholder="Phone" required class="w-full p-4 text-gray-700 bg-gray-100 rounded border border-gray-300">
+                        <input type="tel" name="phone" id="phone" placeholder="Phone" required 
+                            bind:value={formData.phone}    
+                            class="w-full p-4 text-gray-700 bg-gray-100 rounded border border-gray-300">
                     </div>
                     <div class="mb-5">
                         <label for="message" class="mb-2 text-sm text-gray-600">Message*</label>
-                        <textarea rows="4" name="message" id="message" placeholder="Message" required class="w-full h-32 p-4 text-gray-700 bg-gray-100 rounded border border-gray-300"></textarea>
+                        <textarea rows="4" name="message" id="message" placeholder="Message" required 
+                            bind:value={formData.messageText}
+                            class="w-full h-32 p-4 text-gray-700 bg-gray-100 rounded border border-gray-300"></textarea>
                     </div>
-                </form>
+                </div>
+                
             </div>
             
         </div>
@@ -187,8 +233,8 @@
                                         on:click={onClickDay} 
                                         class="{buttonColor(day.date+'_noon')}" 
                                     >
-                                    {blockedDays.includes(day.date+'_noon')? 'Not Available' : 'Noon'}
-                                        </button>
+                                        {blockedDays.includes(day.date+'_noon')? 'Not Available' : 'Noon'}
+                                    </button>
                                     <button id='{day.date}_afternoon' 
                                         on:click={onClickDay} 
                                         class="{buttonColor(day.date+'_afternoon')}" 
@@ -201,11 +247,7 @@
                         {/each}
 
                     </div>
-                    
 
-                    <!-- <div class="flex w-full">
-                        Selected: {#each bookedTimes as sel} {`${formatDateId(sel)} ; `} {/each} 
-                    </div> -->
 
                 </div>
             </div>
@@ -218,8 +260,16 @@
     </div>
     
     <div class="mt-10 flex justify-center items-center">
-        <button type="submit" class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">Send</button>
+        <button type="submit" on:click={() => sendContactForm(formData)} 
+            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">Send</button>
     </div>
+
+    <form>
+        <button type="submit" formaction="?/sendContactForm" 
+            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">Send</button>
+    </form>
 
 
 </div>
+
+<!-- </form> -->

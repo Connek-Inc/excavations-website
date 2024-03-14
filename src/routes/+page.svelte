@@ -10,6 +10,7 @@
 	import Footer from '$lib/Footer.svelte';
 	import Logos from '$lib/Logos.svelte';
 
+	import logo from "$lib/logo.png"
 	import realmadrid from "$lib/images/real madrid.png"
 	import partner1 from "$lib/images/partner1.jpg"
 	import demolition from "$lib/images/demolition.jpg"

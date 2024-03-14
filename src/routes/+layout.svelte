@@ -2,7 +2,7 @@
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 	import TopBar from '$lib/TopBar.svelte';
-
+	import logo from "$lib/logo.png"
 
 	const menuOptions = [{
 		text: 'Services',
@@ -19,7 +19,7 @@
 </script>
 
 
-<TopBar menuOptions={menuOptions} />
+<TopBar menuOptions={menuOptions} logo={logo}/>
 
 <slot />
 
