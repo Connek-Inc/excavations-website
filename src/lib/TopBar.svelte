@@ -1,8 +1,12 @@
 <script>
     
+    import { getContext } from "svelte";
     // Implement photos changing in the background
     export let menuOptions;
     export let logo;
+    
+    const language = getContext('language')
+
 
 </script>
 

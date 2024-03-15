@@ -4,6 +4,7 @@
     export let subtitle;
     export let logo;
     export let bannerImage;
+    export let buttonText;
 
     // Animation
     export let bannerImages;
@@ -46,7 +47,7 @@
                 
                 <div class="mt-8">
                     <a href="#contact">
-                      <button class="rounded-md bg-[#febd17] text-black text-lg font-semibold p-4 md:px-16">Contact us</button>
+                      <button class="rounded-md bg-[#febd17] text-black text-lg font-semibold p-4 md:px-16">{buttonText}</button>
                     </a>
                 </div>
 
