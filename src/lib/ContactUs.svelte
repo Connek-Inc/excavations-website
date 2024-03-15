@@ -11,6 +11,7 @@
     let calendarSubtitle;
     let calendarDates;
     let formLabels;
+    let sendButton;
 
     if (language=='en') {
         contactTitle = 'Contact for a quote.'
@@ -23,6 +24,7 @@
             phone: 'Phone',
             messageText: 'Message (minimum 30 characters)',
         }
+        sendButton = 'Send'
     } else if (language=='fr') {
         contactTitle = 'Contactez-nous pour une soumission.'
         calendarTitle = 'Réservez un appel pour une soumission';
@@ -33,6 +35,7 @@
             phone: 'Téléphone',
             messageText: 'Message (minimum 30 caractères)',
         };
+        sendButton = 'Envoyer'
     }
 
     const today = new Date()
@@ -95,7 +98,7 @@
     // Change button color with clicks 
     $: buttonColor = (id) => {
 
-        const first = 'text-left h-6 w-full max-w-24 p-1 mb-1 text-sm rounded-md '
+        const first = 'text-left h-6 w-full max-w-24 p-1 mb-1 text-xs rounded-md '
 
         if (formData.bookedTimes.includes(id)) {  //Seleccionado
             
@@ -270,14 +273,15 @@
                                     <button id='{day.date}_noon'
                                         on:click={onClickDay} 
                                         class="{buttonColor(day.date+'_noon')}" 
+                                        
                                     >
-                                        {blockedDays.includes(day.date+'_noon')? 'Not Available' : translate('Noon', language)}
+                                        {blockedDays.includes(day.date+'_noon')? translate('Not Available', language) : translate('Noon', language)}
                                     </button>
                                     <button id='{day.date}_afternoon' 
                                         on:click={onClickDay} 
                                         class="{buttonColor(day.date+'_afternoon')}" 
                                     >
-                                        {blockedDays.includes(day.date+'_afternoon')? 'Not Available' : translate('Afternoon', language)}
+                                        {blockedDays.includes(day.date+'_afternoon')? translate('Not Available', language) : translate('Afternoon', language)}
                                     </button>
                                 </div>
                             </div>
@@ -299,7 +303,7 @@
     
     <div class="mt-10 flex justify-center items-center">
         <button type="submit" on:click={() => sendContactForm(formData)} 
-            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">Send</button>
+            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">{sendButton}</button>
     </div>
 
 

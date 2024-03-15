@@ -38,7 +38,9 @@ export function translate(word, language) {
         'Sunday': 'Dimanche',
         // TIME OF DAY
         'Noon': 'Midi',
-        'Afternoon': 'Après-midi'
+        'Afternoon': 'Après-midi',
+        // OTHER
+        'Not Available': 'Pas disponible'
     }
 
     if (language=='fr') {
