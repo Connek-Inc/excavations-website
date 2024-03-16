@@ -4,7 +4,7 @@
 </script>
 
 
-<div class="flex items-center">
+<div class="flex items-center justify-between">
 
     <div class="">
     
@@ -12,13 +12,13 @@
     
     </div>
     
-    <div class="flex justify-around items-center w-full">
+    <div class="flex justify-center items-center w-full">
     
         {#each logos as logo}
     
-            <div class="flex flex-col justify-center md:h-48 md:w-48 h-24 w-24 grayscale">
+            <div class="flex flex-col justify-center md:h-48 md:w-48 h-24 w-24">
                 <img src="{logo.logo}" class="" alt=""> 
-                <p class="text-center">{logo.name? logo.name: ''}</p>
+                <p class="text-center pt-4 opacity-70">{logo.name? logo.name : ''}</p>
             </div>
     
         {/each}

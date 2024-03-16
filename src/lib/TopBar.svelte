@@ -1,17 +1,25 @@
 <script>
     
+    import { getContext } from "svelte";
     // Implement photos changing in the background
     export let menuOptions;
+    export let logo;
+    
+    const language = getContext('language')
+
 
 </script>
 
 
 <!-- bg-gradient-to-b from-black to-[#ffff00] -->
 <div class="fixed flex text-white justify-between top-0 left-0 w-full z-30 bg-[#febd17]">
-    <div>
-        <div class="text-3xl">
-            (logo)
-        </div>
+    <div class="w-36 h-full pb-0 pl-4">
+        <a href="#home">
+            <img class="h-full w-full" src={logo} alt="">
+        </a>
+        <!-- <div class="text-3xl">
+            {logo}
+        </div> -->
     </div>
     <div class="flex flex-row md:text-2xl sm:text-lg font-bold">
         {#each menuOptions as opt}
