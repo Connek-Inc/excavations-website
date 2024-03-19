@@ -109,8 +109,8 @@
             return first + 'bg-gray-500 cursor-default active:shadow-inner transform active:-translate-y-1 transition duration-150 ease-in-out'
 
         } else { // El normal
-
-            return first + 'bg-black text-white hover:bg-yellow-500 hover:text-black'
+            // hover:bg-yellow-500 hover:text-black
+            return first + 'bg-black text-white'
 
         }
         

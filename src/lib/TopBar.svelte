@@ -21,10 +21,10 @@
             {logo}
         </div> -->
     </div>
-    <div class="flex flex-row md:text-2xl sm:text-lg font-bold">
+    <div class="flex flex-row items-center md:text-2xl font-bold">
         {#each menuOptions as opt}
-            <a href="{opt.link}">
-                <div class="text-black sm:p-4 p-2 sm:px-8 rounded hover:bg-black hover:text-white">{opt.text}</div>
+            <a href="{opt.link}" class="h-full">
+                <div class="h-full flex items-center hover:bg-black text-black sm:p-4 p-2 sm:px-8 rounded sm:text-lg hover:text-white text-sm">{opt.text}</div>
             </a>
         {/each}    
     </div>
