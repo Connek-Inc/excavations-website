@@ -33,14 +33,14 @@
 	let bannerTitle: string;
 	let bannerSubtitle: string;
 	let bannerImages;
-	let aboutUsMidText;
+	let aboutUsMidText: string;
 	let services;
 	let galleryImages;
 	let partners;
 	let certifications;
-	let lineMessage;
-	let bannerButtonText;
-	let partnersTitle;
+	let lineMessage: string;
+	let bannerButtonText: string;
+	let partnersTitle: string;
 
 	if (language==='en') {
 
@@ -162,6 +162,8 @@
 		</h1>
 	</div>
 	
+	<ContactUs nDays={9}/>
+
 	<Services services={services}/>
 	
 	<AboutUs midText={aboutUsMidText} leftText={''} rightText={''} galleryImages={galleryImages}/>
@@ -169,10 +171,8 @@
 	
 	<!-- <ImageSlideshow slideShowImages={slideShowImages}/> -->
 
-
 	<Logos logos={partners} title={partnersTitle}/>
 	
-	<ContactUs nDays={9}/>
 
 	<Logos logos={certifications} title={'Certifications'}/>
 

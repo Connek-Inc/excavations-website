@@ -1,13 +1,29 @@
 
 // Process each date string in the array
-export const formatBookedTimes = (dates) => {
+export const formatBookedTimes = (dates, language) => {
+    // Dates are in format js object
+    // bookedTimes: [
+    //     'March 25_noon',
+    //     'March 25_afternoon',
+    //     'March 26_noon',
+    //     'March 26_afternoon'
+    //   ]
 
     const finalString = dates.map(dateString => {
         const [date, partOfDay] = dateString.split('_');
-        const formatPartOfDay = part => part === 'noon' ? 'at Noon' : 'in the Afternoon';
-        return `${date} ${formatPartOfDay(partOfDay)}`;
+
+        const formatPartOfDay = (part, language) => {
+            if (language=='fr') {
+                return (part === 'noon'? 'à midi' : 'après-midi')
+            } else {
+                return (part === 'noon' ? 'at Noon' : 'in the Afternoon')
+            }
+        }
+
+        return `${date} ${formatPartOfDay(partOfDay, language)}`;
     }).join(', ');
 
+    console.log(finalString)
     return finalString
 }
 

@@ -19,9 +19,9 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
     // console.log('TIPOO', formData.formData)
     // console.log('TIPOO', typeof(formData.formData))
 
-    const bookedTimes = formatBookedTimes(formData.bookedTimes)
+    const bookedTimes = formatBookedTimes(formData.bookedTimes, 'fr')
 
-    // console.log(bookedTimes)
+    console.log(bookedTimes)
 
     const email_body = `<h1>¡Hola Mini Excavations Érable!</h1>
 
@@ -57,11 +57,11 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
     }
 
 
-    const emailData = await sendEmail()
-    // console.log('EMMAIL DATA', emailData)
+    // const emailData = await sendEmail()
+    // // console.log('EMMAIL DATA', emailData)
     
 
-    return json(emailData)
+    // return json(emailData)
     // return json({})
 
 
