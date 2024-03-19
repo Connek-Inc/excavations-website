@@ -57,11 +57,11 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
     }
 
 
-    // const emailData = await sendEmail()
-    // // console.log('EMMAIL DATA', emailData)
+    const emailData = await sendEmail()
+    // console.log('EMMAIL DATA', emailData)
     
 
-    // return json(emailData)
+    return json(emailData)
     // return json({})
 
 

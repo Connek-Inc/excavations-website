@@ -166,13 +166,13 @@
 
 	<Services services={services}/>
 	
-	<AboutUs midText={aboutUsMidText} leftText={''} rightText={''} galleryImages={galleryImages}/>
-
+	
 	
 	<!-- <ImageSlideshow slideShowImages={slideShowImages}/> -->
-
+	
 	<Logos logos={partners} title={partnersTitle}/>
 	
+	<AboutUs midText={aboutUsMidText} leftText={''} rightText={''} galleryImages={galleryImages}/>
 
 	<Logos logos={certifications} title={'Certifications'}/>
 
