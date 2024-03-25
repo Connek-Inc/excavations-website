@@ -5,6 +5,7 @@
     import { translate } from "$lib/utils"
 
     const language = getContext('language')
+    const theme = getContext('theme')
 
     let contactTitle;
     let calendarTitle;
@@ -58,22 +59,7 @@
 
 
 
-    function getNextFourteenDays(inputDate, n) {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        let datesArray = [];
-        
-        for (let i = 0; i < n; i++) {
-            let currentDate = new Date(inputDate);
-            currentDate.setDate(currentDate.getDate() + i);
-            
-            let formattedDate = currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-            let dayOfWeek = days[currentDate.getDay()];
-            
-            datesArray.push({ date: formattedDate, day: dayOfWeek });
-        }
-        
-        return datesArray;
-    }
+    
     // const calendarWeeks = getTwoWeeksFromDate(today)
     const calendarWeeks = getNextFourteenDays(today, nDays)
     const blockedDays = ['March 19_noon']
@@ -117,37 +103,6 @@
     }
 
 
-    // Validate contact form
-    const onChangeValidation = async (inputName) => {
-        try {
-            await contactUsSchema.fields[inputName].validate(formData[inputName])
-            formDataValid[inputName] = true
-        } catch (err) {
-            // console.log(err.name, err.errors)
-            formDataValid[inputName] = false
-        }
-    }
-
-
-    // Send notification of contact thru email
-    const sendContactForm = async (formData) => {
-
-        const response = await fetch('/send-contact-form', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({formData})
-        })
-
-        console.log('SEND CONTACT RES', response.json())
-        // goto('/#contact')
-        // return response.body
-    }
-
-    console.log(calendarWeeks)
-
-
 
 </script>
 
@@ -163,14 +118,6 @@
 
 
 
-            
-            <div id='contact-title'>
-
-            <div class='header text-center mb-4'>
-                <h1 class="h1 font-bold">{contactTitle}</h1>
-            </div>
-
-            </div>
             
             
 
