@@ -45,7 +45,7 @@
     <div id='contact-title'>
         
         <div class='header text-center mb-4'>
-            <h1 class="h1 font-bold">{title}</h1>
+            <h2 class="h2 font-bold">{title}</h2>
         </div>
         
     </div>

@@ -26,7 +26,7 @@
                 
 
                 <div class="card card-hover flex flex-col items-center justify-center shadow-md text-white 
-                    {countServices==i+1? 'md:col-span-2 md:justify-self-center md:w-1/2': ''}">
+                    {(countServices==i+1 && countServices%2!=0)? 'md:col-span-2 md:justify-self-center md:w-1/2': ''}">
 
                     <div class="h-[350px] w-full">
                         <img src="{serv.image}" class="object-cover w-full h-full rounded-t-md" alt="">

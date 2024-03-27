@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 
-    export let mainTitle;
+    export let mainTitle: string;
     export let subtitle;
     export let logo;
     export let bannerImage;

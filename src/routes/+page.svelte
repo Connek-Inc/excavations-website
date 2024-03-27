@@ -29,6 +29,7 @@
 	import certif3 from "$lib/images/certification3.png"
 	import demolition from "$lib/images/demolition.jpg"
 	import drainfrancais from "$lib/images/drainfrancais.jpg"
+	import waterproofing1 from "$lib/images/waterproofing1.jpg"
 	import fissure from "$lib/images/fissure.jpg"
 	import fissure2 from "$lib/images/fissure2.jpg"
 	import frenchdrain2 from "$lib/images/frenchdrain2.jpg"
@@ -97,6 +98,11 @@
 				name: 'Camera Inspection',
 				description: "Precise pipeline diagnostics with cutting-edge technology for non-invasive inspections.",
 				image: inspection2
+			},
+			{
+				name: 'Waterproofing',
+				description: "Top-notch waterproofing solutions for residential and commercial properties, utilizing the latest in technology and premium materials for lasting protection.",
+				image: waterproofing1
 			}
 		];
 		bannerButtonText = 'Contact Us'
@@ -136,6 +142,11 @@
 				name: 'Inspection par Caméra',
 				description: "Diagnostics précis de canalisations avec une technologie de pointe pour des inspections non invasives.",
 				image: inspection2
+			},
+			{
+				name: 'Imperméabilisation',
+				description: "Imperméabilisation de pointe pour les propriétés résidentielles et commerciales, utilisant la dernière technologie et des matériaux de qualité pour une protection durable.",
+				image: waterproofing1
 			}
 		];
 		bannerButtonText = 'Contactez nous'

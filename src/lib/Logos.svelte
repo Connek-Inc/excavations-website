@@ -14,7 +14,7 @@
     let logosCount: number;
 
     logosCount = logos.length
-    logosOnScreen = 5
+    logosOnScreen = 4
     animationBool = (logosCount > logosOnScreen? true : false)
 
 
@@ -63,19 +63,17 @@
     
     </div>
     
-    <div class="overflow-hidden w-full">
+    <div class="overflow-hidden w-full px-8 py-2">
         
-        <div class="{sliderStyle}">
+        <div class="{sliderStyle} gap-4">
 
             {#each logosAnimation as logo}
-        
-                <div class="flex flex-col justify-center items-center 
-                    w-[{oneLogoWidth*100}%] h-[{oneLogoWidth*100}%]
-                    max-w-24 max-h-24 md:max-h-48 md:max-w-48">
-                    <img src="{logo.logo}" class="" alt=""> 
-                    <p class="text-center pt-4 opacity-70">{logo.name? logo.name : ''}</p>
+                <div class="grid grid-rows-[3fr_auto] place-items-center">
+                    <img src="{logo.logo}" class="object-fit max-w-20 max-h-20 md:max-h-24 md:max-w-24 lg:max-h-32 lg:max-w-32" alt=""> 
+                    <div class="h-6">
+                        <p class="text-center text-xs md:text-sm w-full row-span-1 h-auto">{logo.name? logo.name : ''}</p>
+                    </div>
                 </div>
-        
             {/each}
         </div>
         

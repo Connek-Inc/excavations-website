@@ -24,7 +24,7 @@
 <div id="home" class="w-full flex justify-center items-center m-auto overflow-x-hidden">
     <div class="text-center text-white flex flex-col">
 	
-		<div class="relative w-screen min-h-screen overflow-hidden">
+		<div class="relative w-screen min-h-screen overflow-hidden h-[950px] md:h-screen">
 			{#each bannerImages as image}
 				<img
 					class="absolute animatingImage z-0 w-full h-full" 
@@ -35,18 +35,18 @@
 		</div>
 		
 		<div class="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-			space-y-4 w-full min-h-screen
-			flex justify-between"
+			space-y-4 w-screen min-h-screen
+			flex items-center justify-center"
 			bind:this={contentDiv}>
 			
 
-			<div class="md:grid md:grid-cols-2 flex flex-col justify-center items-center min-h-screen">
+			<div class="md:grid md:grid-cols-2 flex flex-col justify-center items-center min-h-screen w-full h-[980px] md:h-screen pt-36 md:p-16 p-8 ">
 
-					<div id="left-content-homebanner" class="flex flex-col justify-center items-start md:p-16 px-8">
+					<div id="left-content-homebanner" class="flex flex-col justify-center items-start pt-24 md:pr-8 w-full">
 
 						<div>
 							<img src="{logo}" alt="Logo" class="h-32 w-32">
-						</div>
+						</div>	
 
 						<div class="w-full text-left">
 							<h1 class="h1 font-bold text-[#febd17]">
@@ -59,7 +59,7 @@
 
 					</div>
 
-					<div id="right-content-homebanner" class="md:p-16 px-8">
+					<div id="right-content-homebanner" class="w-full md:pt-16 pt-8">
 
 						<slot/>
 
