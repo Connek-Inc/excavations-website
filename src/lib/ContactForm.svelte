@@ -15,22 +15,33 @@
     export let contactForm: ContactFormClass;
     export let title: string;
     export let buttonText: string
+    let validForm: boolean = true;
+
     
-
-
 
     // Send notification of contact thru email
     const sendContactForm = async (contactForm: ContactFormClass) => {
 
-        const response = await fetch('/send-contact-form', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(contactForm.toObject())
-        })
+        validForm = await contactForm.validateAll()
 
-        console.log('SEND CONTACT RES', response.json())
+        if (validForm) {
+
+            const response = await fetch('/send-contact-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    formData: contactForm.toObject()
+                })
+            })
+
+            console.log('SEND CONTACT RES', response.json())
+            contactForm.reset()
+        } else {
+            console.error('Email didnt work')
+        }
+
         // goto('/#contact')
         // return response.body
     }
@@ -93,9 +104,17 @@
                         {contactForm.description.valid? 'focus:ring-blue-500': 'focus:ring-red-500 focus:ring-8'} 
                         focus:border-transparent w-full"
                     ></textarea>
+                {#if !validForm}
+                    <p class="text-red-500 text-left font-bold">Please enter all information correctly.</p>
+                {/if}
             </div>
+            
             <button type="submit" on:click={() => sendContactForm(contactForm)} 
-                class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">{buttonText}</button>
+                class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded"
+            >
+                {buttonText}
+            </button>
+
         </form>
     </div>
 

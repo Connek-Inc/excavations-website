@@ -1,5 +1,5 @@
 <script lang="ts">
-  	import { onMount } from "svelte";
+  	import { onMount, getContext } from "svelte";
 
 
     export let title: string;
@@ -9,22 +9,28 @@
 
 	let contentDiv: HTMLElement | null = null;
 	let divHeight = 0
+	let topPadding = getContext('topBarHeight')
+	console.log(topPadding)
 
 	onMount(() => {
 		if (contentDiv) {	
 			divHeight = contentDiv.offsetHeight + 100; // or use getBoundingClientRect()
-			console.log(`Height of the div: ${divHeight}px`);
+			// console.log(`Height of the div: ${divHeight}px`);
 		}
+
+		
 	});
 
+	const topMargin = ''
 
 </script>
 
 
-<div id="home" class="w-full flex justify-center items-center m-auto overflow-x-hidden">
-    <div class="text-center text-white flex flex-col">
+<div id="contact" class="w-full overflow-x-hidden">
+
+    <div class="relative text-center text-white flex flex-col min-h-screen h-[1000px] md:h-[800px] overflow-hidden">
 	
-		<div class="relative w-screen min-h-screen overflow-hidden h-[950px] md:h-screen">
+		<div class="absolute top-0 left-0 right-0 bottom-0 w-screen min-h-screen overflow-hidden ">
 			{#each bannerImages as image}
 				<img
 					class="absolute animatingImage z-0 w-full h-full" 
@@ -34,15 +40,16 @@
 			<div class="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-60 z-10"></div>
 		</div>
 		
-		<div class="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-			space-y-4 w-screen min-h-screen
-			flex items-center justify-center"
+		<div class="absolute z-20 top-0 left-0 right-0 bottom-0 
+			w-screen min-h-screen "
 			bind:this={contentDiv}>
 			
 
-			<div class="md:grid md:grid-cols-2 flex flex-col justify-center items-center min-h-screen w-full h-[980px] md:h-screen pt-36 md:p-16 p-8 ">
-
-					<div id="left-content-homebanner" class="flex flex-col justify-center items-start pt-24 md:pr-8 w-full">
+			<div class="absolute top-0 left-0 right-0 bottom-0 
+				md:grid md:grid-cols-2 flex flex-col justify-center items-center min-h-screen w-full 
+				h-auto md:h-screen md:p-16 p-8 mt-8 md:mt-0">
+				<!-- pt-72 sm:pt-60 md:pt-16  -->
+					<div id="left-content-homebanner" class="flex flex-col justify-center items-start md:pt-8 md:pr-8 w-full">
 
 						<div>
 							<img src="{logo}" alt="Logo" class="h-32 w-32">
@@ -61,7 +68,7 @@
 
 					<div id="right-content-homebanner" class="w-full md:pt-16 pt-8">
 
-						<slot/>
+						<slot />
 
 					</div>
 			

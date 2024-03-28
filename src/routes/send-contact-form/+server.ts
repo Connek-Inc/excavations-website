@@ -19,10 +19,13 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
     // console.log('TIPOO', formData.formData)
     // console.log('TIPOO', typeof(formData.formData))
 
-    const bookedTimes = formatBookedTimes(formData.bookedTimes, 'fr')
+    // const bookedTimes = formatBookedTimes(formData.bookedTimes, 'fr')
 
-    console.log(bookedTimes)
+    // console.log(bookedTimes)
 
+    // <ul>
+    //     <li><strong>Fecha(s):</strong> ${bookedTimes}</li>
+    // </ul>
     const email_body = `<h1>¡Hola Mini Excavations Érable!</h1>
 
         <p>Has recibido una nueva solicitud de información de un cliente potencial interesado en los servicios de Mini Excavaciones Érable. A continuación, encontrarás los detalles de su solicitud para un seguimiento oportuno:</p>
@@ -31,11 +34,9 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
         <p><strong>Número de Teléfono:</strong> ${formData.phone}</p>
         <p><strong>Correo Electrónico:</strong> ${formData.email}</p>
         <p><strong>Descripción del Problema/Reparación Solicitada:</strong><br>
-        ${formData.messageText}</p>
+        ${formData.description}</p>
         <p><strong>Preferencia de Contacto:</strong></p>
-        <ul>
-            <li><strong>Fecha(s):</strong> ${bookedTimes}</li>
-        </ul>
+        
         
         <p>Por favor, asegúrate de contactar al cliente en el momento sugerido para proporcionarle más información sobre cómo podemos asistirle con sus necesidades de mini excavaciones. ¡Gracias por atender prontamente esta nueva oportunidad de negocio!</p>
         

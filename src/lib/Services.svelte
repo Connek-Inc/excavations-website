@@ -12,7 +12,7 @@
 
 </script>
 
-
+<div id="services" style="position:relative; top:-60px;"></div>
 <div id="services" class="flex w-full bg-gray-200 px-6 md:px-16 py-12 justify-center items-center m-auto">
     <!-- <div class="text-black md:w-[70%] w-[90%] m-auto">
         hi

@@ -1,12 +1,12 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { translate } from "$lib/utils"
-    import type { Calendar } from "./calendar.ts";
+    import type { CalendarClass } from "./calendar.ts";
 
     const language = getContext('language')
     const theme = getContext('theme')
 
-    export let calendar: Calendar;
+    export let calendar: CalendarClass;
     export let title: string;
     export let subtitle: string;
 
@@ -61,7 +61,7 @@
 </script>
 
 
-<div id='contact-calendar' class="flex flex-col">
+<div id='contact-calendar' class="flex flex-col bg-gray-300 p-4 rounded border-2 border-black">
 
     <div class="flex flex-col md:py-2 py-8 gap-4">
         <h4 class="h4 text-black font-bold">{title}</h4>

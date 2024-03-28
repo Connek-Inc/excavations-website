@@ -5,6 +5,7 @@ export class ContactFormClass {
     email: { label: string; value: string; valid: boolean; error?: null | string };
     phone: { label: string; value: string; valid: boolean; error?: null | string };
     description: { label: string; value: string; valid: boolean; error?: null | string };
+    valid: boolean = false
 
     constructor() {
         this.name = {
@@ -46,13 +47,39 @@ export class ContactFormClass {
         }
     }
 
+    async validateAll() {
+        try {
+            await contactUsSchema.validate({
+                name: this.name.value,
+                email: this.email.value,
+                phone: this.phone.value,
+                description: this.description.value,
+            }, { 
+                abortEarly: false 
+            })
+            this.valid = true
+            return this.valid
+        } catch (error) {
+            console.error('cannot validate form')
+            this.valid = false
+            return this.valid
+        }
+    }
+
     toObject() {
         return {
             name: this.name.value,
             email: this.email.value,
             phone: this.phone.value,
             description: this.description.value,
-            
         }
+    }
+
+    reset() {
+        this.name = { label: 'Name', value: '', valid: false, error: null };
+        this.email = { label: 'Email', value: '', valid: false, error: null };
+        this.phone = { label: 'Phone', value: '', valid: false, error: null };
+        this.description = { label: 'Description', value: '', valid: false, error: null };
+        this.valid = false;
     }
 }

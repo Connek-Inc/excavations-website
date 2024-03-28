@@ -14,7 +14,7 @@
     let logosCount: number;
 
     logosCount = logos.length
-    logosOnScreen = 4
+    logosOnScreen = 5
     animationBool = (logosCount > logosOnScreen? true : false)
 
 
@@ -55,7 +55,7 @@
     } 
 </style>
 
-<div class="grid grid-cols-1 md:flex items-center justify-between">
+<div class="grid grid-cols-1 md:flex items-center justify-between px-4">
 
     <div class="">
     

@@ -20,8 +20,8 @@ export const actions = {
                 return data
             }
 
-            // const emailData = await sendEmail()
-            // return emailData
+            const emailData = await sendEmail()
+            return emailData
             }
 
         notifyOnEmail()

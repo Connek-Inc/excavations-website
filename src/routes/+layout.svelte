@@ -1,11 +1,18 @@
 <script lang="ts">
 	import '../app.postcss';
 	import TopBar from '$lib/TopBar.svelte';
+	import Calendar from '$lib/Calendar.svelte';
 	import logo from "$lib/logo.png"
-    import { setContext } from 'svelte';
+    import { onMount, setContext } from 'svelte';
 	import { Modal, initializeStores } from "@skeletonlabs/skeleton"
+	import type { ModalComponent } from '@skeletonlabs/skeleton';
+    import { CalendarClass } from '$lib/calendar';
 
 	initializeStores()
+	let papa = new CalendarClass([], [])
+	const modalRegistry: Record<string, ModalComponent> = {
+		calendarModal: { ref: Calendar, props: {calendar: papa, title: 'HI', subtitle: 'hello'} }
+	};
 
 	const language = 'fr'
 	setContext('language', language)
@@ -16,6 +23,9 @@
 	})
 
 	let menuOptions;
+	let topBarHeight: string | number | undefined;
+
+	$: console.log('IN LAYOUTTTT', topBarHeight)
 
 	if (language=='en') {
 		menuOptions = [{
@@ -42,18 +52,25 @@
 	}
 
 	
-
-
+	onMount(()=> {
+		if (window.innerHeight <= 768) {
+			topBarHeight = 68
+		} else {
+			topBarHeight = 96
+		}
+	})
 
 
 	// Font Afacad sans-serif
 </script>
 
-<Modal/>
+<Modal components={modalRegistry}/>
 
-<TopBar menuOptions={menuOptions} logo={logo}/>
+<TopBar menuOptions={menuOptions} logo={logo} bind:topBarHeight/>
 
-<slot />
+<div class="mt-{topBarHeight/4}">
+	<slot />
+</div>
 
 
 

@@ -19,17 +19,6 @@
   });
     
 
-
-    import { slide } from "svelte/transition";
-
-    
-
-
-
-
-    // const imageHeight = '1024px'
-    // const imageWidth = '1024px'
-
 </script>
 
 

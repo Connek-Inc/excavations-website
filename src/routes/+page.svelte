@@ -1,8 +1,10 @@
 <script lang="ts">
 
 	import { getContext, setContext } from 'svelte';
+	import { getModalStore, Modal } from '@skeletonlabs/skeleton';
+	import type { ModalSettings } from '@skeletonlabs/skeleton';
 
-	import banner from '$lib/images/banner.jpg'
+	const modalStore = getModalStore();
 
 	// Components
 	import HomeBannerSplit2 from "$lib/HomeBannerSplit2.svelte";
@@ -11,11 +13,14 @@
 	import ImageSlideshow from '$lib/ImageSlideshow.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import Logos from '$lib/Logos.svelte';
+	import Calendar from '$lib/Calendar.svelte';
 
 	// Classes
-	import {ContactFormClass} from "$lib/contact-form"
+	import { ContactFormClass } from "$lib/contact-form"
+	import { CalendarClass } from '$lib/calendar';
 
 	// Assets
+	import banner from '$lib/images/banner.jpg'
 	import logo from "$lib/logo.png"
 	import certifiedBadge from "$lib/icons/quality-badge.png"
 	import realmadrid from "$lib/images/real madrid.png"
@@ -37,7 +42,7 @@
 	import inspection2 from "$lib/images/inspection2.jpg"
 	import demolition2 from "$lib/images/demolition2.jpg"
 	import ContactForm from '$lib/ContactForm.svelte';
-  	import { Calendar } from '$lib/calendar';
+  	
 
 	const language = getContext('language')
 	const theme = getContext('theme')
@@ -48,7 +53,8 @@
 
 	let bannerTitle: string;
 	let bannerSubtitle: string;
-	let aboutUsMidText: string;
+	let aboutUsTitle: string;
+	let aboutUsText: string;
 	let services;
 	let partners;
 	let certifications;
@@ -68,7 +74,8 @@
 
 		bannerTitle = 'Mini Excavations Érable'
 		bannerSubtitle = 'With 15+ years of experience.'
-		aboutUsMidText = `With more than 15 years of experience, Mini Excavation Maple is recognized as a leader in Quebec in the fields of construction and restoration of French drains, demolition, crack repair, and camera inspections. Our long history and deep expertise testify to our commitment to excellence and quality of service, supported by all the necessary certifications and qualifications. Our team of experts is dedicated to offering customized and effective solutions, precisely meeting the specific needs of each project. By choosing Mini Excavation Maple, you opt for a company whose reliability and excellence are proven by decades of experience.`;
+		aboutUsTitle = "About Us"
+		aboutUsText = `With more than 15 years of experience, Mini Excavation Maple is recognized as a leader in Quebec in the fields of construction and restoration of French drains, demolition, crack repair, and camera inspections. Our long history and deep expertise testify to our commitment to excellence and quality of service, supported by all the necessary certifications and qualifications. Our team of experts is dedicated to offering customized and effective solutions, precisely meeting the specific needs of each project. By choosing Mini Excavation Maple, you opt for a company whose reliability and excellence are proven by decades of experience.`;
 		contactTitle = 'Contact for a quote.'
         calendarTitle = 'Book a call for a quote'
         calendarSubtitle = 'Below are our times available. Choose your times and we will give you a call.'
@@ -112,7 +119,9 @@
 	} else if (language=='fr') {
 		bannerTitle = 'Mini Excavations Érable';
 		bannerSubtitle = 'Avec plus de 15 ans d’expérience.';
-		aboutUsMidText = `Fort de plus de 15 ans d'expérience, Mini Excavation Érable est reconnu comme un leader au Québec dans les domaines de la construction et de la restauration de drains français, de la démolition, de la réparation de fissures et des inspections par caméra. Notre longue histoire et notre expertise approfondie témoignent de notre engagement envers l'excellence et la qualité de service, soutenus par toutes les certifications et qualifications nécessaires. Notre équipe d'experts est dédiée à offrir des solutions personnalisées et efficaces, répondant précisément aux besoins spécifiques de chaque projet. En choisissant Mini Excavation Érable, vous optez pour une entreprise dont la fiabilité et l'excellence sont prouvées par des décennies d'expérience.`;
+		
+		aboutUsTitle = 'À propos'
+		aboutUsText = `Fort de plus de 15 ans d'expérience, Mini Excavation Érable est reconnu comme un leader au Québec dans les domaines de la construction et de la restauration de drains français, de la démolition, de la réparation de fissures et des inspections par caméra. Notre longue histoire et notre expertise approfondie témoignent de notre engagement envers l'excellence et la qualité de service, soutenus par toutes les certifications et qualifications nécessaires. Notre équipe d'experts est dédiée à offrir des solutions personnalisées et efficaces, répondant précisément aux besoins spécifiques de chaque projet. En choisissant Mini Excavation Érable, vous optez pour une entreprise dont la fiabilité et l'excellence sont prouvées par des décennies d'expérience.`;
 		contactTitle = 'Contactez-nous pour une soumission.'
         calendarTitle = 'Réservez un appel pour une soumission';
         calendarSubtitle = 'Ci-dessous se trouvent nos créneaux disponibles. Choisissez votre horaire et nous vous appellerons.';
@@ -157,7 +166,7 @@
 
 	// Init classes
 	let contactForm = new ContactFormClass()
-	let calendar = new Calendar(bookedTimes, blockedTimes)
+	let calendar = new CalendarClass(bookedTimes, blockedTimes)
 	
 	// Gallery
 	const bannerImages: string[] = [banner, fissure]
@@ -203,7 +212,23 @@
 		}
 	]
 
+	export let topBarHeight;
+	$: console.log('IN PAGE SVELTE', topBarHeight)
+	
+	const triggerCalendar = () => {
+		const modal: ModalSettings = {
+			type: 'component',
+			component: { ref: Calendar, 
+				props: {calendar: calendar, title: calendarTitle, subtitle: calendarSubtitle}
+			},
+			modalClasses: '!bg-red-500',
+			}
+		modalStore.trigger(modal)
+	}
+
+
 </script>
+
 
 <div class="page-content flex flex-col">
 
@@ -217,6 +242,14 @@
 		<ContactForm title={contactTitle} buttonText={contactButtonText} bind:contactForm/>
 	</HomeBannerSplit2>
 
+	<!-- {#if $modalStore[0]}
+		<Calendar 
+			calendar={calendar}
+			title={calendarTitle}
+			subtitle={calendarSubtitle}
+		/>
+	{/if} -->
+
 	
 	<div class='h-36 bg-{secondaryColor} flex justify-center items-center text-white font-bold'> 
 		<h1 class="h1 text-center text-[{primaryColor}] px-16 md:p-0">
@@ -224,16 +257,16 @@
 		</h1>
 	</div>
 	
+	
+
 	<Logos logos={partners} title={partnersTitle}/>
 	
 	<Services services={services}/>
 	
+	<AboutUs title={aboutUsTitle} text={aboutUsText}>
+		<ImageSlideshow slideShowImages={galleryImages} intervalSeconds={2}/>
+	</AboutUs>
 	
-	
-	<!-- <ImageSlideshow slideShowImages={slideShowImages}/> -->
-
-
-
 
 	<Logos logos={certifications} title={'Certifications'}/>
 

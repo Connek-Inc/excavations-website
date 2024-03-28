@@ -1,10 +1,10 @@
 
-export class Calendar {
+export class CalendarClass {
     bookedTimes: string[];
     blockedTimes: string[];
     // Must be in form March 19_noon or afternoon
 
-    constructor(blockedTimes: string[], bookedTimes: string[]) {
+    constructor(bookedTimes: string[], blockedTimes: string[]) {
         this.blockedTimes = blockedTimes
         this.bookedTimes = bookedTimes
     }
