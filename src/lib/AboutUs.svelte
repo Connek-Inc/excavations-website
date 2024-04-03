@@ -7,8 +7,6 @@
 
     const language = getContext('language')
 
-
-
 </script>
     
 <div id="about-us" style="position:relative; top:-100px;"></div>
