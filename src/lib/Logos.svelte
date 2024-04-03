@@ -14,7 +14,7 @@
     let logosCount: number;
 
     logosCount = logos.length
-    logosOnScreen = 5
+    logosOnScreen = 4
     animationBool = (logosCount > logosOnScreen? true : false)
 
 
