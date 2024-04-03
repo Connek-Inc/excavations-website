@@ -42,14 +42,12 @@
 	import inspection2 from "$lib/images/inspection2.jpg"
 	import demolition2 from "$lib/images/demolition2.jpg"
 	import ContactForm from '$lib/ContactForm.svelte';
-  	
 
 	const language = getContext('language')
 	const theme = getContext('theme')
 	const primaryColor: string = theme.primary
     const secondaryColor: string = theme.secondary
     const tertiaryColor: string = theme.tertiary
-
 
 	let bannerTitle: string;
 	let bannerSubtitle: string;
