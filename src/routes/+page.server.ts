@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { RESEND, CONTACT_EMAIL } from '$env/static/private'
+import { RESEND } from '$env/static/private'
 
 
 
@@ -13,7 +13,7 @@ export const actions = {
                 console.log('Running sending email')
                 const data = await resend.emails.send({
                     from: 'Connek <team@connek.ca>',
-                    to: [CONTACT_EMAIL],
+                    to: 'miniexcavationerables@gmail.com',
                     subject: 'You have a new lead',
                     html: '<strong>Contact them fast!</strong>'
                 })
