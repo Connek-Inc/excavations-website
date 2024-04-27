@@ -49,6 +49,7 @@
     const secondaryColor: string = theme.secondary
     const tertiaryColor: string = theme.tertiary
 
+	export let form;
 	let bannerTitle: string;
 	let bannerSubtitle: string;
 	let aboutUsTitle: string;
@@ -163,7 +164,6 @@
 	}
 
 	// Init classes
-	let contactForm = new ContactFormClass()
 	let calendar = new CalendarClass(bookedTimes, blockedTimes)
 	
 	// Gallery
@@ -237,7 +237,7 @@
 		logo={certifiedBadge}
 		bannerImages={bannerImages}
 	>
-		<ContactForm title={contactTitle} buttonText={contactButtonText} bind:contactForm/>
+		<ContactForm title={contactTitle} buttonText={contactButtonText} form={form}/>
 	</HomeBannerSplit2>
 
 	<!-- {#if $modalStore[0]}

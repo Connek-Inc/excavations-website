@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
     import { getContext } from "svelte";
     import { contactUsSchema } from "$lib/yup/contactUsSchema";
-    import { translate } from "$lib/utils"
-    import type { ContactFormClass } from "./contact-form";
+    import InputText from "$lib/inputs/InputText.svelte"
+    import InputTextarea from "$lib/inputs/InputTextarea.svelte"
+    import { enhance } from "$app/forms";
 
     const language = getContext('language')
     const theme = getContext('theme')
@@ -12,41 +12,24 @@
     const secondaryColor: string = theme.secondary
     const tertiaryColor: string = theme.tertiary
 
-    export let contactForm: ContactFormClass;
     export let title: string;
     export let buttonText: string
-    let validForm: boolean = true;
 
-    
+    export let form;
 
-    // Send notification of contact thru email
-    const sendContactForm = async (contactForm: ContactFormClass) => {
 
-        validForm = await contactForm.validateAll()
+    let successMessage: string;
+    let errorMessage: string;
 
-        if (validForm) {
-
-            const response = await fetch('/send-contact-form', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    formData: contactForm.toObject()
-                })
-            })
-
-            console.log('SEND CONTACT RES', response.json())
-            contactForm.reset()
-        } else {
-            console.error('Email didnt work')
-        }
-
-        // goto('/#contact')
-        // return response.body
+    if (language=='en') {
+        successMessage = 'Thank you, we received your message. We will contact you soon.'
+        errorMessage = 'There was an error please try again'
+    } else if (language=='fr') {
+        successMessage = 'Merci pour votre message. Nous vous contacterons bientôt.'
+        errorMessage = 'Il y a eu une erreur. SVP essayer encore.'
     }
 
-
+    console.log(form)
 
 </script>
 
@@ -62,54 +45,31 @@
     </div>
 
 
-
     <div id="contact-form" class="flex flex-col w-full text-[{secondaryColor}]">
-        <form action="">
+        {#if form}
+            {#if form?.success}
+                <!-- this message is ephemeral; it exists because the page was rendered in
+                    response to a form submission. it will vanish if the user reloads -->
+                <p class="text-3xl font-semibold text-[{primaryColor}]">{successMessage}</p>
+            {:else if !form?.success}
+                <p class="text-[{primaryColor}]">{errorMessage}</p>
+            {/if}
+        {/if}
+        <form use:enhance method='post'>
             <div class="mb-5">
-                <label for="name" class="mb-2 text-sm text-left">{contactForm.name.label}</label>
-                <input type="text" name="name" id="name" placeholder={contactForm.name.value} required 
-                bind:value={contactForm.name.value}
-                on:input={async () => await contactForm.validateField('name')}
-                class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                    {contactForm.name.valid? 'focus:ring-blue-500': 'focus:ring-red-500 focus:ring-8'} 
-                    focus:border-transparent w-full"
-                >
+                <InputText name={'name'} label={language=='en'? 'Name': 'Nom'} position={'vertical'} validationSchema={contactUsSchema}/>
             </div>
             <div class="mb-5">
-                <label for="email" class="mb-2 text-sm text-left">{contactForm.email.label}</label>
-                <input type="email" name="email" id="email" placeholder={contactForm.email.value} required 
-                bind:value={contactForm.email.value}    
-                on:input={async () => await contactForm.validateField('email')}
-                class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                    {contactForm.email.valid? 'focus:ring-blue-500': 'focus:ring-red-500 focus:ring-8'} 
-                    focus:border-transparent w-full"
-                >
+                <InputText name={'email'} label={'Email'} position={'vertical'} validationSchema={contactUsSchema}/>
             </div>
             <div class="mb-5">
-                <label for="phone" class="mb-2 text-sm text-left">{contactForm.phone.label}</label>
-                <input type="tel" name="phone" id="phone" placeholder={contactForm.phone.value} required 
-                bind:value={contactForm.phone.value}    
-                on:input={async () => await contactForm.validateField("phone")}
-                class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                    {contactForm.phone.valid? 'focus:ring-blue-500': 'focus:ring-red-500 focus:ring-8'} 
-                    focus:border-transparent w-full"
-                >
+                <InputText name={'phone'} label={language=='en'? 'Phone': 'Téléphone'} position={'vertical'} validationSchema={contactUsSchema}/>
             </div>
             <div class="mb-5">
-                <label for="message" class="mb-2 text-sm text-left">{contactForm.description.label}</label>
-                <textarea rows="4" name="message" id="message" placeholder={contactForm.description.value} required 
-                bind:value={contactForm.description.value}
-                on:input={async () => await contactForm.validateField("description")}
-                    class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                        {contactForm.description.valid? 'focus:ring-blue-500': 'focus:ring-red-500 focus:ring-8'} 
-                        focus:border-transparent w-full"
-                    ></textarea>
-                {#if !validForm}
-                    <p class="text-red-500 text-left font-bold">Please enter all information correctly.</p>
-                {/if}
+                <InputTextarea name={'description'} label={'Description'} position={'vertical'} validationSchema={contactUsSchema}/>
             </div>
             
-            <button type="submit" on:click={() => sendContactForm(contactForm)} 
+            <button type="submit" 
                 class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded"
             >
                 {buttonText}

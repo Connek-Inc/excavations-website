@@ -45,7 +45,7 @@
 	let menuOptions;
 	let topBarHeight: string | number | undefined;
 
-	$: console.log('IN LAYOUTTTT', topBarHeight)
+	// $: console.log('IN LAYOUTTTT', topBarHeight)
 
 	if (language=='en') {
 		menuOptions = [{

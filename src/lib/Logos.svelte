@@ -23,17 +23,17 @@
         logosWidth = logosCount / logosOnScreen
         oneLogoWidth = 1 / logosOnScreen
         sliderStyle = `slider flex w-[${logosWidth*100*2}%] items-center`
-        console.log(sliderStyle)
+        // console.log(sliderStyle)
     } else {
         logosAnimation = logos
         logosWidth = 1
         oneLogoWidth = 1 / logosCount
         sliderStyle = `flex justify-around ` 
-        console.log('FALSE', sliderStyle)
+        // console.log('FALSE', sliderStyle)
     }
     
 
-    console.log('ANIMATION:', animationBool)
+    // console.log('ANIMATION:', animationBool)
     
 
 

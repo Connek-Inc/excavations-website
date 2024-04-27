@@ -8,7 +8,7 @@ export const contactUsSchema = yup.object().shape({
     .matches(/^[0-9]+$/, "Phone number must be only digits")
     .min(10, 'Phone number must be at least 10 digits long')
     .max(15, 'Phone number must be less than 15 digits long'),
-    description: yup.string().required('Message is required').min(30, 'Message must be at least 30 characters long'),
+    description: yup.string().required('Description is required').min(15, "Description must be at least 15 characters"),
 });
 
 export default contactUsSchema;
