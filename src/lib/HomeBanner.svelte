@@ -21,7 +21,7 @@
                     <img
                         class="absolute animatingImage z-0 w-full h-screen" 
                         src="{image}" 
-                        alt="banner">    
+                        alt="mini excavations erable">    
                 {/each}
                 <!-- <img
                     class="absolute animatingImage z-0 w-full h-screen object-fit" 
@@ -37,7 +37,7 @@
                       </div>
                 {/if}
                 <div class="w-full">
-                      <h1 class="h1 font-bold text-[#febd17]">
+                      <h1 class="h1 font-bold text-[#febd17] ">
                           {mainTitle}
                       </h1>
                 </div>

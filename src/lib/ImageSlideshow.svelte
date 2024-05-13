@@ -40,7 +40,7 @@
         {#each slideShowImages as image, i}
             <img
                 src={image}
-                alt={`Image ${i + 1}`}
+                alt= {`Image ${i + 1}`}
                 class="w-full h-full object-cover absolute transition-opacity duration-1000"
                 style:opacity="{i === indexImage ? '1' : '0'}" />
             <!-- <img src="{image}" class="object-cover w-full h-full" alt=""> -->

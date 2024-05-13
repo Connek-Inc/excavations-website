@@ -29,11 +29,11 @@
                     {countServices==i+1? 'md:col-span-2 md:justify-self-center md:w-1/2': ''}">
 
                     <div class="h-[350px] w-full">
-                        <img src="{serv.image}" class="object-cover w-full h-full rounded-t-md" alt="">
+                        <img src="{serv.image}" class="object-cover w-full h-full rounded-t-md" alt="mini excavations erable">
                     </div>
                     <div class="bg-black flex flex-col items-center p-4 rounded-b-md w-full h-[60%]">
                         <div class="-translate-y-16 -mb-8">
-                            <img src={construction} class="bg-white p-4 rounded-full h-24" alt="">
+                            <img src={construction} class="bg-white p-4 rounded-full h-24" alt="mini excavations erable">
                         </div>
                         <div class="flex flex-col items-center md:pb-8">
                             <h2 class="h2 text-3xl font-bold text-[#febd17] text-center mb-6">{serv.name.toUpperCase()}</h2>

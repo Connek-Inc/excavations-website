@@ -1,6 +1,6 @@
-
+import { language } from '$lib/store/store.js';
 // Process each date string in the array
-export const formatBookedTimes = (dates, language) => {
+export const formatBookedTimes = (dates, $language) => {
     // Dates are in format js object
     // bookedTimes: [
     //     'March 25_noon',
@@ -12,15 +12,15 @@ export const formatBookedTimes = (dates, language) => {
     const finalString = dates.map(dateString => {
         const [date, partOfDay] = dateString.split('_');
 
-        const formatPartOfDay = (part, language) => {
-            if (language=='fr') {
+        const formatPartOfDay = (part, $language) => {
+            if ($language=='fr') {
                 return (part === 'noon'? 'à midi' : 'après-midi')
             } else {
                 return (part === 'noon' ? 'at Noon' : 'in the Afternoon')
             }
         }
 
-        return `${date} ${formatPartOfDay(partOfDay, language)}`;
+        return `${date} ${formatPartOfDay(partOfDay, $language)}`;
     }).join(', ');
 
     console.log(finalString)
@@ -28,7 +28,7 @@ export const formatBookedTimes = (dates, language) => {
 }
 
 
-export function translate(word, language) {
+export function translate(word, $language) {
     
     // English to French month mapping
     const translation = {
@@ -59,7 +59,7 @@ export function translate(word, language) {
         'Not Available': 'Pas disponible'
     }
 
-    if (language=='fr') {
+    if ($language=='fr') {
         return translation[word] || word
     } else {
         return word

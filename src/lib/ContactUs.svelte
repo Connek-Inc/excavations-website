@@ -1,10 +1,10 @@
-<script>
+<script lang= 'ts'>
     import { goto } from "$app/navigation";
     import { getContext } from "svelte";
     import { contactUsSchema } from "$lib/yup/contactUsSchema";
     import { translate } from "$lib/utils"
-
-    const language = getContext('language')
+    import { language } from "./store/store";
+    //const language = getContext('language')
 
     let contactTitle;
     let calendarTitle;
@@ -13,7 +13,7 @@
     let formLabels;
     let sendButton;
 
-    if (language=='en') {
+    if ($language=='en') {
         contactTitle = 'Contact for a quote.'
         calendarTitle = 'Book a call for a quote'
         calendarSubtitle = 'Below are our times available. Choose your times and we will give you a call.' 
@@ -25,7 +25,7 @@
             messageText: 'Message (minimum 30 characters)',
         }
         sendButton = 'Send'
-    } else if (language=='fr') {
+    } else if ($language=='fr') {
         contactTitle = 'Contactez-nous pour une soumission.'
         calendarTitle = 'Réservez un appel pour une soumission';
         calendarSubtitle = 'Ci-dessous se trouvent nos créneaux disponibles. Choisissez votre horaire et nous vous appellerons.';
@@ -59,7 +59,9 @@
 
 
     function getNextFourteenDays(inputDate, n) {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
         let datesArray = [];
         
         for (let i = 0; i < n; i++) {
@@ -145,7 +147,7 @@
         // return response.body
     }
 
-    console.log(calendarWeeks)
+    //console.log(calendarWeeks)
 
 
 
@@ -167,7 +169,16 @@
         <div id='contact-title'>
 
             <div class='header text-center mb-4'>
-                <h1 class="h1 font-bold">{contactTitle}</h1>
+                {#if $language == 'en'}
+                    <h1 class="h1 font-bold">
+                        Contact for a quote
+                    </h1>
+                {:else}
+                    <h1 class="h1 font-bold">
+                        Contactez-nous pour une soumission.
+                    </h1>
+                {/if}
+                
             </div>
 
         </div>
@@ -200,10 +211,10 @@
             <div class="flex justify-center items-center">
                 
                 <div class="flex flex-col w-full">
-                    
+                    {#if $language == 'en'}
                     <div class="mb-5">
-                        <label for="name" class="mb-2 text-sm text-gray-600">{formLabels.name}</label>
-                        <input type="text" name="name" id="name" placeholder={formLabels.name} required 
+                        <label for="name" class="mb-2 text-sm text-gray-600">Name</label>
+                        <input type="text" name="name" id="name" placeholder='Name' required 
                             bind:value={formData.name}
                             on:input={() => onChangeValidation("name")}
                             class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
@@ -212,8 +223,8 @@
                             >
                     </div>
                     <div class="mb-5">
-                        <label for="email" class="mb-2 text-sm text-gray-600">{formLabels.email}</label>
-                        <input type="email" name="email" id="email" placeholder={formLabels.email} required 
+                        <label for="email" class="mb-2 text-sm text-gray-600">Email</label>
+                        <input type="email" name="email" id="email" placeholder='Email' required 
                             bind:value={formData.email}    
                             on:input={() => onChangeValidation("email")}
                             class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
@@ -222,8 +233,8 @@
                             >
                     </div>
                     <div class="mb-5">
-                        <label for="phone" class="mb-2 text-sm text-gray-600">{formLabels.phone}</label>
-                        <input type="tel" name="phone" id="phone" placeholder={formLabels.phone} required 
+                        <label for="phone" class="mb-2 text-sm text-gray-600">Phone</label>
+                        <input type="tel" name="phone" id="phone" placeholder='Phone' required 
                             bind:value={formData.phone}    
                             on:input={() => onChangeValidation("phone")}
                             class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
@@ -232,8 +243,8 @@
                             >
                     </div>
                     <div class="mb-5">
-                        <label for="message" class="mb-2 text-sm text-gray-600">{formLabels.messageText}</label>
-                        <textarea rows="4" name="message" id="message" placeholder={formLabels.messageText} required 
+                        <label for="message" class="mb-2 text-sm text-gray-600">Message (minimum 30 characters)</label>
+                        <textarea rows="4" name="message" id="message" placeholder='Message (minimum 30 characters)' required 
                             bind:value={formData.messageText}
                             on:input={() => onChangeValidation("messageText")}
                             class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
@@ -241,6 +252,48 @@
                                 focus:border-transparent w-full"
                             ></textarea>
                     </div>
+                    {:else}
+                    <div class="mb-5">
+                        <label for="name" class="mb-2 text-sm text-gray-600">Nom</label>
+                        <input type="text" name="name" id="name" placeholder='Nom' required 
+                            bind:value={formData.name}
+                            on:input={() => onChangeValidation("name")}
+                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
+                                {formDataValid['name']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
+                                focus:border-transparent w-full"
+                            >
+                    </div>
+                    <div class="mb-5">
+                        <label for="email" class="mb-2 text-sm text-gray-600">Courriel</label>
+                        <input type="email" name="email" id="email" placeholder='Courriel' required 
+                            bind:value={formData.email}    
+                            on:input={() => onChangeValidation("email")}
+                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
+                                {formDataValid['email']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
+                                focus:border-transparent w-full"
+                            >
+                    </div>
+                    <div class="mb-5">
+                        <label for="phone" class="mb-2 text-sm text-gray-600">Téléphone</label>
+                        <input type="tel" name="phone" id="phone" placeholder='Téléphone' required 
+                            bind:value={formData.phone}    
+                            on:input={() => onChangeValidation("phone")}
+                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
+                                {formDataValid['phone']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
+                                focus:border-transparent w-full"
+                            >
+                    </div>
+                    <div class="mb-5">
+                        <label for="message" class="mb-2 text-sm text-gray-600">Message (minimum 30 caractères)</label>
+                        <textarea rows="4" name="message" id="message" placeholder='Message (minimum 30 caractères) ' required 
+                            bind:value={formData.messageText}
+                            on:input={() => onChangeValidation("messageText")}
+                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
+                                {formDataValid['messageText']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
+                                focus:border-transparent w-full"
+                            ></textarea>
+                    </div>
+                    {/if}
                 </div>
                 
             </div>
@@ -255,8 +308,13 @@
             <div id='contact-calendar' class="flex flex-col">
 
                 <div class="flex flex-col md:py-2 py-8 gap-4">
-                    <h4 class="h4 text-black font-bold">{calendarTitle}</h4>
-                    <p class="text-sm">{calendarSubtitle}</p>
+                    {#if $language == 'en'}
+                        <h4 class="h4 text-black font-bold">Book a call for a quote</h4>
+                        <p class="text-sm">Below are our times available. Choose your times and we will give you a call.</p>
+                    {:else}
+                        <h4 class="h4 text-black font-bold">Réservez un appel pour une soumission</h4>
+                        <p class="text-sm">Ci-dessous se trouvent nos créneaux disponibles. Choisissez votre horaire et nous vous appellerons.</p>
+                    {/if}
                 </div>
                 
                 <div class="flex flex-col justify-center items-center w-full gap-y-8">
@@ -303,7 +361,13 @@
     
     <div class="mt-10 flex justify-center items-center">
         <button type="submit" on:click={() => sendContactForm(formData)} 
-            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">{sendButton}</button>
+            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">
+            {#if $language == 'en'}
+                Send
+            {:else}
+                Envoyer    
+            {/if}
+        </button>
     </div>
 
 

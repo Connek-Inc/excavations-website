@@ -1,6 +1,7 @@
 <script>
     import ImageSlideshow from '$lib/ImageSlideshow.svelte';
     import { getContext } from 'svelte';
+    import { language } from './store/store';
 
     export let galleryImages;
 
@@ -8,12 +9,12 @@
     export let leftText;
     export let rightText;
 
-    const language = getContext('language')
+    //const language = getContext('language')
     let titleComponent
 
-    if (language=='en') {
+    if ($language=='en') {
         titleComponent = 'About Us'
-    } else if (language=='fr') {
+    } else if ($language=='fr') {
         titleComponent = 'À propos'
     }
 
