@@ -67,7 +67,7 @@
 		
 		<div class="mx-0 sm:mx-6">
 			
-			<div class="bg-white w-full p-8 md:p-24 text-xl md:text-2xl text-gray-800 leading-normal" style="font-family:Georgia,serif;">
+			<div class="bg-white bg-opacity-50 w-full p-8 md:p-24 text-xl md:text-2xl text-gray-800 leading-normal" style="font-family:Georgia,serif;">
 				
 				<!--Post Content-->
 
