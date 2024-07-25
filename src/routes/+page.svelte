@@ -11,6 +11,7 @@
 	import ContactUs from '$lib/ContactUs.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import Logos from '$lib/Logos.svelte';
+	import Blogs from './blog/blogs.svelte';
 	import Map from '$lib/map.svelte';
 
 	import logo from "$lib/logo.png"
@@ -239,11 +240,13 @@
 	{#if $language == 'en'}
 		<Logos logos={partners} title={'Partners'}/>
 		<AboutUs midText={`With more than 15 years of experience, Mini Excavation Maple is recognized as a leader in Quebec in the fields of construction and restoration of French drains, demolition, crack repair, and camera inspections. Our long history and deep expertise testify to our commitment to excellence and quality of service, supported by all the necessary certifications and qualifications. Our team of experts is dedicated to offering customized and effective solutions, precisely meeting the specific needs of each project. By choosing Mini Excavation Maple, you opt for a company whose reliability and excellence are proven by decades of experience.`} leftText={''} rightText={''} galleryImages={galleryImages}/>
+		<Blogs />
 		<Map />
 		<Logos logos={certifications} title={'Certifications'}/>
 	{:else}
 		<Logos logos={partners} title={'Partenaires'}/>
 		<AboutUs midText={`Fort de plus de 15 ans d'expérience, Mini Excavation Érable est reconnu comme un leader au Québec dans les domaines de la construction et de la restauration de drains français, de la démolition, de la réparation de fissures et des inspections par caméra. Notre longue histoire et notre expertise approfondie témoignent de notre engagement envers l'excellence et la qualité de service, soutenus par toutes les certifications et qualifications nécessaires. Notre équipe d'experts est dédiée à offrir des solutions personnalisées et efficaces, répondant précisément aux besoins spécifiques de chaque projet. En choisissant Mini Excavation Érable, vous optez pour une entreprise dont la fiabilité et l'excellence sont prouvées par des décennies d'expérience.`} leftText={''} rightText={''} galleryImages={galleryImages}/>
+		<Blogs />
 		<Map />
 		<Logos logos={certifications} title={'Attestations'}/>
 	{/if}

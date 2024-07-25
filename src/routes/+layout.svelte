@@ -77,6 +77,9 @@
 	text: 'Services',
 	link: '#services' 
 }, {
+	text: 'Blogs',
+	link: '#blogs' 
+}, {
 	text: 'À propos',
 	link: '#about-us' 
 }, {
@@ -87,6 +90,9 @@
 <TopBar menuOptions={menuOptions = [{
 	text: 'Services',
 	link: '#services' 
+}, {
+	text: 'Blogs',
+	link: '#blogs' 
 }, {
 	text: 'About Us',
 	link: '#about-us' 
