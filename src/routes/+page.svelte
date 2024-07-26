@@ -256,7 +256,6 @@
 	</div>
 	
 	
-
 	<Logos logos={partners} title={partnersTitle}/>
 	
 	<Services services={services}/>
