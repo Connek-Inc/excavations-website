@@ -20,22 +20,22 @@
 
 
 <!-- bg-gradient-to-b from-black to-[#ffff00] -->
-<div class="fixed flex text-white justify-between top-0 left-0 w-full z-30 bg-[#febd17]">
+<div class="fixed flex flex-wrap text-white justify-between top-0 left-0 w-full z-30 bg-[#febd17]">
     <div class="w-36 h-full pb-0 pl-4">
         <a href="../#home">
-            <img class="h-full w-full" src={logo} alt="mini excavations erable">
+            <img class="h-full w-full items-center" src={logo} alt="mini excavations erable">
         </a>
         <!-- <div class="text-3xl">
             {logo}
         </div> -->
     </div>
-    <div class="flex flex-row items-center md:text-2xl font-bold">
+    <div class="flex  items-center md:text-2xl font-bold bg-[#febd17]">
         {#each menuOptions as opt}
             <a href="../{opt.link}" class="h-full">
                 <div class="h-full flex items-center hover:bg-black text-black sm:p-4 p-2 sm:px-8 rounded sm:text-lg hover:text-white text-sm">{opt.text}</div>
             </a>
         {/each}
-        <a href="tel:15148309973" class="h-full">
+        <a href="tel:15148309973" class="h-full text-white ">
             <div class="h-full flex items-center hover:bg-black text-black sm:p-4 p-2 sm:px-8 rounded sm:text-lg hover:text-white text-sm">+1 (514) 830-9973</div>
         </a>
         <select bind:value={$language} on:change={(event) => changeLanguage(event.target.value)} class="border-none hover:border-none rounded-md selection:border-none text-black m-2">

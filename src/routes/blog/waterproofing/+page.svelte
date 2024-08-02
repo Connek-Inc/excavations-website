@@ -1,5 +1,6 @@
 <script lang="ts">
     import { language } from '$lib/store/store.js'; 
+	import waterproofing from "$lib/images/basement-sump-pumps-installation-1.png";
 
 
     let title;
@@ -60,7 +61,7 @@
 	</div>
 
 	<!--image-->
-	<div class="container w-full max-w-6xl mx-auto bg-white bg-cover mt-8 rounded" style="background-image:url('../../../../src/lib/images/basement-sump-pumps-installation-1.png'); height: 75vh;"></div>
+	<div class="container w-full max-w-6xl mx-auto bg-white bg-cover mt-8 rounded" style="background-image:url({waterproofing}); height: 75vh;"></div>
 	
 	<!--Container-->
 	<div class="container max-w-5xl mx-auto -mt-32">

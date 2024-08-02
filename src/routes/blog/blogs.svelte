@@ -1,6 +1,8 @@
 <script>
-  import { language } from '../../../src/lib/store/store'; 
-
+  import { language } from '$lib/store/store'; 
+  import waterproofing from "$lib/images/basement-sump-pumps-installation-1.png";
+  import benefits from "$lib/images/residential-excavating-service-image-600x400-1.webp";
+  import importance from "$lib/images/french drain1.jpg";
 
   let maintitle;
   let button;  
@@ -49,7 +51,7 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-12 max-md:max-w-lg mx-auto">
         <div class="rounded overflow-hidden p-6 hover:bg-white transition-all duration-300">
-          <img src="src\lib\images\french drain1.jpg" alt="Blog Post 1" class="w-full h-64 object-cover rounded" />
+          <img src={importance} alt="Blog Post 1" class="w-full h-64 object-cover rounded" />
           <div class="text-center">
             <span class="text-sm block text-[#333] mb-2 mt-4">{subtitle1}</span>
             <h3 class="text-xl font-bold text-[#333] mb-4">{title1}</h3>
@@ -58,7 +60,7 @@
           </div>
         </div>
         <div class="rounded overflow-hidden p-6 hover:bg-white transition-all duration-300">
-          <img src="src\lib\images\residential-excavating-service-image-600x400-1.webp" alt="Blog Post 2" class="w-full h-64 object-cover rounded" />
+          <img src={benefits} alt="Blog Post 2" class="w-full h-64 object-cover rounded" />
           <div class="text-center">
             <span class="text-sm block text-[#333] mb-2 mt-4">{subtitle2}</span>
             <h3 class="text-xl font-bold text-[#333] mb-4">{title2}</h3>
@@ -67,7 +69,7 @@
           </div>
         </div>
         <div class="rounded overflow-hidden p-6 hover:bg-white transition-all duration-300">
-          <img src="src\lib\images\basement-sump-pumps-installation-1.png" alt="Blog Post 3" class="w-full h-64 object-cover rounded" />
+          <img src={waterproofing} alt="Blog Post 3" class="w-full h-64 object-cover rounded" />
           <div class="text-center">
             <span class="text-sm block text-[#333] mb-2 mt-4">{subtitle3}</span>
             <h3 class="text-xl font-bold text-[#333] mb-4">{title3}</h3>
@@ -77,4 +79,4 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> 

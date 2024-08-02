@@ -2,6 +2,7 @@
 	import '../app.postcss';
 	import TopBar from '$lib/TopBar.svelte';
 	import logo from "$lib/logo.png"
+	import Header from '$lib/Header.svelte';
     import { setContext } from 'svelte';
 	import { getContext } from 'svelte';
 	import { language } from '../lib/store/store';

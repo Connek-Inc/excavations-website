@@ -1,6 +1,6 @@
 <script lang ="ts">
-    import { language } from '$lib/store/store.js'; 
-
+    import { language } from '$lib/store/store.js';  
+	import importance from "$lib/images/frenchdrain2.jpg";
 
     let title;
 	let subtitle;
@@ -81,7 +81,7 @@
 	</div>
 
 	<!--image-->
-	<div class="container w-full max-w-6xl mx-auto bg-white bg-cover mt-8 rounded" style="background-image:url('../../../../src/lib/images/french drain1.jpg'); height: 75vh;"></div>
+	<div class="container w-full max-w-6xl mx-auto bg-white bg-cover mt-8 rounded" style="background-image:url({importance}); height: 75vh;"></div>
 	
 	<!--Container-->
 	<div class="container max-w-5xl mx-auto -mt-32">

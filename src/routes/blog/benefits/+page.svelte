@@ -1,11 +1,13 @@
 <script lang ="ts">
 	import Footer from '$lib/Footer.svelte';
     import { language } from '$lib/store/store.js'; 
+	import benefits from "$lib/images/residential-excavating-service-image-600x400-1.webp";
 
     //export let midText;
 
     //const language = getContext('language')
     let title;  
+	
     let p1;
     let pagetitle;
 	let author_desc;
@@ -61,7 +63,7 @@
 	</div>
 
 	<!--image-->
-	<div class="container w-full max-w-6xl mx-auto bg-white bg-cover mt-8 rounded" style="background-image:url('../../../../src/lib/images/residential-excavating-service-image-600x400-1.webp'); height: 75vh;"></div>
+	<div class="container w-full max-w-6xl mx-auto bg-white bg-cover mt-8 rounded" style="background-image:url({benefits}); height: 75vh;"></div>
 	
 	<!--Container-->
 	<div class="container max-w-5xl mx-auto -mt-32">
