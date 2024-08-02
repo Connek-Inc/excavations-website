@@ -9,7 +9,7 @@ export const posts = [
 	{
 		slug: 'safety',
 		title: 'Safety notice',
-		content:
+		content: "Hi"
 			
 	},
 
