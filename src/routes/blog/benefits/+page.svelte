@@ -45,10 +45,8 @@
 	 .scroll-top {position: fixed;z-index: 50;padding: 0;right: 30px;bottom: 100px;opacity: 0;visibility: hidden;transform: translateY(15px);height: 46px;width: 46px;cursor: pointer;display: flex;align-items: center;justify-content: center;border-radius: 50%;transition: all .4s ease;border: none;box-shadow: inset 0 0 0 2px #ccc;color: #ccc;background-color: #fff;}.scroll-top.is-active {opacity: 1;visibility: visible;transform: translateY(0);}.scroll-top .icon-tabler-arrow-up {position: absolute;stroke-width: 2px;stroke: #333;}.scroll-top svg path {fill: none;}.scroll-top svg.progress-circle path {stroke: #333;stroke-width: 4;transition: all .4s ease;}.scroll-top:hover {color: var(--ghost-accent-color);}.scroll-top:hover .progress-circle path, .scroll-top:hover .icon-tabler-arrow-up {stroke: var(--ghost-accent-color);}
 	</style>
 </head>
-<body class="bg-white font-sans leading-normal tracking-normal">
-
-
-	
+<body class="bg-white font-sans  leading-normal tracking-normal">
+	<br><br><br><br><br><br>
 	<!--slide in nav-->
 	<div class="bg-white fixed w-full z-10 top-0 hidden animated" style="opacity: .95;">
 
@@ -58,7 +56,7 @@
 	
 	
 	<!--Title-->
-	<div id="blogs" class="text-center pt-20 ">
+	<div id="blogs" class="text-center pt-1 ">
 		<p class="text-sm md:text-base text-green-500 font-bold">23 JUNE 2024 <span class="text-gray-900">/</span> EXCAVATIONS SERVICES</p>
 		<h1 class="font-bold break-normal text-3xl md:text-5xl">{title}</h1>
 	</div>

@@ -46,7 +46,7 @@
 	</style>
 </head>
 <body class="bg-white font-sans leading-normal tracking-normal">
-
+	<br><br><br><br><br><br>
 
 	
 	<!--slide in nav-->
@@ -76,7 +76,7 @@
 	
 	
 	<!--Title-->
-	<div id="blogs" class="text-center pt-16 md:pt-32">
+	<div id="blogs" class="text-center pt-1">
 		<p class="text-sm md:text-base text-green-500 font-bold">{subtitle}<span class="text-gray-900">/</span>{subtitle2}</p>
 		<h1 class="font-bold break-normal text-3xl md:text-5xl">{title}</h1>
 	</div>
