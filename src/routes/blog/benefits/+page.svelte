@@ -2,6 +2,7 @@
 	import Footer from '$lib/Footer.svelte';
     import { language } from '$lib/store/store.js'; 
 	import benefits from "$lib/images/residential-excavating-service-image-600x400-1.webp";
+	import logo from "$lib/logo.png"
 
     //export let midText;
 
@@ -57,7 +58,7 @@
 	
 	
 	<!--Title-->
-	<div id="blogs" class="text-center pt-16 md:pt-32">
+	<div id="blogs" class="text-center pt-20 ">
 		<p class="text-sm md:text-base text-green-500 font-bold">23 JUNE 2024 <span class="text-gray-900">/</span> EXCAVATIONS SERVICES</p>
 		<h1 class="font-bold break-normal text-3xl md:text-5xl">{title}</h1>
 	</div>
@@ -86,7 +87,7 @@
 	
 				<!--Author-->
 				<div class="flex w-full items-center font-sans p-8 md:p-24">
-					<img class="w-10 h-10 rounded-full mr-4" src="..\src\lib\logo.png" alt="Avatar of Author">
+					<img class="w-10 h-10 rounded-full mr-4" src="{logo}" alt="Avatar of Author">
 					<div class="flex-1">
 						<p class="text-base font-bold text-base md:text-xl leading-none">Mini Excavations Érable</p>
 						<p class="text-gray-600 text-xs md:text-base">{author_desc}</p>
