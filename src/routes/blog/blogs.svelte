@@ -2,7 +2,7 @@
   import { language } from '$lib/store/store'; 
   import waterproofing from "$lib/images/basement-sump-pumps-installation-1.png";
   import benefits from "$lib/images/residential-excavating-service-image-600x400-1.webp";
-  import importance from "$lib/images/french drain1.jpg";
+  import importance from "$lib/images/frenchdrain2.jpg";
 
   let maintitle;
   let button;  

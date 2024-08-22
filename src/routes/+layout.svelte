@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.postcss';
 	import TopBar from '$lib/TopBar.svelte';
+	import Topbar2 from '$lib/Topbar2.svelte';
 	import logo from "$lib/logo.png";
     import { setContext } from 'svelte';
 	import { getContext } from 'svelte';
@@ -72,8 +73,9 @@
 	{/if}
 	
 </svelte:head>
+
 {#if $language == 'fr'}
-<TopBar menuOptions={menuOptions = [{
+<Topbar2 menuOptions={menuOptions = [{
 	text: 'Services',
 	link: '#services' 
 }, {
@@ -87,7 +89,7 @@
 	link: '#contact' 
 }]} logo={logo}/>
 {:else}
-<TopBar menuOptions={menuOptions = [{
+<Topbar2 menuOptions={menuOptions = [{
 	text: 'Services',
 	link: '#services' 
 }, {
@@ -101,6 +103,8 @@
 	link: '#contact' 
 }]} logo={logo}/>
 {/if}
+
+
 
 <slot />
 

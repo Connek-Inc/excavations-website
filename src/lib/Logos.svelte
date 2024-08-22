@@ -16,7 +16,7 @@
     
         {#each logos as logo}
     
-            <div class="flex flex-col justify-center lg:h-48 lg:w-48 h-36 w-36">
+            <div class="flex flex-col justify-center lg:h-48 lg:w-48 h-36 w-36 p-2">
                 <img src="{logo.logo}" class="" alt="mini excavations erable"> 
                 <p class="text-center pt-4 opacity-70">{logo.name? logo.name : ''}</p>
             </div>

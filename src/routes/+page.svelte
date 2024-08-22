@@ -21,6 +21,8 @@
 	import partner3 from "$lib/images/partner3.jpg"
 	import certif1 from "$lib/images/neq.png"
 	import certif2 from "$lib/images/RBQ.png"
+	import certif3 from "$lib/images/CMMTQ.svg"
+	import certif4 from "$lib/images/CCQ.png"
 	import demolition from "$lib/images/demolition.jpg"
 	import drainfrancais from "$lib/images/drainfrancais.jpg"
 	import fissure from "$lib/images/fissure.jpg"
@@ -124,10 +126,7 @@
 
 	// Partners
 	partners = [
-		{
-			logo: partner1,
-			name: ''
-		},
+		
 		{
 			logo: partner2,
 			name: ''
@@ -143,6 +142,22 @@
 		{
 			logo: certif1,
 			name: '(NEQ): 1179620118'
+		},
+		{
+			logo: certif2,
+			name: '(RBQ): 5823773601'
+		},
+		{
+			logo: partner1,
+			name: ''
+		},
+		{
+			logo: certif3,
+			name: ''
+		},
+		{
+			logo: certif4,
+			name: ''
 		}
 	]
 
