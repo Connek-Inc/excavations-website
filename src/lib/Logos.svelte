@@ -3,26 +3,19 @@
     export let logos;
 </script>
 
-
-<div class="flex md:flex-row flex-col items-center justify-between">
-
-    <div class="">
-    
-        <h1 class="h1 opacity-50 text-gray md:p-12 pt-4">{title}</h1>
-    
+<div class="flex flex-col items-center justify-between md:flex-row">
+    <div class="w-full md:w-auto">
+        <h1 class="h1 opacity-50 text-gray pt-4 md:p-12 text-center md:text-left">{title}</h1>
     </div>
     
-    <div class="flex justify-center items-center w-full px-4">
-    
-        {#each logos as logo}
-    
-            <div class="flex flex-col justify-center lg:h-48 lg:w-48 h-36 w-36 p-2">
-                <img src="{logo.logo}" class="" alt="mini excavations erable"> 
-                <p class="text-center pt-4 opacity-70">{logo.name? logo.name : ''}</p>
-            </div>
-    
-        {/each}
-        
+    <div class="w-full px-4 mt-4 md:mt-0">
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center">
+            {#each logos as logo}
+                <div class="flex flex-col items-center justify-center p-2">
+                    <img src="{logo.logo}" class="sm:h-36 sm:w-36 lg:h-48 lg:w-48 object-contain" alt="mini excavations erable"> 
+                    <p class="text-center pt-4 font-bold opacity-70">{logo.name ? logo.name : ''}</p>
+                </div>
+            {/each}
+        </div>
     </div>
-
 </div>

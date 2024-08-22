@@ -46,7 +46,7 @@
 	</style>
 </head>
 <body class="bg-white font-sans leading-normal tracking-normal">
-	<br><br><br><br><br><br>
+	<br><br><br><br>
 
 	
 	<!--slide in nav-->

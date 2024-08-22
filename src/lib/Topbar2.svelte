@@ -25,7 +25,7 @@
   <nav class="bg-[#febd17] py-4 px-6 sm:px-8 md:px-12 fixed top-0 left-0 w-full z-50">
     <div class="flex justify-between items-center">
       <div class="flex items-center">
-        <a href="#" class="flex items-center">
+        <a href="#" class="flex items-center" on:click={closeMenu}>
           <img src={logo} alt="mini excavations erable" class="h-8 sm:h-10 mr-2">
           <span class="text-lg font-bold">Mini Excavations Erable</span>
         </a>

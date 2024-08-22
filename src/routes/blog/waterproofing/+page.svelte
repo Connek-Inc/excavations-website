@@ -46,7 +46,7 @@
 	</style>
 </head>
 <body class="bg-white font-sans leading-normal tracking-normal">
-	<br><br><br><br><br><br>
+	<br><br><br><br>
 	<!--slide in nav-->
 	<div class="bg-white fixed w-full z-10 top-0 hidden animated" style="opacity: .95;">
 
