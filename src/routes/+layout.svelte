@@ -57,6 +57,7 @@
 
 
 	// Font Afacad sans-serif
+
 </script>
 
 <html lang="{$language}"> <!--SEO Optimization-->
@@ -73,6 +74,22 @@
 	{/if}
 	
 </svelte:head>
+
+<div class="floating-button">
+	{#if $language == 'fr'}
+	<a href="tel:15148309973" title="Appelle Maintenant +1(514) 830-9973">
+		<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+		</svg>
+	</a>
+	{:else}
+	<a href="tel:15148309973" title="Call Now +1(514) 830-9973">
+		<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+		</svg>
+	</a>
+	{/if}
+</div>
 
 {#if $language == 'fr'}
 <Topbar2 menuOptions={menuOptions = [{
@@ -104,7 +121,49 @@
 }]} logo={logo}/>
 {/if}
 
-
+<style>
+	.floating-button {
+	  position: fixed;
+	  width: 60px;
+	  height: 60px;
+	  border-radius: 50%;
+	  background-color: #25D366;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  cursor: pointer;
+	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	  transition: transform 0.3s ease;
+	  animation: pulse 2s infinite;
+	  bottom: 20px;
+	  right: 20px;
+	  z-index: 9999;
+	}
+  
+	.floating-button:hover {
+	  transform: scale(1.1);
+	}
+  
+	.floating-button a {
+	  color: white;
+	  text-decoration: none;
+	}
+  
+	@keyframes pulse {
+	  0% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+	  }
+	  70% {
+		transform: scale(1.1);
+		box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+	  }
+	  100% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+	  }
+	}
+  </style>
 
 <slot />
 
