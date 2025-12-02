@@ -56,6 +56,18 @@
         bookedTimes: true
     }
 
+    // Initial validation on load
+    $: if (formData.name) onChangeValidation('name')
+    $: if (formData.email) onChangeValidation('email')
+    $: if (formData.phone) onChangeValidation('phone')
+    $: if (formData.messageText) onChangeValidation('messageText')
+
+    // Reactive validation
+    $: formDataValid.name = formData.name ? formDataValid.name : false
+    $: formDataValid.email = formData.email ? formDataValid.email : false
+    $: formDataValid.phone = formData.phone ? formDataValid.phone : false
+    $: formDataValid.messageText = formData.messageText ? formDataValid.messageText : false
+
 
 
     function getNextFourteenDays(inputDate, n) {
@@ -360,12 +372,13 @@
     </div>
     
     <div class="mt-10 flex justify-center items-center">
-        <button type="submit" on:click={() => sendContactForm(formData)} 
-            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded">
+        <button type="button" on:click={() => sendContactForm(formData)}
+            disabled={!formDataValid.name || !formDataValid.email || !formDataValid.phone || !formDataValid.messageText}
+            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded disabled:bg-gray-400 disabled:cursor-not-allowed">
             {#if $language == 'en'}
                 Send
             {:else}
-                Envoyer    
+                Envoyer
             {/if}
         </button>
     </div>
