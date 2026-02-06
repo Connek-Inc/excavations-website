@@ -147,50 +147,84 @@
     let success = false
 
     const sendContactForm = async () => {
-        sending = true
-        errorMessage = ''
-        success = false // Reset success state on new attempt
+        if (sending) return; // Prevent multiple clicks
+        
+        sending = true;
+        errorMessage = '';
+        success = false;
 
-        console.log('Attempting to send contact form:', formData)
+        console.log('Sending data:', JSON.stringify(formData));
+
+        // Create a timeout controller to prevent hanging forever
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 seconds timeout
 
         try {
             const response = await fetch('/send-contact-form', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify({formData})
-            })
+                body: JSON.stringify({ formData }),
+                signal: controller.signal
+            });
 
-            const payload = await response.json()
-            console.log('Server response:', payload)
+            clearTimeout(timeoutId);
 
-            if (!response.ok || !payload?.success) {
-                throw new Error(payload?.error || 'Unknown server error')
+            let payload;
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                payload = await response.json();
+            } else {
+                const text = await response.text();
+                throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}`);
+            }
+
+            console.log('Response payload:', payload);
+
+            if (!response.ok || payload?.success === false) {
+                throw new Error(payload?.error || `Server error ${response.status}`);
             }
             
-            success = true
-            // Clear form on success
+            success = true;
+            // Complete reset of form data and validation states
             formData = {
                 name: '',
                 email: '',
                 phone: '',
                 messageText: '',
                 bookedTimes: []
-            }
+            };
             
-            setTimeout(() => { success = false }, 8000) // Hide success alert after 8s
-            return payload
+            // Forced reset of internal validation flags
+            formDataValid = {
+                name: false,
+                email: false,
+                phone: false,
+                messageText: false,
+                bookedTimes: true
+            };
+
+            console.log('Form sent successfully!');
+            setTimeout(() => { success = false; }, 10000);
+            
         } catch (err) {
-            errorMessage = $language === 'en' 
-                ? `Error: ${err.message}. Please try again.` 
-                : `Erreur: ${err.message}. Veuillez réessayer.`
-            console.error('SEND CONTACT ERROR DETAIL:', err)
-            return null
+            console.error('CRITICAL SEND ERROR:', err);
+            if (err.name === 'AbortError') {
+                errorMessage = $language === 'en' 
+                    ? 'Request timed out. The server is taking too long to respond.' 
+                    : 'La solicitud ha expirado. El servidor está tardando demasiado en responder.';
+            } else {
+                errorMessage = $language === 'en' 
+                    ? `Failed to send: ${err.message}` 
+                    : `Échec de l'envoi: ${err.message}`;
+            }
         } finally {
-            sending = false
+            clearTimeout(timeoutId);
+            sending = false;
         }
-    }
+    };
 
     //console.log(calendarWeeks)
 
