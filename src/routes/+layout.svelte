@@ -64,13 +64,13 @@
 </html>
 <svelte:head>
 	{#if $language == 'fr'}
-	<title>Mini Excavations Érable - Service d'excavation de confiance</title>
-	<meta name="description" content="Mini Excavations Érable offre des services d'excavation de première qualité. Contactez-nous pour des devis et opportunités de partenariat. Certifié et fiable." />
-	<meta name="keywords" content="excavations, érable, services, certifie, Installation de drain français, Solutions d'imperméabilisation, Réparation de fondations, Excavation résidentielleImperméabilisation de sous-sol, Réparation de ligne d'égout, Services d'inspection par caméra, Solutions de drainage, Réparation de fissures de fondationInstallation de pompe de puisard" /><!--SEO Optimization-->
+		<title>Mini Excavations Érable - Service d'excavation de confiance</title>
+		<meta name="description" content="Mini Excavations Érable offre des services d'excavation de première qualité. Contactez-nous pour des devis et opportunités de partenariat. Certifié et fiable." />
+		<meta name="keywords" content="excavations, érable, services, certifie, Installation de drain français, Solutions d'imperméabilisation, Réparation de fondations, Excavation résidentielleImperméabilisation de sous-sol, Réparation de ligne d'égout, Services d'inspection par caméra, Solutions de drainage, Réparation de fissures de fondationInstallation de pompe de puisard" /><!--SEO Optimization-->
 	{:else}
-	<title>Mini Excavations Érable - Trusted Excavation Services</title>
-	<meta name="description" content= 'Mini Excavations Érable offers premium quality excavation services. Contact us for quotes and partnership opportunities. Certified and reliable.' />
-	<meta name="keywords" content="excavations, erable, services, certified, French drain installation, Waterproofing solutions, Foundation repair services, Residential excavation, Basement waterproofing, Sewer line repair, Camera inspection services, Drainage solutions, Foundation crack repair, Sump pump installation" /><!--SEO Optimization-->
+		<title>Mini Excavations Érable - Trusted Excavation Services</title>
+		<meta name="description" content= 'Mini Excavations Érable offers premium quality excavation services. Contact us for quotes and partnership opportunities. Certified and reliable.' />
+		<meta name="keywords" content="excavations, erable, services, certified, French drain installation, Waterproofing solutions, Foundation repair services, Residential excavation, Basement waterproofing, Sewer line repair, Camera inspection services, Drainage solutions, Foundation crack repair, Sump pump installation" /><!--SEO Optimization-->
 	{/if}
 	
 </svelte:head>
