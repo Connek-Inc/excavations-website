@@ -9,7 +9,6 @@
     let contactTitle;
     let calendarTitle;
     let calendarSubtitle;
-    let calendarDates;
     let formLabels;
     let sendButton;
 
@@ -17,7 +16,6 @@
         contactTitle = 'Contact for a quote.'
         calendarTitle = 'Book a call for a quote'
         calendarSubtitle = 'Below are our times available. Choose your times and we will give you a call.' 
-        calendarDates = 
         formLabels = {
             name: 'Name',
             email: 'Email',
@@ -144,19 +142,54 @@
 
 
     // Send notification of contact thru email
-    const sendContactForm = async (formData) => {
+    let sending = false
+    let errorMessage = ''
+    let success = false
 
-        const response = await fetch('/send-contact-form', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({formData})
-        })
+    const sendContactForm = async () => {
+        sending = true
+        errorMessage = ''
+        success = false // Reset success state on new attempt
 
-        console.log('SEND CONTACT RES', response.json())
-        // goto('/#contact')
-        // return response.body
+        console.log('Attempting to send contact form:', formData)
+
+        try {
+            const response = await fetch('/send-contact-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({formData})
+            })
+
+            const payload = await response.json()
+            console.log('Server response:', payload)
+
+            if (!response.ok || !payload?.success) {
+                throw new Error(payload?.error || 'Unknown server error')
+            }
+            
+            success = true
+            // Clear form on success
+            formData = {
+                name: '',
+                email: '',
+                phone: '',
+                messageText: '',
+                bookedTimes: []
+            }
+            
+            setTimeout(() => { success = false }, 8000) // Hide success alert after 8s
+            return payload
+        } catch (err) {
+            errorMessage = $language === 'en' 
+                ? `Error: ${err.message}. Please try again.` 
+                : `Erreur: ${err.message}. Veuillez réessayer.`
+            console.error('SEND CONTACT ERROR DETAIL:', err)
+            return null
+        } finally {
+            sending = false
+        }
     }
 
     //console.log(calendarWeeks)
@@ -336,22 +369,22 @@
 
                             <div class="bg-gray-50 border-4 p-2 border-gray-100 hover:bg-white">
                                 <div class="pb-4">
-                                    <p class="text-sm font-bold">{translate(day.day, language)}</p>
-                                    <p class="text-xs text-gray opacity-60">{translate(day.date.split(' ')[0], language)} {day.date.split(' ')[1]}</p>
+                                    <p class="text-sm font-bold">{translate(day.day, $language)}</p>
+                                    <p class="text-xs text-gray opacity-60">{translate(day.date.split(' ')[0], $language)} {day.date.split(' ')[1]}</p>
                                 </div>
                                 <div class="">
-                                    <button id='{day.date}_noon'
+                                    <button id={day.date + '_noon'}
                                         on:click={onClickDay} 
                                         class="{buttonColor(day.date+'_noon')}" 
                                         
                                     >
-                                        {blockedDays.includes(day.date+'_noon')? translate('Not Available', language) : translate('Noon', language)}
+                                        {blockedDays.includes(day.date+'_noon')? translate('Not Available', $language) : translate('Noon', $language)}
                                     </button>
-                                    <button id='{day.date}_afternoon' 
+                                    <button id={day.date + '_afternoon'} 
                                         on:click={onClickDay} 
                                         class="{buttonColor(day.date+'_afternoon')}" 
                                     >
-                                        {blockedDays.includes(day.date+'_afternoon')? translate('Not Available', language) : translate('Afternoon', language)}
+                                        {blockedDays.includes(day.date+'_afternoon')? translate('Not Available', $language) : translate('Afternoon', $language)}
                                     </button>
                                 </div>
                             </div>
@@ -371,20 +404,36 @@
     
     </div>
     
-    <div class="mt-10 flex justify-center items-center">
-        <button type="button" on:click={() => sendContactForm(formData)}
-            disabled={!formDataValid.name || !formDataValid.email || !formDataValid.phone || !formDataValid.messageText}
-            class="p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded disabled:bg-gray-400 disabled:cursor-not-allowed">
-            {#if $language == 'en'}
-                Send
+    <div class="mt-10 flex flex-col justify-center items-center w-full max-w-md mx-auto">
+        {#if success}
+            <div class="mb-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 w-full rounded shadow-md animate-pulse">
+                <p class="font-bold">{$language === 'en' ? 'Success!' : 'Succès!'}</p>
+                <p>{$language === 'en' ? 'Your message has been sent. We will contact you soon.' : 'Votre message a été envoyé. Nous vous contacteros bientôt.'}</p>
+            </div>
+        {/if}
+
+        {#if errorMessage}
+            <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 w-full rounded shadow-md">
+                <p class="font-bold">{$language === 'en' ? 'Error' : 'Erreur'}</p>
+                <p>{errorMessage}</p>
+            </div>
+        {/if}
+
+        <button type="button" on:click={() => sendContactForm()}
+            disabled={sending || !formDataValid.name || !formDataValid.email || !formDataValid.phone || !formDataValid.messageText}
+            class="flex items-center justify-center p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded shadow-lg transform active:scale-95 transition-all duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed">
+            
+            {#if sending}
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>{$language == 'en' ? 'Sending...' : 'Envoi...'}</span>
             {:else}
-                Envoyer
+                <span>{$language == 'en' ? 'Send Message' : 'Envoyer le Message'}</span>
             {/if}
         </button>
     </div>
-
-
-
 </div>
 
 <!-- </form> -->

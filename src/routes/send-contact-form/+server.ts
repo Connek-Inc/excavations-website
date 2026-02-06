@@ -8,13 +8,23 @@ import { formatBookedTimes } from '$lib/utils';
 
 export const POST: RequestHandler = async (event: RequestEvent) => {
     try {
-        const resend = new Resend(RESEND); //Add your Resend API key here
+        if (!RESEND) {
+            console.error('RESEND API Key is missing in environment variables!');
+            return json({ success: false, error: 'Configuration error: API Key missing' }, { status: 500 });
+        }
+
+        const resend = new Resend(RESEND);
         const recipient = 'miniexcavationerables@gmail.com'
         const cc = 'edoarvega@gmail.com'
 
-        const { formData } = await event.request.json()
+        const body = await event.request.json()
+        const { formData } = body
 
-        console.log('FORMDATA', formData)
+        if (!formData) {
+            return json({ success: false, error: 'No form data received' }, { status: 400 });
+        }
+
+        console.log('Processing form submission for:', formData.email)
 
         const bookedTimes = formatBookedTimes(formData.bookedTimes, 'fr')
 
