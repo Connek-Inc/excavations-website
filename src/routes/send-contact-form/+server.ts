@@ -8,9 +8,12 @@ import { formatBookedTimes } from '$lib/utils';
 
 export const POST: RequestHandler = async (event: RequestEvent) => {
     try {
-        if (!RESEND) {
-            console.error('RESEND API Key is missing in environment variables!');
-            return json({ success: false, error: 'Configuration error: API Key missing' }, { status: 500 });
+        if (!RESEND || RESEND === 're_your_api_key_here') {
+            console.error('RESEND API Key is missing or using placeholder in .env file!');
+            return json({ 
+                success: false, 
+                error: 'Falta la API Key de Resend. Por favor, agrégala al archivo .env en la raíz del proyecto.' 
+            }, { status: 500 });
         }
 
         const resend = new Resend(RESEND);

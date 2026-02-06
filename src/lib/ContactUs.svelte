@@ -147,81 +147,43 @@
     let success = false
 
     const sendContactForm = async () => {
-        if (sending) return; // Prevent multiple clicks
+        if (sending) return;
         
+        console.log('--- FORM SUBMIT V4 START ---');
         sending = true;
         errorMessage = '';
         success = false;
 
-        console.log('Sending data:', JSON.stringify(formData));
-
-        // Create a timeout controller to prevent hanging forever
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 seconds timeout
-
         try {
+            console.log('Data to send:', formData);
+
             const response = await fetch('/send-contact-form', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ formData }),
-                signal: controller.signal
+                body: JSON.stringify({ formData })
             });
 
-            clearTimeout(timeoutId);
-
-            let payload;
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                payload = await response.json();
-            } else {
-                const text = await response.text();
-                throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}`);
-            }
-
-            console.log('Response payload:', payload);
+            console.log('Response status:', response.status);
+            
+            const payload = await response.json();
+            console.log('Result from server:', payload);
 
             if (!response.ok || payload?.success === false) {
-                throw new Error(payload?.error || `Server error ${response.status}`);
+                throw new Error(payload?.error || 'Server error');
             }
             
             success = true;
-            // Complete reset of form data and validation states
-            formData = {
-                name: '',
-                email: '',
-                phone: '',
-                messageText: '',
-                bookedTimes: []
-            };
+            formData = { name: '', email: '', phone: '', messageText: '', bookedTimes: [] };
+            formDataValid = { name: false, email: false, phone: false, messageText: false, bookedTimes: true };
             
-            // Forced reset of internal validation flags
-            formDataValid = {
-                name: false,
-                email: false,
-                phone: false,
-                messageText: false,
-                bookedTimes: true
-            };
-
-            console.log('Form sent successfully!');
-            setTimeout(() => { success = false; }, 10000);
-            
+            console.log('--- FORM SUBMIT V4 SUCCESS ---');
+            setTimeout(() => { success = false; }, 5000);
         } catch (err) {
-            console.error('CRITICAL SEND ERROR:', err);
-            if (err.name === 'AbortError') {
-                errorMessage = $language === 'en' 
-                    ? 'Request timed out. The server is taking too long to respond.' 
-                    : 'La solicitud ha expirado. El servidor está tardando demasiado en responder.';
-            } else {
-                errorMessage = $language === 'en' 
-                    ? `Failed to send: ${err.message}` 
-                    : `Échec de l'envoi: ${err.message}`;
-            }
+            console.error('--- FORM SUBMIT V4 ERROR ---', err);
+            errorMessage = $language === 'en' ? `Error: ${err.message}` : `Erreur: ${err.message}`;
         } finally {
-            clearTimeout(timeoutId);
             sending = false;
         }
     };
