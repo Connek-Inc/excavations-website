@@ -3,11 +3,11 @@
 
 </script>
 
-<div class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
+<div class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center bg-white dark:bg-black transition-colors duration-300">
     {#if $language == 'en' }
-        <h2 class="text-5xl mb-3 text-black">Location</h2>
+        <h2 class="text-5xl mb-3 text-black dark:text-white font-bold tracking-tight">Location</h2>
     {:else}
-        <h2 class="text-5xl mb-3 text-black">Emplacement</h2>
+        <h2 class="text-5xl mb-3 text-black dark:text-white font-bold tracking-tight">Emplacement</h2>
     {/if}
     
 </div>

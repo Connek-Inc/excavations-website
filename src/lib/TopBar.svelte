@@ -56,9 +56,3 @@
     </div>
 </div>
 
-<style> 
-  /* Custom class for the top inner shadow */
-  .top-inner-shadow {
-    box-shadow: inset 0 8px 16px -8px rgba(0, 0, 0, 1);
-  }
-</style>

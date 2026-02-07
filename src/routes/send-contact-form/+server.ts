@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 import { RESEND } from '$env/static/private';
 import type { RequestEvent, RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
-import { formatBookedTimes } from '$lib/utils';
+import { formatBookedTimes } from '$lib/lib-utils';
 
 
 
@@ -10,9 +10,9 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
     try {
         if (!RESEND || RESEND === 're_your_api_key_here') {
             console.error('RESEND API Key is missing or using placeholder in .env file!');
-            return json({ 
-                success: false, 
-                error: 'Falta la API Key de Resend. Por favor, agrégala al archivo .env en la raíz del proyecto.' 
+            return json({
+                success: false,
+                error: 'Falta la API Key de Resend. Por favor, agrégala al archivo .env en la raíz del proyecto.'
             }, { status: 500 });
         }
 

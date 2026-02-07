@@ -1,40 +1,7 @@
 <script lang= 'ts'>
-    import { goto } from "$app/navigation";
-    import { getContext } from "svelte";
     import { contactUsSchema } from "$lib/yup/contactUsSchema";
-    import { translate } from "$lib/utils"
+    import { translate } from "$lib/lib-utils"
     import { language } from "./store/store";
-    //const language = getContext('language')
-
-    let contactTitle;
-    let calendarTitle;
-    let calendarSubtitle;
-    let formLabels;
-    let sendButton;
-
-    if ($language=='en') {
-        contactTitle = 'Contact for a quote.'
-        calendarTitle = 'Book a call for a quote'
-        calendarSubtitle = 'Below are our times available. Choose your times and we will give you a call.' 
-        formLabels = {
-            name: 'Name',
-            email: 'Email',
-            phone: 'Phone',
-            messageText: 'Message (minimum 30 characters)',
-        }
-        sendButton = 'Send'
-    } else if ($language=='fr') {
-        contactTitle = 'Contactez-nous pour une soumission.'
-        calendarTitle = 'Réservez un appel pour une soumission';
-        calendarSubtitle = 'Ci-dessous se trouvent nos créneaux disponibles. Choisissez votre horaire et nous vous appellerons.';
-        formLabels = {
-            name: 'Nom',
-            email: 'Courriel',
-            phone: 'Téléphone',
-            messageText: 'Message (minimum 30 caractères)',
-        };
-        sendButton = 'Envoyer'
-    }
 
     const today = new Date()
     export let nDays = 7;
@@ -102,32 +69,7 @@
             // Add time to bookedTimes
             formData.bookedTimes = [...formData.bookedTimes, e.target.id]
         }
-        
-        
-        console.log('days', nDays)
     }
-
-    // Change button color with clicks 
-    $: buttonColor = (id) => {
-
-        const first = 'text-left h-6 w-full max-w-24 p-1 mb-1 text-xs rounded-md '
-
-        if (formData.bookedTimes.includes(id)) {  //Seleccionado
-            
-            return first + 'bg-yellow-500 text-white'
-
-        } else if (blockedDays.includes(id)) { //Grey, not selectable
-
-            return first + 'bg-gray-500 cursor-default active:shadow-inner transform active:-translate-y-1 transition duration-150 ease-in-out'
-
-        } else { // El normal
-            // hover:bg-yellow-500 hover:text-black
-            return first + 'bg-black text-white'
-
-        }
-        
-    }
-
 
     // Validate contact form
     const onChangeValidation = async (inputName) => {
@@ -188,248 +130,283 @@
         }
     };
 
-    //console.log(calendarWeeks)
-
-
-
 </script>
 
 
-<div id="contact" class="flex flex-col items-center justify-center bg-gray-200 py-16">
-
-
+<div id="contact" class="flex flex-col items-center justify-center bg-transparent py-16 w-full font-[sans-serif]">
     
-
-    
-
-    <div class="grid grid-cols md:grid-cols-[5fr_6fr] w-full">
-
-
-
+    <!-- Modern Container with Glassmorphism/Dark Theme Card style -->
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div id='contact-title'>
-
-            <div class='header text-center mb-4'>
+        <!-- Section Header -->
+        <div class="text-center mb-16 space-y-4">
+            <h2 class="text-4xl md:text-5xl font-black text-black dark:text-white tracking-tight uppercase">
                 {#if $language == 'en'}
-                    <h1 class="h1 font-bold">
-                        Contact for a quote
-                    </h1>
+                    Contact <span class="text-[#febd17]">Us</span>
+                {:else if $language == 'es'}
+                    Contácta<span class="text-[#febd17]">nos</span>
                 {:else}
-                    <h1 class="h1 font-bold">
-                        Contactez-nous pour une soumission.
-                    </h1>
+                    Contactez-<span class="text-[#febd17]">Nous</span>
                 {/if}
-                
-            </div>
-
+            </h2>
+            <div class="h-1 w-24 bg-[#febd17] mx-auto rounded-full"></div>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                {#if $language == 'en'}
+                    Ready to start your project? Fill out the form or book a call directly.
+                {:else if $language == 'es'}
+                    ¿Listo para comenzar su proyecto? Complete el formulario o reserve una llamada directamente.
+                {:else}
+                    Prêt à commencer votre projet ? Remplissez le formulaire ou réservez un appel directement.
+                {/if}
+            </p>
         </div>
-        
-        
 
 
-
-
-
-        <div id='contact-blank'>
-        </div>
-        
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-        <div id='contact-form' class="lg:px-16 sm:px-4 px-4">
-
-            <div class="flex justify-center items-center">
-                
-                <div class="flex flex-col w-full">
-                    {#if $language == 'en'}
-                    <div class="mb-5">
-                        <label for="name" class="mb-2 text-sm text-gray-600">Name</label>
-                        <input type="text" name="name" id="name" placeholder='Name' required 
-                            bind:value={formData.name}
-                            on:input={() => onChangeValidation("name")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['name']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            >
-                    </div>
-                    <div class="mb-5">
-                        <label for="email" class="mb-2 text-sm text-gray-600">Email</label>
-                        <input type="email" name="email" id="email" placeholder='Email' required 
-                            bind:value={formData.email}    
-                            on:input={() => onChangeValidation("email")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['email']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            >
-                    </div>
-                    <div class="mb-5">
-                        <label for="phone" class="mb-2 text-sm text-gray-600">Phone</label>
-                        <input type="tel" name="phone" id="phone" placeholder='Phone' required 
-                            bind:value={formData.phone}    
-                            on:input={() => onChangeValidation("phone")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['phone']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            >
-                    </div>
-                    <div class="mb-5">
-                        <label for="message" class="mb-2 text-sm text-gray-600">Message (minimum 30 characters)</label>
-                        <textarea rows="4" name="message" id="message" placeholder='Message (minimum 30 characters)' required 
-                            bind:value={formData.messageText}
-                            on:input={() => onChangeValidation("messageText")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['messageText']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            ></textarea>
-                    </div>
-                    {:else}
-                    <div class="mb-5">
-                        <label for="name" class="mb-2 text-sm text-gray-600">Nom</label>
-                        <input type="text" name="name" id="name" placeholder='Nom' required 
-                            bind:value={formData.name}
-                            on:input={() => onChangeValidation("name")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['name']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            >
-                    </div>
-                    <div class="mb-5">
-                        <label for="email" class="mb-2 text-sm text-gray-600">Courriel</label>
-                        <input type="email" name="email" id="email" placeholder='Courriel' required 
-                            bind:value={formData.email}    
-                            on:input={() => onChangeValidation("email")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['email']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            >
-                    </div>
-                    <div class="mb-5">
-                        <label for="phone" class="mb-2 text-sm text-gray-600">Téléphone</label>
-                        <input type="tel" name="phone" id="phone" placeholder='Téléphone' required 
-                            bind:value={formData.phone}    
-                            on:input={() => onChangeValidation("phone")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['phone']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            >
-                    </div>
-                    <div class="mb-5">
-                        <label for="message" class="mb-2 text-sm text-gray-600">Message (minimum 30 caractères)</label>
-                        <textarea rows="4" name="message" id="message" placeholder='Message (minimum 30 caractères) ' required 
-                            bind:value={formData.messageText}
-                            on:input={() => onChangeValidation("messageText")}
-                            class="pl-4 pr-12 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 
-                                {formDataValid['messageText']? 'focus:ring-blue-500': 'focus:ring-red-500'} 
-                                focus:border-transparent w-full"
-                            ></textarea>
-                    </div>
-                    {/if}
-                </div>
-                
-            </div>
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             
-        </div>
-
-
-        
-        <div id='contact-content' class="px-[5%]">
-
-
-            <div id='contact-calendar' class="flex flex-col">
-
-                <div class="flex flex-col md:py-2 py-8 gap-4">
-                    {#if $language == 'en'}
-                        <h4 class="h4 text-black font-bold">Book a call for a quote</h4>
-                        <p class="text-sm">Below are our times available. Choose your times and we will give you a call.</p>
-                    {:else}
-                        <h4 class="h4 text-black font-bold">Réservez un appel pour une soumission</h4>
-                        <p class="text-sm">Ci-dessous se trouvent nos créneaux disponibles. Choisissez votre horaire et nous vous appellerons.</p>
-                    {/if}
+            <!-- Left Column: Contact Form -->
+            <div class="bg-white dark:bg-zinc-900/50 backdrop-blur-md p-8 md:p-10 rounded-3xl shadow-2xl dark:shadow-none border border-gray-100 dark:border-zinc-800 transition-all duration-300 hover:border-[#febd17]/30">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                         {#if $language == 'en'}
+                            Get a Quote
+                        {:else if $language == 'es'}
+                            Obtenga una Cotización
+                        {:else}
+                            Obtenez une Soumission
+                        {/if}
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        {#if $language == 'en'}
+                            Fill in your details and we'll get back to you shortly.
+                        {:else if $language == 'es'}
+                            Complete sus datos y nos pondremos en contacto con usted en breve.
+                        {:else}
+                            Remplissez vos coordonnées et nous vous répondrons sous peu.
+                        {/if}
+                    </p>
                 </div>
-                
-                <div class="flex flex-col justify-center items-center w-full gap-y-8">
-                    <div class="grid grid-cols-3 md:grid-cols-5 w-full">
-                    
-                        {#each calendarWeeks.slice(0, nDays) as day}
 
-                            <div class="bg-gray-50 border-4 p-2 border-gray-100 hover:bg-white">
-                                <div class="pb-4">
-                                    <p class="text-sm font-bold">{translate(day.day, $language)}</p>
-                                    <p class="text-xs text-gray opacity-60">{translate(day.date.split(' ')[0], $language)} {day.date.split(' ')[1]}</p>
-                                </div>
-                                <div class="">
-                                    <button id={day.date + '_noon'}
-                                        on:click={onClickDay} 
-                                        class="{buttonColor(day.date+'_noon')}" 
-                                        
-                                    >
-                                        {blockedDays.includes(day.date+'_noon')? translate('Not Available', $language) : translate('Noon', $language)}
-                                    </button>
-                                    <button id={day.date + '_afternoon'} 
-                                        on:click={onClickDay} 
-                                        class="{buttonColor(day.date+'_afternoon')}" 
-                                    >
-                                        {blockedDays.includes(day.date+'_afternoon')? translate('Not Available', $language) : translate('Afternoon', $language)}
-                                    </button>
-                                </div>
+                <div class="space-y-6">
+                    <!-- Form Fields -->
+                    {#if $language == 'en'}
+                        <div class="group">
+                            <label for="name" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Name</label>
+                            <input type="text" name="name" id="name" placeholder='Your Name' required 
+                                bind:value={formData.name}
+                                on:input={() => onChangeValidation("name")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                            <label for="email" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Email</label>
+                            <input type="email" name="email" id="email" placeholder='john@example.com' required 
+                                bind:value={formData.email}    
+                                on:input={() => onChangeValidation("email")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                             <label for="phone" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Phone</label>
+                            <input type="tel" name="phone" id="phone" placeholder='(555) 123-4567' required 
+                                bind:value={formData.phone}    
+                                on:input={() => onChangeValidation("phone")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                            <label for="message" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Message</label>
+                            <textarea rows="4" name="message" id="message" placeholder='Tell us about your project (min 30 chars)...' required 
+                                bind:value={formData.messageText}
+                                on:input={() => onChangeValidation("messageText")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none resize-none"
+                            ></textarea>
+                            <div class="text-right text-xs mt-1 {formData.messageText.length >= 30 ? 'text-green-500' : 'text-gray-400'}">
+                                {formData.messageText.length} / 30
                             </div>
-    
-                        {/each}
-
-                    </div>
-
-
+                        </div>
+                    {:else if $language == 'es'}
+                        <div class="group">
+                            <label for="name" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Nombre</label>
+                            <input type="text" name="name" id="name" placeholder='Su Nombre' required 
+                                bind:value={formData.name}
+                                on:input={() => onChangeValidation("name")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                            <label for="email" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Correo Electrónico</label>
+                            <input type="email" name="email" id="email" placeholder='juan@ejemplo.com' required 
+                                bind:value={formData.email}    
+                                on:input={() => onChangeValidation("email")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                             <label for="phone" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Teléfono</label>
+                            <input type="tel" name="phone" id="phone" placeholder='(555) 123-4567' required 
+                                bind:value={formData.phone}    
+                                on:input={() => onChangeValidation("phone")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                            <label for="message" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Mensaje</label>
+                            <textarea rows="4" name="message" id="message" placeholder='Cuéntenos sobre su proyecto (mín 30 car.)...' required 
+                                bind:value={formData.messageText}
+                                on:input={() => onChangeValidation("messageText")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none resize-none"
+                            ></textarea>
+                            <div class="text-right text-xs mt-1 {formData.messageText.length >= 30 ? 'text-green-500' : 'text-gray-400'}">
+                                {formData.messageText.length} / 30
+                            </div>
+                        </div>
+                    {:else}
+                         <div class="group">
+                            <label for="name" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Nom</label>
+                            <input type="text" name="name" id="name" placeholder='Votre Nom' required 
+                                bind:value={formData.name}
+                                on:input={() => onChangeValidation("name")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                            <label for="email" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Courriel</label>
+                            <input type="email" name="email" id="email" placeholder='jean@exemple.com' required 
+                                bind:value={formData.email}    
+                                on:input={() => onChangeValidation("email")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                             <label for="phone" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Téléphone</label>
+                            <input type="tel" name="phone" id="phone" placeholder='(555) 123-4567' required 
+                                bind:value={formData.phone}    
+                                on:input={() => onChangeValidation("phone")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none"
+                            >
+                        </div>
+                        <div class="group">
+                            <label for="message" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 group-focus-within:text-[#febd17] transition-colors">Message</label>
+                            <textarea rows="4" name="message" id="message" placeholder='Parlez-nous de votre projet (min 30 car.)...' required 
+                                bind:value={formData.messageText}
+                                on:input={() => onChangeValidation("messageText")}
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800 border-2 border-transparent focus:border-[#febd17] rounded-xl text-gray-900 dark:text-white placeholder-gray-400 transition-all outline-none resize-none"
+                            ></textarea>
+                            <div class="text-right text-xs mt-1 {formData.messageText.length >= 30 ? 'text-green-500' : 'text-gray-400'}">
+                                {formData.messageText.length} / 30
+                            </div>
+                        </div>
+                    {/if}
                 </div>
             </div>
 
 
+            <!-- Right Column: Calendar & Submit -->
+            <div class="flex flex-col space-y-8">
+                
+                <!-- Calendar Card -->
+                <div class="bg-white dark:bg-zinc-900/50 backdrop-blur-md p-8 md:p-10 rounded-3xl shadow-2xl dark:shadow-none border border-gray-100 dark:border-zinc-800 transition-all duration-300 hover:border-[#febd17]/30">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                             {#if $language == 'en'}
+                                Book a Call
+                             {:else if $language == 'es'}
+                                Reservar una Llamada
+                             {:else}
+                                Réserver un Appel
+                             {/if}
+                        </h3>
+                         <p class="text-sm text-gray-500 dark:text-gray-400">
+                             {#if $language == 'en'}
+                                Select available times below for us to call you.
+                             {:else if $language == 'es'}
+                                Seleccione los horarios disponibles a continuación para que lo llamemos.
+                             {:else}
+                                Sélectionnez ci-dessous les créneaux disponibles pour que nous vous appelions.
+                             {/if}
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                        {#each calendarWeeks.slice(0, nDays) as day}
+                             <div class="flex flex-col space-y-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 ml-1">
+                                    {translate(day.day, $language).slice(0, 3)} {day.date.split(' ')[1]}
+                                </span>
+                                
+                                <button id={day.date + '_noon'}
+                                    on:click={onClickDay}
+                                    class="w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 border 
+                                    {formData.bookedTimes.includes(day.date+'_noon') 
+                                        ? 'bg-[#febd17] border-[#febd17] text-black shadow-lg shadow-yellow-500/20 transform scale-105' 
+                                        : blockedDays.includes(day.date+'_noon')
+                                            ? 'bg-gray-100 dark:bg-zinc-800 border-transparent text-gray-400 cursor-not-allowed'
+                                            : 'bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-gray-300 hover:border-[#febd17] hover:text-[#febd17] active:scale-95'
+                                    }"
+                                    disabled={blockedDays.includes(day.date+'_noon')}
+                                >
+                                    {blockedDays.includes(day.date+'_noon')? '---' : translate('Noon', $language)}
+                                </button>
+
+                                <button id={day.date + '_afternoon'}
+                                    on:click={onClickDay}
+                                    class="w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 border 
+                                    {formData.bookedTimes.includes(day.date+'_afternoon') 
+                                        ? 'bg-[#febd17] border-[#febd17] text-black shadow-lg shadow-yellow-500/20 transform scale-105' 
+                                        : blockedDays.includes(day.date+'_afternoon')
+                                            ? 'bg-gray-100 dark:bg-zinc-800 border-transparent text-gray-400 cursor-not-allowed'
+                                            : 'bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-gray-300 hover:border-[#febd17] hover:text-[#febd17] active:scale-95'
+                                    }"
+                                     disabled={blockedDays.includes(day.date+'_afternoon')}
+                                >
+                                    {blockedDays.includes(day.date+'_afternoon')? '---' : translate('Afternoon', $language)}
+                                </button>
+                             </div>
+                        {/each}
+                    </div>
+                </div>
+
+                <!-- Submit Button Area -->
+                <div class="flex flex-col items-center">
+                    {#if success}
+                        <div class="mb-4 p-4 bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 w-full rounded-2xl text-center animate-pulse">
+                            <p class="font-bold">{$language === 'en' ? 'Success!' : ($language === 'es' ? '¡Éxito!' : 'Succès!')}</p>
+                            <p class="text-sm">{$language === 'en' ? 'We will be in touch shortly.' : ($language === 'es' ? 'Nos pondremos en contacto en breve.' : 'Nous vous contacterons bientôt.')}</p>
+                        </div>
+                    {/if}
+
+                    {#if errorMessage}
+                         <div class="mb-4 p-4 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 w-full rounded-2xl text-center">
+                            <p class="font-bold">Error</p>
+                            <p class="text-sm">{errorMessage}</p>
+                        </div>
+                    {/if}
+
+                    <button type="button" on:click={() => sendContactForm()}
+                        disabled={sending || !formDataValid.name || !formDataValid.email || !formDataValid.phone || !formDataValid.messageText}
+                        class="w-full py-5 text-base font-bold text-black uppercase tracking-wider bg-[#febd17] hover:bg-[#e5aa15] rounded-xl shadow-lg shadow-yellow-500/20 transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center justify-center gap-3">
+                        
+                        {#if sending}
+                            <svg class="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>{$language == 'en' ? 'Sending...' : ($language === 'es' ? 'Enviando...' : 'Envoi...')}</span>
+                        {:else}
+                            <span>{$language == 'en' ? 'Send Request' : ($language === 'es' ? 'Enviar Solicitud' : 'Envoyer la Demande')}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        {/if}
+                    </button>
+                    <p class="mt-4 text-xs text-gray-400 text-center">
+                        {$language == 'en' ? 'Protected by industry standard encryption.' : ($language === 'es' ? 'Protegido por cifrado estándar de la industria.' : 'Protégé par un cryptage standard de l\'industrie.')}
+                    </p>
+                </div>
+
+            </div>
+
         </div>
-
-
-    
-    </div>
-    
-    <div class="mt-10 flex flex-col justify-center items-center w-full max-w-md mx-auto">
-        {#if success}
-            <div class="mb-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 w-full rounded shadow-md animate-pulse">
-                <p class="font-bold">{$language === 'en' ? 'Success!' : 'Succès!'}</p>
-                <p>{$language === 'en' ? 'Your message has been sent. We will contact you soon.' : 'Votre message a été envoyé. Nous vous contacteros bientôt.'}</p>
-            </div>
-        {/if}
-
-        {#if errorMessage}
-            <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 w-full rounded shadow-md">
-                <p class="font-bold">{$language === 'en' ? 'Error' : 'Erreur'}</p>
-                <p>{errorMessage}</p>
-            </div>
-        {/if}
-
-        <button type="button" on:click={() => sendContactForm()}
-            disabled={sending || !formDataValid.name || !formDataValid.email || !formDataValid.phone || !formDataValid.messageText}
-            class="flex items-center justify-center p-4 text-sm w-48 font-medium text-black bg-[#febd17] rounded shadow-lg transform active:scale-95 transition-all duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed">
-            
-            {#if sending}
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>{$language == 'en' ? 'Sending...' : 'Envoi...'}</span>
-            {:else}
-                <span>{$language == 'en' ? 'Send Message' : 'Envoyer le Message'}</span>
-            {/if}
-        </button>
     </div>
 </div>
-
-<!-- </form> -->

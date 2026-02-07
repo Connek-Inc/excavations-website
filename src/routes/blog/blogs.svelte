@@ -44,37 +44,43 @@
 
 </script>
 
-<div id="blogs" class="bg-gray-200 px-4 py-20 font-[sans-serif]">
+<div id="blogs" class="bg-gray-100 dark:bg-black px-4 py-20 font-[sans-serif] transition-colors duration-300">
     <div class="max-w-6xl mx-auto">
       <div class="text-center">
-        <h2 class="text-3xl font-extrabold text-[#333]">{maintitle}</h2>
+        <h2 class="text-3xl font-extrabold text-[#333] dark:text-white uppercase tracking-tight">{maintitle}</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-12 max-md:max-w-lg mx-auto">
-        <div class="rounded overflow-hidden p-6 hover:bg-white transition-all duration-300">
-          <img src={importance} alt="Blog Post 1" class="w-full h-64 object-cover rounded" />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 max-md:max-w-lg mx-auto">
+        <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group">
+          <div class="overflow-hidden rounded-lg mb-4">
+             <img src={importance} alt="Blog Post 1" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500" />
+          </div>
           <div class="text-center">
-            <span class="text-sm block text-[#333] mb-2 mt-4">{subtitle1}</span>
-            <h3 class="text-xl font-bold text-[#333] mb-4">{title1}</h3>
-            <p class="text-[#333] text-sm">{description1}</p>
-            <a href="/blog/importance"><button type="button" class="px-6 py-3 text-white text-sm tracking-wider border-none outline-none bg-[#b69b88] hover:bg-[#af876a] mt-6">{button}</button></a>
+            <span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">{subtitle1 || 'BLOG POST'}</span>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">{title1}</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">{description1}</p>
+            <a href="/blog/importance"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">{button}</button></a>
           </div>
         </div>
-        <div class="rounded overflow-hidden p-6 hover:bg-white transition-all duration-300">
-          <img src={benefits} alt="Blog Post 2" class="w-full h-64 object-cover rounded" />
+        <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group">
+          <div class="overflow-hidden rounded-lg mb-4">
+            <img src={benefits} alt="Blog Post 2" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500" />
+          </div>
           <div class="text-center">
-            <span class="text-sm block text-[#333] mb-2 mt-4">{subtitle2}</span>
-            <h3 class="text-xl font-bold text-[#333] mb-4">{title2}</h3>
-            <p class="text-[#333] text-sm">{description2}</p>
-            <a href="/blog/benefits"><button type="button" class="px-6 py-3 text-white text-sm tracking-wider border-none outline-none bg-[#b69b88] hover:bg-[#af876a] mt-6">{button}</button></a>
+             <span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">{subtitle2 || 'BLOG POST'}</span>
+             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">{title2}</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">{description2}</p>
+            <a href="/blog/benefits"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">{button}</button></a>
           </div>
         </div>
-        <div class="rounded overflow-hidden p-6 hover:bg-white transition-all duration-300">
-          <img src={waterproofing} alt="Blog Post 3" class="w-full h-64 object-cover rounded" />
+        <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group">
+          <div class="overflow-hidden rounded-lg mb-4">
+            <img src={waterproofing} alt="Blog Post 3" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500" />
+          </div>
           <div class="text-center">
-            <span class="text-sm block text-[#333] mb-2 mt-4">{subtitle3}</span>
-            <h3 class="text-xl font-bold text-[#333] mb-4">{title3}</h3>
-            <p class="text-[#333] text-sm">{description3}</p>
-            <a href="/blog/waterproofing"><button type="button" class="px-6 py-3 text-white text-sm tracking-wider border-none outline-none bg-[#b69b88] hover:bg-[#af876a] mt-6">{button}</button></a>
+             <span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">{subtitle3 || 'BLOG POST'}</span>
+             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">{title3}</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">{description3}</p>
+            <a href="/blog/waterproofing"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">{button}</button></a>
           </div>
         </div>
       </div>

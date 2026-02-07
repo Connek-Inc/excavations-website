@@ -29,7 +29,12 @@
   "type": "module",
   "dependencies": {
     "@sveltejs/adapter-vercel": "^5.4.1",
+    "bits-ui": "^0.21.16",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-svelte": "^0.563.0",
     "resend": "^3.2.0",
+    "tailwind-merge": "^3.4.0",
     "yup": "^1.4.0"
   }
 }
