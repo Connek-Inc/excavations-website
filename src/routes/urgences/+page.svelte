@@ -55,9 +55,18 @@
         }
     ];
 
+    $: pageTitle = currentLang === 'fr' ? 'Urgence Excavation & Drain 24/7 | Inspection Gratuite | Mini Excavations Érable' : currentLang === 'es' ? 'Urgencia Excavación y Drenaje 24/7 | Inspección Gratis | Mini Excavations Érable' : 'Emergency Excavation & Drain 24/7 | Free Inspection | Mini Excavations Érable';
+    $: pageDescription = currentLang === 'fr' ? 'Intervention d\'urgence 24/7 pour refoulement d\'égout, infiltration d\'eau, drain français et fissures. Déplacement rapide à Montréal, Laval et Rive-Nord. Appelez maintenant!' : currentLang === 'es' ? 'Intervención de emergencia 24/7 para respaldo de alcantarillado, infiltración de agua, drenaje francés y grietas. Desplazamiento rápido. ¡Llame ahora!' : '24/7 emergency intervention for sewer backup, water infiltration, french drain and cracks. Fast response in Montreal, Laval and North Shore. Call now!';
+
 </script>
 
-<SEO lang={currentLang} path="/urgences" jsonLd={homeJsonLd} />
+<SEO 
+    lang={currentLang} 
+    path="/urgences" 
+    title={pageTitle}
+    description={pageDescription}
+    jsonLd={homeJsonLd} 
+/>
 
 <main class="flex flex-col min-h-screen bg-background font-sans" itemscope itemtype="https://schema.org/LocalBusiness">
     <!-- Hero Section (Brutal & Urgency Focused) -->
