@@ -1,11 +1,59 @@
 <!DOCTYPE html>
-<html class=""> <!--class="dark" dont show the scroll bars, omited-->
+<html lang="fr" class="">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/logo.png" />
-		<script src="https://gateway.moneris.com/chktv2/js/chkt_v2.00.js"></script>
-		<meta name="viewport" content="width=device-width" />
-		<!--Meta tags move to +layout.svelte in order to use lang variable in SEO Optimization-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#febd17" />
+		<meta name="format-detection" content="telephone=yes" />
+
+		<!-- Favicons & Icons -->
+		<link rel="icon" type="image/png" href="%sveltekit.assets%/logo.png" />
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/logo.png" />
+		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+
+		<!-- Performance: Preconnect to critical origins -->
+		<link rel="preconnect" href="https://gateway.moneris.com" crossorigin />
+		<link rel="dns-prefetch" href="https://gateway.moneris.com" />
+		<link rel="preconnect" href="https://www.google.com" crossorigin />
+		<link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+		<link rel="dns-prefetch" href="https://wa.me" />
+		<link rel="dns-prefetch" href="https://www.google.com/maps" />
+
+		<!-- Resource hints for hero image (LCP optimization) -->
+		<link rel="preload" as="image" href="/logo.png" fetchpriority="high" />
+
+		<!-- Prefetch likely-clicked routes -->
+		<link rel="prefetch" href="/services/drain-francais" />
+
+		<!-- SEO: Search engine directives -->
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="googlebot" content="index, follow" />
+		<meta name="bingbot" content="index, follow" />
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+
+		<!-- Geo targeting: Quebec, Canada -->
+		<meta name="geo.region" content="CA-QC" />
+		<meta name="geo.placename" content="Québec, Montréal, Laval, Laurentides" />
+		<meta name="geo.position" content="46.8139;-71.2080" />
+		<meta name="ICBM" content="46.8139, -71.2080" />
+
+		<!-- Author / Publisher -->
+		<meta name="author" content="Mini Excavations Érable" />
+		<meta name="publisher" content="Mini Excavations Érable" />
+		<meta name="copyright" content="Mini Excavations Érable" />
+
+		<script src="https://gateway.moneris.com/chktv2/js/chkt_v2.00.js" defer></script>
+
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18036493782"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'AW-18036493782');
+		</script>
+
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover" data-theme="">

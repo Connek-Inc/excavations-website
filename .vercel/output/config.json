@@ -1,0 +1,90 @@
+{
+	"version": 3,
+	"routes": [
+		{
+			"src": "/services/drain-francais",
+			"dest": "/services/drain-francais/"
+		},
+		{
+			"src": "/services/drain-francais/",
+			"status": 308,
+			"headers": {
+				"Location": "/services/drain-francais"
+			}
+		},
+		{
+			"src": "/services/excavation",
+			"dest": "/services/excavation/"
+		},
+		{
+			"src": "/services/excavation/",
+			"status": 308,
+			"headers": {
+				"Location": "/services/excavation"
+			}
+		},
+		{
+			"src": "/services/reparation-fissures",
+			"dest": "/services/reparation-fissures/"
+		},
+		{
+			"src": "/services/reparation-fissures/",
+			"status": 308,
+			"headers": {
+				"Location": "/services/reparation-fissures"
+			}
+		},
+		{
+			"src": "/services/demolition",
+			"dest": "/services/demolition/"
+		},
+		{
+			"src": "/services/demolition/",
+			"status": 308,
+			"headers": {
+				"Location": "/services/demolition"
+			}
+		},
+		{
+			"src": "/services/inspection-camera",
+			"dest": "/services/inspection-camera/"
+		},
+		{
+			"src": "/services/inspection-camera/",
+			"status": 308,
+			"headers": {
+				"Location": "/services/inspection-camera"
+			}
+		},
+		{
+			"src": "/_app/immutable/.+",
+			"headers": {
+				"cache-control": "public, immutable, max-age=31536000"
+			}
+		},
+		{
+			"handle": "filesystem"
+		},
+		{
+			"src": "/.*",
+			"dest": "/fn"
+		}
+	],
+	"overrides": {
+		"services/drain-francais.html": {
+			"path": "services/drain-francais"
+		},
+		"services/excavation.html": {
+			"path": "services/excavation"
+		},
+		"services/reparation-fissures.html": {
+			"path": "services/reparation-fissures"
+		},
+		"services/demolition.html": {
+			"path": "services/demolition"
+		},
+		"services/inspection-camera.html": {
+			"path": "services/inspection-camera"
+		}
+	}
+}

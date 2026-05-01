@@ -1,155 +1,110 @@
 <script lang="ts">
 	import '../app.postcss';
-	import TopBar from '$lib/TopBar.svelte';
+	import { page } from '$app/stores';
 	import Topbar2 from '$lib/Topbar2.svelte';
-	import logo from "$lib/logo.png";
-    import { setContext } from 'svelte';
-	import { getContext } from 'svelte';
+	import logo from '$lib/logo.png';
 	import { language, theme } from '../lib/store/store';
-    import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
+	import SEO from '$lib/seo/SEO.svelte';
+	import {
+		localBusinessJsonLd,
+		websiteJsonLd,
+		faqJsonLd,
+		breadcrumbJsonLd,
+		SITE
+	} from '$lib/seo/seo-config';
+	import FloatingActions from '$lib/components/FloatingActions.svelte';
+	import StickyCTA from '$lib/components/StickyCTA.svelte';
+	import ExitIntentModal from '$lib/components/ExitIntentModal.svelte';
 
-	/*const language = 'en' /* Global Variable SEO Optimization */
-	// Set default language
-	//let language = 'en'
-	//setContext('language', language)
-	//let language = getContext('language')
+	onMount(() => {
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme) {
+			theme.set(savedTheme);
+		} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			theme.set('dark');
+		}
 
-	
-	let lang
-    language.subscribe(value => {
-        lang = value
-    })
+		theme.subscribe((value) => {
+			if (value === 'dark') {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
+			localStorage.setItem('theme', value);
+		});
 
-    // Theme Logic
-    onMount(() => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            theme.set(savedTheme);
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            theme.set('dark');
-        }
+		language.subscribe((value) => {
+			const tag = value === 'fr' ? 'fr-CA' : value === 'es' ? 'es-ES' : 'en-CA';
+			document.documentElement.setAttribute('lang', tag);
+		});
+	});
 
-        theme.subscribe(value => {
-            if (value === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-            localStorage.setItem('theme', value);
-        });
-    });
-	//console.log('test layout :', lang) Debug purpose
+	$: currentLang = ($language as 'fr' | 'en' | 'es') || 'fr';
+	$: isAdmin = $page.url.pathname.startsWith('/mi/');
 
-	let menuOptions, title, description, keywords: string;
+	$: jsonLdSchemas = [
+		localBusinessJsonLd(currentLang),
+		websiteJsonLd(currentLang),
+		faqJsonLd(currentLang),
+		breadcrumbJsonLd([{ name: 'Accueil', url: SITE.url }])
+	];
 
-	if (lang=='en') {
-		menuOptions = [{
-			text: 'Services',
-			link: '#services' 
-		}, {
-			text: 'About Us',
-			link: '#about-us' 
-		}, {
-			text: 'Contact',
-			link: '#contact' 
-		}],
-		title = 'Trusted Excavation Services',
-		description = 'Mini Excavations Érable offers premium quality excavation services. Contact us for quotes and partnership opportunities. Certified and reliable.',
-		keywords = 'excavations, erable, services, certified, French drain installation, Waterproofing solutions, Foundation repair services, Residential excavation, Basement waterproofing, Sewer line repair, Camera inspection services, Drainage solutions, Foundation crack repair, Sump pump installation'
-	} else if (lang=='fr') {
-		menuOptions = [{
-			text: 'Services',
-			link: '#services' 
-		}, {
-			text: 'À propos',
-			link: '#about-us' 
-		}, {
-			text: 'Contact',
-			link: '#contact' 
-		}],
-		title = "Service d'excavation de confiance"
-		description = "Mini Excavations Érable offre des services d'excavation de première qualité. Contactez-nous pour des devis et opportunités de partenariat. Certifié et fiable.",
-		keywords = "excavations, érable, services, certifie, Installation de drain français, Solutions d'imperméabilisation, Réparation de fondations, Excavation résidentielleImperméabilisation de sous-sol, Réparation de ligne d'égout, Services d'inspection par caméra, Solutions de drainage, Réparation de fissures de fondationInstallation de pompe de puisard"
-	}
+	$: isUrgences = $page.url.pathname.startsWith('/urgences');
 
-	
-
-
-
-
-	import FloatingControls from '$lib/FloatingControls.svelte';
-	// Font Afacad sans-serif
-
+	$: menuOptions = isUrgences
+		? currentLang === 'fr'
+			? [
+					{ text: 'Urgence', link: '#home' },
+					{ text: 'Inspection', link: '#inspection' },
+					{ text: 'Garantie', link: '#garantie' },
+					{ text: 'Avis', link: '#avis' }
+				]
+			: currentLang === 'es'
+				? [
+						{ text: 'Urgencia', link: '#home' },
+						{ text: 'Inspección', link: '#inspection' },
+						{ text: 'Garantía', link: '#garantie' },
+						{ text: 'Reseñas', link: '#avis' }
+					]
+				: [
+						{ text: 'Emergency', link: '#home' },
+						{ text: 'Inspection', link: '#inspection' },
+						{ text: 'Warranty', link: '#garantie' },
+						{ text: 'Reviews', link: '#avis' }
+					]
+		: currentLang === 'fr'
+			? [
+					{ text: 'Services', link: '/#services' },
+					{ text: 'Blogs', link: '/#blogs' },
+					{ text: 'À propos', link: '/#about-us' },
+					{ text: 'Contact', link: '/#contact' }
+				]
+			: currentLang === 'es'
+				? [
+						{ text: 'Servicios', link: '/#services' },
+						{ text: 'Blogs', link: '/#blogs' },
+						{ text: 'Sobre Nosotros', link: '/#about-us' },
+						{ text: 'Contacto', link: '/#contact' }
+					]
+				: [
+						{ text: 'Services', link: '/#services' },
+						{ text: 'Blogs', link: '/#blogs' },
+						{ text: 'About Us', link: '/#about-us' },
+						{ text: 'Contact', link: '/#contact' }
+					];
 </script>
 
-<html lang="{$language}"> <!--SEO Optimization-->
-</html>
-<svelte:head>
-	{#if $language == 'fr'}
-		<title>Mini Excavations Érable - Service d'excavation de confiance</title>
-		<meta name="description" content="Mini Excavations Érable offre des services d'excavation de première qualité. Contactez-nous pour des devis et opportunités de partenariat. Certifié et fiable." />
-		<meta name="keywords" content="excavations, érable, services, certifie, Installation de drain français, Solutions d'imperméabilisation, Réparation de fondations, Excavation résidentielleImperméabilisation de sous-sol, Réparation de ligne d'égout, Services d'inspection par caméra, Solutions de drainage, Réparation de fissures de fondationInstallation de pompe de puisard" /><!--SEO Optimization-->
-	{:else if $language == 'es'}
-		<title>Mini Excavations Érable - Servicios de Excavación Confiables</title>
-		<meta name="description" content="Mini Excavations Érable ofrece servicios de excavación de primera calidad. Contáctenos para cotizaciones y oportunidades de asociación. Certificado y confiable." />
-		<meta name="keywords" content="excavaciones, erable, servicios, certificado, instalación de drenaje francés, soluciones de impermeabilización, reparación de cimientos, excavación residencial, impermeabilización de sótanos, reparación de líneas de alcantarillado, servicios de inspección con cámara, soluciones de drenaje, reparación de grietas en cimientos, instalación de bombas de sumidero" />
-	{:else}
-		<title>Mini Excavations Érable - Trusted Excavation Services</title>
-		<meta name="description" content= 'Mini Excavations Érable offers premium quality excavation services. Contact us for quotes and partnership opportunities. Certified and reliable.' />
-		<meta name="keywords" content="excavations, erable, services, certified, French drain installation, Waterproofing solutions, Foundation repair services, Residential excavation, Basement waterproofing, Sewer line repair, Camera inspection services, Drainage solutions, Foundation crack repair, Sump pump installation" /><!--SEO Optimization-->
-	{/if}
-	
-</svelte:head>
-
-<FloatingControls />
-
-{#if $language == 'fr'}
-<Topbar2 menuOptions={menuOptions = [{
-	text: 'Services',
-	link: '#services' 
-}, {
-	text: 'Blogs',
-	link: '#blogs' 
-}, {
-	text: 'À propos',
-	link: '#about-us' 
-}, {
-	text: 'Contact',
-	link: '#contact' 
-}]} logo={logo}/>
-{:else if $language == 'es'}
-<Topbar2 menuOptions={menuOptions = [{
-	text: 'Servicios',
-	link: '#services' 
-}, {
-	text: 'Blogs',
-	link: '#blogs' 
-}, {
-	text: 'Sobre Nosotros',
-	link: '#about-us' 
-}, {
-	text: 'Contacto',
-	link: '#contact' 
-}]} logo={logo}/>
+{#if isAdmin}
+	<slot />
 {:else}
-<Topbar2 menuOptions={menuOptions = [{
-	text: 'Services',
-	link: '#services' 
-}, {
-	text: 'Blogs',
-	link: '#blogs' 
-}, {
-	text: 'About Us',
-	link: '#about-us' 
-}, {
-	text: 'Contact',
-	link: '#contact' 
-}]} logo={logo}/>
+	<SEO lang={currentLang} jsonLd={jsonLdSchemas} />
+
+	<Topbar2 {menuOptions} {logo} />
+
+	<slot />
+
+	<FloatingActions />
+	<StickyCTA />
+	<ExitIntentModal />
 {/if}
-
-<slot />
-
-
-
-
-

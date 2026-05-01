@@ -1,10 +1,10 @@
-<script lang= 'ts'>
+<script lang="ts">
     import { contactUsSchema } from "$lib/yup/contactUsSchema";
     import { translate } from "$lib/lib-utils"
     import { language } from "./store/store";
 
     const today = new Date()
-    export let nDays = 7;
+    export let nDays: number = 7;
     // let bookedTimes = []
     let formData = {
         name: '',

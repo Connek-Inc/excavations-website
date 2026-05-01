@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /send-contact-form
+
+# Block aggressive AI scrapers (optional - remove if you want AI visibility)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Sitemap
+Sitemap: https://miniexcavationserable.com/sitemap.xml
+
+# Crawl optimization
+Crawl-delay: 1
