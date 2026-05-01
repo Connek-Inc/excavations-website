@@ -39,6 +39,11 @@
 	<meta name="keywords" content={finalKeywords} />
 	<link rel="canonical" href={canonical} />
 
+	<!-- Semantic Topic / Subject -->
+	<meta name="subject" content="Excavation and French Drain Services" />
+	<meta name="topic" content="Construction, Excavation, Fondation" />
+	<meta name="summary" content={finalDescription} />
+
 	<!-- Robots -->
 	{#if noIndex}
 		<meta name="robots" content="noindex, nofollow" />

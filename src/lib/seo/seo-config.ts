@@ -49,7 +49,7 @@ export const seoData: Record<
 		description:
 			"Entreprise d'excavation #1 au Québec ✓ Drain français, réparation fissures, démolition, inspection caméra. 15+ ans d'expérience, certifié RBQ. Soumission gratuite 24h.",
 		keywords:
-			"excavation Québec, drain français Montréal, réparation fissure fondation, mini excavation, entrepreneur excavation certifié RBQ, imperméabilisation sous-sol, démolition résidentielle, inspection caméra drain, pompe puisard, excavation Laval, excavation Laurentides, drain agricole Québec, excavateur Montréal, excavation résidentielle commerciale",
+			"excavation Québec, drain français Montréal, réparation fissure fondation, mini excavation, entrepreneur excavation certifié RBQ, imperméabilisation sous-sol, démolition résidentielle, inspection caméra drain, pompe puisard, excavation Laval, excavation Laurentides, drain agricole Québec, excavateur Montréal, excavation résidentielle, excavation commerciale, urgence excavation, refoulement égout, réparation drain français, installation drain français prix, excavation Rive-Nord, excavation Rive-Sud, excavation Lanaudière, excavation Montérégie, travaux de terrassement, nivellement de terrain, excavation fondation, réparation solage, fissure injection époxy, drain bouché, urgence inondation sous-sol, excavation machinerie lourde, mini pelle, location excavatrice, démolition intérieure, démolition garage, entrée d'eau, raccordement égout, excavation piscine, excavation asphalte, pavage, murs de soutènement",
 		ogLocale: 'fr_CA'
 	},
 	en: {
@@ -57,7 +57,7 @@ export const seoData: Record<
 		description:
 			'#1 Excavation contractor in Quebec ✓ French drain, foundation crack repair, demolition, camera inspection. 15+ years experience, RBQ certified. Free quote in 24h.',
 		keywords:
-			'excavation Quebec, french drain Montreal, foundation crack repair, mini excavation, RBQ certified excavation contractor, basement waterproofing, residential demolition, sewer camera inspection, sump pump installation, excavation Laval, drainage solutions Quebec, residential commercial excavation',
+			'excavation Quebec, french drain Montreal, foundation crack repair, mini excavation, RBQ certified excavation contractor, basement waterproofing, residential demolition, sewer camera inspection, sump pump installation, excavation Laval, drainage solutions Quebec, residential excavation, commercial excavation, emergency excavation, sewer backup repair, french drain repair, french drain installation cost, excavation North Shore, excavation South Shore, excavation Laurentians, earthworks, land grading, foundation excavation, foundation repair, epoxy crack injection, clogged drain, basement flood emergency, heavy machinery excavation, mini excavator, excavator rental, interior demolition, garage demolition, water main entry, sewer connection, pool excavation, asphalt excavation, retaining walls',
 		ogLocale: 'en_CA'
 	},
 	es: {
@@ -65,7 +65,7 @@ export const seoData: Record<
 		description:
 			'Empresa de excavación #1 en Quebec ✓ Drenaje francés, reparación de grietas, demolición, inspección con cámara. +15 años de experiencia, certificada RBQ. Cotización gratuita 24h.',
 		keywords:
-			'excavación Quebec, drenaje francés Montreal, reparación grietas cimientos, mini excavación, contratista excavación certificado RBQ, impermeabilización sótano, demolición residencial, inspección cámara drenaje, instalación bomba sumidero, excavación Laval, excavación residencial comercial',
+			'excavación Quebec, drenaje francés Montreal, reparación grietas cimientos, mini excavación, contratista excavación certificado RBQ, impermeabilización sótano, demolición residencial, inspección cámara drenaje, instalación bomba sumidero, excavación Laval, excavación residencial, excavación comercial, urgencia excavación, reparación respaldo alcantarillado, reparación drenaje francés, costo instalación drenaje francés, excavación Laurentides, excavación Rive-Nord, excavación Rive-Sud, movimiento de tierras, nivelación de terreno, excavación cimientos, reparación cimientos, inyección epoxi grietas, drenaje obstruido, emergencia inundación sótano, maquinaria pesada excavación, mini excavadora, alquiler excavadora, demolición interior, demolición garaje, entrada de agua, conexión alcantarillado, excavación piscina, muros de contención',
 		ogLocale: 'es_ES'
 	}
 };
@@ -132,9 +132,30 @@ export function localBusinessJsonLd(lang: Lang) {
 				{
 					'@type': 'Offer',
 					itemOffered: { '@type': 'Service', name: 'Inspection par Caméra' }
+				},
+				{
+					'@type': 'Offer',
+					itemOffered: { '@type': 'Service', name: 'Imperméabilisation de Sous-sol' }
+				},
+				{
+					'@type': 'Offer',
+					itemOffered: { '@type': 'Service', name: 'Urgence Refoulement d\'Égout' }
 				}
 			]
 		},
+		knowsAbout: [
+			'Excavation',
+			'French Drain Installation',
+			'Drain Français',
+			'Drenaje Francés',
+			'Foundation Repair',
+			'Réparation de Fondation',
+			'Crack Injection',
+			'Injection de Fissures',
+			'Demolition',
+			'Sewer Inspection',
+			'Waterproofing'
+		],
 		aggregateRating: {
 			'@type': 'AggregateRating',
 			ratingValue: '4.9',
