@@ -49,8 +49,16 @@
 		<script>
 		  window.dataLayer = window.dataLayer || [];
 		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
+		  
+		  // Default Google Consent Mode v2
+		  gtag('consent', 'default', {
+		    'ad_storage': 'granted',
+		    'ad_user_data': 'granted',
+		    'ad_personalization': 'granted',
+		    'analytics_storage': 'granted'
+		  });
 
+		  gtag('js', new Date());
 		  gtag('config', 'AW-18036493782');
 		</script>
 
