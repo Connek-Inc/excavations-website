@@ -10,7 +10,7 @@ return {
 	assets: new Set(["favicon.png","logo.png","robots.txt","site.webmanifest"]),
 	mimeTypes: {".png":"image/png",".txt":"text/plain",".webmanifest":"application/manifest+json"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.CJSuBiXl.js","app":"_app/immutable/entry/app.C-1cwdNf.js","imports":["_app/immutable/entry/start.CJSuBiXl.js","_app/immutable/chunks/entry.iGvxD1w1.js","_app/immutable/chunks/16.Hg3iES99.js","_app/immutable/chunks/index.DSr7kP-3.js","_app/immutable/chunks/control.CYgJF_JY.js","_app/immutable/entry/app.C-1cwdNf.js","_app/immutable/chunks/16.Hg3iES99.js","_app/immutable/chunks/index.xsNOgvTg.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
+		client: {"start":"_app/immutable/entry/start.BdtvLE_h.js","app":"_app/immutable/entry/app.ll6DUPmk.js","imports":["_app/immutable/entry/start.BdtvLE_h.js","_app/immutable/chunks/entry.KefXZ3f0.js","_app/immutable/chunks/17.Hg3iES99.js","_app/immutable/chunks/index.DtHhzqLo.js","_app/immutable/chunks/control.CYgJF_JY.js","_app/immutable/entry/app.ll6DUPmk.js","_app/immutable/chunks/17.Hg3iES99.js","_app/immutable/chunks/index.Bl9WQOpk.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
 		nodes: [
 			__memo(() => import('../output/server/nodes/0.js')),
 			__memo(() => import('../output/server/nodes/1.js')),
@@ -21,7 +21,6 @@ return {
 			__memo(() => import('../output/server/nodes/6.js')),
 			__memo(() => import('../output/server/nodes/7.js')),
 			__memo(() => import('../output/server/nodes/8.js')),
-			__memo(() => import('../output/server/nodes/9.js')),
 			__memo(() => import('../output/server/nodes/10.js')),
 			__memo(() => import('../output/server/nodes/11.js')),
 			__memo(() => import('../output/server/nodes/12.js')),
@@ -31,7 +30,9 @@ return {
 			__memo(() => import('../output/server/nodes/16.js')),
 			__memo(() => import('../output/server/nodes/17.js')),
 			__memo(() => import('../output/server/nodes/18.js')),
-			__memo(() => import('../output/server/nodes/19.js'))
+			__memo(() => import('../output/server/nodes/19.js')),
+			__memo(() => import('../output/server/nodes/20.js')),
+			__memo(() => import('../output/server/nodes/22.js'))
 		],
 		routes: [
 			{
@@ -151,6 +152,13 @@ return {
 				pattern: /^\/services\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 19 },
+				endpoint: null
+			},
+			{
+				id: "/urgences",
+				pattern: /^\/urgences\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 20 },
 				endpoint: null
 			}
 		],

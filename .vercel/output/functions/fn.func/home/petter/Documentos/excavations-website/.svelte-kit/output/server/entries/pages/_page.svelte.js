@@ -1,54 +1,14 @@
-import { c as create_ssr_component, f as compute_rest_props, g as spread, h as escape_attribute_value, i as escape_object, a as subscribe, e as escape, b as add_attribute, v as validate_component, d as each } from "../../chunks/ssr.js";
+import { c as create_ssr_component, a as subscribe, e as escape, b as add_attribute, v as validate_component, d as each } from "../../chunks/ssr.js";
 import { l as language } from "../../chunks/store.js";
-import { cva } from "class-variance-authority";
-import { c as cn } from "../../chunks/lib-utils.js";
+import { B as Button, c as certif1, a as certif2, b as certif3, d as certif4 } from "../../chunks/CCQ.js";
 import "clsx";
-import { i as importance } from "../../chunks/frenchdrain2.js";
-import { C as ContactUs, I as InlineCTA } from "../../chunks/InlineCTA.js";
+import { f as frenchdrain2 } from "../../chunks/frenchdrain2.js";
+import { C as ContactUs } from "../../chunks/ContactUs.js";
 import { F as Footer } from "../../chunks/Footer.js";
 import { w as waterproofing } from "../../chunks/basement-sump-pumps-installation-1.js";
 import { b as benefits } from "../../chunks/residential-excavating-service-image-600x400-1.js";
 import { l as localBusinessJsonLd, w as websiteJsonLd, f as faqJsonLd, s as serviceJsonLd, S as SITE, a as SEO } from "../../chunks/SEO.js";
-const Button = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $$restProps = compute_rest_props($$props, ["class", "variant", "size"]);
-  const buttonVariants = cva("inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50", {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline"
-      },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10"
-      }
-    },
-    defaultVariants: { variant: "default", size: "default" }
-  });
-  let { class: className = void 0 } = $$props;
-  let { variant = "default" } = $$props;
-  let { size = "default" } = $$props;
-  if ($$props.class === void 0 && $$bindings.class && className !== void 0)
-    $$bindings.class(className);
-  if ($$props.variant === void 0 && $$bindings.variant && variant !== void 0)
-    $$bindings.variant(variant);
-  if ($$props.size === void 0 && $$bindings.size && size !== void 0)
-    $$bindings.size(size);
-  return `<button${spread(
-    [
-      {
-        class: escape_attribute_value(cn(buttonVariants({ variant, size, className })))
-      },
-      escape_object($$restProps)
-    ],
-    {}
-  )}>${slots.default ? slots.default({}) : ``}</button>`;
-});
+import { I as InlineCTA } from "../../chunks/InlineCTA.js";
 const banner = "/_app/immutable/assets/banner.BM-gk5F_.jpg";
 const excavation2 = "/_app/immutable/assets/excavation2.YFAEktvn.jpg";
 const fissure2 = "/_app/immutable/assets/fissure2.CyqstC3W.jpg";
@@ -57,10 +17,6 @@ const inspection2 = "/_app/immutable/assets/inspection2.BI1_foG9.jpg";
 const partner1 = "/_app/immutable/assets/partner1.BYZJ2Kf0.jpg";
 const partner2 = "/_app/immutable/assets/partner2.CrgWnSAm.jpg";
 const partner3 = "/_app/immutable/assets/partner3.BZhMnZJe.jpg";
-const certif1 = "data:image/png;base64,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";
-const certif2 = "/_app/immutable/assets/RBQ.DXAyArpO.png";
-const certif3 = "/_app/immutable/assets/CMMTQ.QYKK5cAN.svg";
-const certif4 = "/_app/immutable/assets/CCQ.D3M7-nHi.png";
 const css = {
   code: ".map-responsive.svelte-zrgfih.svelte-zrgfih{overflow:hidden;padding-bottom:40%;position:relative;height:0}.map-responsive.svelte-zrgfih iframe.svelte-zrgfih{left:0;top:0;height:100%;width:100%;position:absolute}",
   map: null
@@ -112,7 +68,7 @@ const Blogs = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     description3 = "Découvrez des solutions efficaces d'imperméabilisation pour garder votre sous-sol sec. Apprenez-en plus sur l'installation de pompes de puisard et d'autres techniques pour protéger votre maison.";
   }
   $$unsubscribe_language();
-  return `<div id="blogs" class="bg-gray-100 dark:bg-black px-4 py-20 font-[sans-serif] transition-colors duration-300"><div class="max-w-6xl mx-auto"><div class="text-center"><h2 class="text-3xl font-extrabold text-[#333] dark:text-white uppercase tracking-tight">${escape(maintitle)}</h2></div> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 max-md:max-w-lg mx-auto"><div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group"><div class="overflow-hidden rounded-lg mb-4" data-svelte-h="svelte-101807c"><img${add_attribute("src", importance, 0)} alt="Blog Post 1" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"></div> <div class="text-center"><span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">${escape(subtitle1 || "BLOG POST")}</span> <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">${escape(title1)}</h3> <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">${escape(description1)}</p> <a href="/blog/importance"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">${escape(button)}</button></a></div></div> <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group"><div class="overflow-hidden rounded-lg mb-4" data-svelte-h="svelte-1p9khbv"><img${add_attribute("src", benefits, 0)} alt="Blog Post 2" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"></div> <div class="text-center"><span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">${escape(subtitle2 || "BLOG POST")}</span> <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">${escape(title2)}</h3> <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">${escape(description2)}</p> <a href="/blog/benefits"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">${escape(button)}</button></a></div></div> <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group"><div class="overflow-hidden rounded-lg mb-4" data-svelte-h="svelte-ckpqpl"><img${add_attribute("src", waterproofing, 0)} alt="Blog Post 3" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"></div> <div class="text-center"><span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">${escape(subtitle3 || "BLOG POST")}</span> <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">${escape(title3)}</h3> <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">${escape(description3)}</p> <a href="/blog/waterproofing"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">${escape(button)}</button></a></div></div></div></div></div>`;
+  return `<div id="blogs" class="bg-gray-100 dark:bg-black px-4 py-20 font-[sans-serif] transition-colors duration-300"><div class="max-w-6xl mx-auto"><div class="text-center"><h2 class="text-3xl font-extrabold text-[#333] dark:text-white uppercase tracking-tight">${escape(maintitle)}</h2></div> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 max-md:max-w-lg mx-auto"><div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group"><div class="overflow-hidden rounded-lg mb-4" data-svelte-h="svelte-101807c"><img${add_attribute("src", frenchdrain2, 0)} alt="Blog Post 1" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"></div> <div class="text-center"><span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">${escape(subtitle1 || "BLOG POST")}</span> <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">${escape(title1)}</h3> <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">${escape(description1)}</p> <a href="/blog/importance"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">${escape(button)}</button></a></div></div> <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group"><div class="overflow-hidden rounded-lg mb-4" data-svelte-h="svelte-1p9khbv"><img${add_attribute("src", benefits, 0)} alt="Blog Post 2" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"></div> <div class="text-center"><span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">${escape(subtitle2 || "BLOG POST")}</span> <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">${escape(title2)}</h3> <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">${escape(description2)}</p> <a href="/blog/benefits"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">${escape(button)}</button></a></div></div> <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 hover:shadow-xl dark:hover:bg-zinc-800 transition-all duration-300 group"><div class="overflow-hidden rounded-lg mb-4" data-svelte-h="svelte-ckpqpl"><img${add_attribute("src", waterproofing, 0)} alt="Blog Post 3" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"></div> <div class="text-center"><span class="text-xs font-bold text-[#febd17] mb-2 mt-2 block uppercase tracking-wider">${escape(subtitle3 || "BLOG POST")}</span> <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">${escape(title3)}</h3> <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">${escape(description3)}</p> <a href="/blog/waterproofing"><button type="button" class="px-6 py-3 text-black font-bold text-sm tracking-wider border-none outline-none bg-[#febd17] hover:bg-[#e5aa15] rounded-full mt-6 transition-all hover:scale-105 shadow-lg shadow-yellow-500/20">${escape(button)}</button></a></div></div></div></div></div>`;
 });
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentLang;
@@ -158,7 +114,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     {
       title: $language === "en" ? "French Drains" : $language === "es" ? "Drenajes Franceses" : "Drains Français",
       description: $language === "en" ? "Expert French drain solutions for long-lasting protection against moisture." : $language === "es" ? "Soluciones expertas en drenajes franceses para una protección duradera contra la humedad." : "Solutions expertes en drains français pour une protection durable contre l'humidité.",
-      image: importance
+      image: frenchdrain2
     },
     {
       title: $language === "en" ? "Crack Repairs" : $language === "es" ? "Reparación de Grietas" : "Réparations de Fissures",

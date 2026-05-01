@@ -1,8 +1,10 @@
-
+import * as server from '../entries/pages/mi/admin/settings/_page.server.ts.js';
 
 export const index = 19;
 let component_cache;
-export const component = async () => component_cache ??= (await import('../entries/pages/services/_page.svelte.js')).default;
-export const imports = ["_app/immutable/nodes/19.CvLPAT_1.js","_app/immutable/chunks/16.Hg3iES99.js","_app/immutable/chunks/index.xsNOgvTg.js","_app/immutable/chunks/Icon.jKQ0pTKu.js","_app/immutable/chunks/store.C4YmkljO.js","_app/immutable/chunks/index.DSr7kP-3.js","_app/immutable/chunks/SEO.RHPnErSt.js","_app/immutable/chunks/services-content.CR5s_y8n.js","_app/immutable/chunks/Footer.BWPtCgNe.js","_app/immutable/chunks/arrow-right.Cy2rsqIq.js","_app/immutable/chunks/mail.CxQNfSe9.js","_app/immutable/chunks/phone.JhnogOMf.js","_app/immutable/chunks/clock.DxYvJLwB.js"];
+export const component = async () => component_cache ??= (await import('../entries/pages/mi/admin/settings/_page.svelte.js')).default;
+export { server };
+export const server_id = "src/routes/mi/admin/settings/+page.server.ts";
+export const imports = ["_app/immutable/nodes/19.DsXscN3b.js","_app/immutable/chunks/17.Hg3iES99.js","_app/immutable/chunks/index.Bl9WQOpk.js","_app/immutable/chunks/Icon.xIbDICFG.js","_app/immutable/chunks/forms.B2aXqdJn.js","_app/immutable/chunks/entry.KefXZ3f0.js","_app/immutable/chunks/index.DtHhzqLo.js","_app/immutable/chunks/control.CYgJF_JY.js","_app/immutable/chunks/input.oZbWHBJH.js","_app/immutable/chunks/lib-utils.CrxRf8It.js","_app/immutable/chunks/label.DUU4snNT.js","_app/immutable/chunks/textarea.LPgSOpZT.js","_app/immutable/chunks/settings.C_ljmf5b.js","_app/immutable/chunks/globe.DaS71LgU.js"];
 export const stylesheets = [];
 export const fonts = [];

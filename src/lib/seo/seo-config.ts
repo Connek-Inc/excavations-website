@@ -1,8 +1,11 @@
 export const SITE = {
 	url: 'https://miniexcavationserable.com',
+	altUrl: 'https://excavationserable.com',
 	name: 'Mini Excavations Érable',
+	legalName: 'Mini Excavations Érable Inc.',
 	logo: 'https://miniexcavationserable.com/logo.png',
-	phone: '+1-514-000-0000',
+	phone: '+1-514-830-9973',
+	emergencyPhone: '+1-514-830-9973',
 	email: 'info@miniexcavationserable.com',
 	address: {
 		streetAddress: '',
@@ -12,24 +15,54 @@ export const SITE = {
 		addressCountry: 'CA'
 	},
 	geo: {
-		latitude: 46.8139,
-		longitude: -71.208
+		latitude: 45.5019,
+		longitude: -73.5674
 	},
+	geoRadius: 200000, // 200km radius
 	areaServed: [
+		// Grandes regiones administrativas de Quebec
 		'Québec',
 		'Montréal',
 		'Laval',
 		'Laurentides',
 		'Lanaudière',
 		'Montérégie',
+		'Estrie',
+		'Outaouais',
+		'Mauricie',
+		'Centre-du-Québec',
 		'Rive-Nord',
-		'Rive-Sud'
+		'Rive-Sud',
+		// Ciudades clave del Grand Montréal
+		'Longueuil',
+		'Brossard',
+		'Saint-Jérôme',
+		'Terrebonne',
+		'Repentigny',
+		'Mascouche',
+		'Blainville',
+		'Boisbriand',
+		'Sainte-Thérèse',
+		'Saint-Eustache',
+		'Mirabel',
+		'Vaudreuil-Dorion',
+		'Châteauguay',
+		'Saint-Hyacinthe',
+		'Saint-Jean-sur-Richelieu',
+		'Granby',
+		'Drummondville',
+		'Trois-Rivières',
+		'Sherbrooke',
+		'Gatineau',
+		// Provincia + país (para SEO Canadá)
+		'Quebec',
+		'Canada'
 	],
 	priceRange: '$$',
 	foundingDate: '2010',
 	sameAs: [
 		'https://www.facebook.com/miniexcavationserable',
-		'https://www.instagram.com/miniexcavationserable'
+		'https://www.instagram.com/mini_excavation_erable'
 	]
 } as const;
 
@@ -74,9 +107,11 @@ export function localBusinessJsonLd(lang: Lang) {
 	const data = seoData[lang];
 	return {
 		'@context': 'https://schema.org',
-		'@type': ['LocalBusiness', 'GeneralContractor'],
+		'@type': ['LocalBusiness', 'GeneralContractor', 'EmergencyService', 'HomeAndConstructionBusiness'],
 		'@id': `${SITE.url}/#organization`,
 		name: SITE.name,
+		legalName: SITE.legalName,
+		alternateName: ['Excavations Érable', 'Mini Excavation Érable', 'Excavation Érable Québec'],
 		image: SITE.logo,
 		logo: SITE.logo,
 		url: SITE.url,
@@ -85,6 +120,11 @@ export function localBusinessJsonLd(lang: Lang) {
 		priceRange: SITE.priceRange,
 		description: data.description,
 		foundingDate: SITE.foundingDate,
+		slogan: lang === 'fr'
+			? "L'excellence en excavation depuis 2010"
+			: lang === 'es'
+				? 'Excelencia en excavación desde 2010'
+				: 'Excellence in excavation since 2010',
 		address: {
 			'@type': 'PostalAddress',
 			addressLocality: SITE.address.addressLocality,
@@ -96,6 +136,38 @@ export function localBusinessJsonLd(lang: Lang) {
 			latitude: SITE.geo.latitude,
 			longitude: SITE.geo.longitude
 		},
+		serviceArea: {
+			'@type': 'GeoCircle',
+			geoMidpoint: {
+				'@type': 'GeoCoordinates',
+				latitude: SITE.geo.latitude,
+				longitude: SITE.geo.longitude
+			},
+			geoRadius: SITE.geoRadius
+		},
+		contactPoint: [
+			{
+				'@type': 'ContactPoint',
+				telephone: SITE.phone,
+				contactType: 'customer service',
+				areaServed: ['CA-QC', 'CA'],
+				availableLanguage: ['French', 'English', 'Spanish'],
+				contactOption: 'TollFree'
+			},
+			{
+				'@type': 'ContactPoint',
+				telephone: SITE.emergencyPhone,
+				contactType: 'emergency',
+				areaServed: 'CA-QC',
+				availableLanguage: ['French', 'English'],
+				hoursAvailable: {
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+					opens: '00:00',
+					closes: '23:59'
+				}
+			}
+		],
 		areaServed: SITE.areaServed.map((a) => ({ '@type': 'City', name: a })),
 		sameAs: SITE.sameAs,
 		openingHoursSpecification: [
@@ -182,6 +254,53 @@ export function websiteJsonLd(lang: Lang) {
 			'query-input': 'required name=search_term_string'
 		}
 	};
+}
+
+// SiteNavigationElement — produces "Sitelinks" in Google search results
+export function siteNavigationJsonLd(lang: Lang) {
+	const items = lang === 'fr'
+		? [
+				{ name: 'Garantie 15 Ans', url: `${SITE.url}/urgences#garantie`, description: 'Totalement transférable. Protégez votre investissement.' },
+				{ name: 'Inspection Gratuite', url: `${SITE.url}/urgences#inspection`, description: 'Déplacement sans frais. Soumission rapide en 24h-48h.' },
+				{ name: 'Nos Certifications', url: `${SITE.url}/urgences#certifications`, description: 'Licences APCHQ, RBQ et CMTQ. Machinerie récente et sécuritaire.' },
+				{ name: 'Avis de nos Clients', url: `${SITE.url}/urgences#avis`, description: 'Plus de 127 avis positifs. Voyez nos travaux récents.' },
+				{ name: 'Drain Français', url: `${SITE.url}/services/drain-francais`, description: 'Installation et réparation de drain français.' },
+				{ name: 'Excavation', url: `${SITE.url}/services/excavation`, description: 'Excavation résidentielle et commerciale.' },
+				{ name: 'Réparation de Fissures', url: `${SITE.url}/services/reparation-fissures`, description: 'Injection époxy/polyuréthane.' },
+				{ name: 'Démolition', url: `${SITE.url}/services/demolition`, description: 'Démolition résidentielle sécuritaire.' },
+				{ name: 'Inspection Caméra', url: `${SITE.url}/services/inspection-camera`, description: 'Diagnostic précis sans excavation.' }
+			]
+		: lang === 'es'
+			? [
+					{ name: 'Garantía 15 Años', url: `${SITE.url}/urgences#garantie`, description: 'Totalmente transferible.' },
+					{ name: 'Inspección Gratuita', url: `${SITE.url}/urgences#inspection`, description: 'Sin costo de desplazamiento.' },
+					{ name: 'Certificaciones', url: `${SITE.url}/urgences#certifications`, description: 'Licencias APCHQ, RBQ, CMTQ.' },
+					{ name: 'Reseñas', url: `${SITE.url}/urgences#avis`, description: '+127 reseñas positivas.' },
+					{ name: 'Drenaje Francés', url: `${SITE.url}/services/drain-francais`, description: 'Instalación y reparación.' },
+					{ name: 'Excavación', url: `${SITE.url}/services/excavation`, description: 'Residencial y comercial.' },
+					{ name: 'Reparación Grietas', url: `${SITE.url}/services/reparation-fissures`, description: 'Inyección epoxi/poliuretano.' },
+					{ name: 'Demolición', url: `${SITE.url}/services/demolition`, description: 'Demolición segura.' },
+					{ name: 'Inspección Cámara', url: `${SITE.url}/services/inspection-camera`, description: 'Diagnóstico sin excavación.' }
+				]
+			: [
+					{ name: '15-Year Warranty', url: `${SITE.url}/urgences#garantie`, description: 'Fully transferable. Protect your investment.' },
+					{ name: 'Free Inspection', url: `${SITE.url}/urgences#inspection`, description: 'No travel fee. Quick quote 24-48h.' },
+					{ name: 'Our Certifications', url: `${SITE.url}/urgences#certifications`, description: 'APCHQ, RBQ and CMTQ licenses.' },
+					{ name: 'Client Reviews', url: `${SITE.url}/urgences#avis`, description: 'Over 127 positive reviews.' },
+					{ name: 'French Drain', url: `${SITE.url}/services/drain-francais`, description: 'Installation and repair.' },
+					{ name: 'Excavation', url: `${SITE.url}/services/excavation`, description: 'Residential and commercial.' },
+					{ name: 'Crack Repair', url: `${SITE.url}/services/reparation-fissures`, description: 'Epoxy/polyurethane injection.' },
+					{ name: 'Demolition', url: `${SITE.url}/services/demolition`, description: 'Safe demolition services.' },
+					{ name: 'Camera Inspection', url: `${SITE.url}/services/inspection-camera`, description: 'Precise diagnostics.' }
+				];
+
+	return items.map((item) => ({
+		'@context': 'https://schema.org',
+		'@type': 'SiteNavigationElement',
+		name: item.name,
+		description: item.description,
+		url: item.url
+	}));
 }
 
 export function faqJsonLd(lang: Lang) {

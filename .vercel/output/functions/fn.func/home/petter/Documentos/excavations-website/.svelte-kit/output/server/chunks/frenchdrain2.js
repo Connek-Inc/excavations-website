@@ -1,4 +1,4 @@
-const importance = "/_app/immutable/assets/frenchdrain2.D9GqCnyh.jpg";
+const frenchdrain2 = "/_app/immutable/assets/frenchdrain2.D9GqCnyh.jpg";
 export {
-  importance as i
+  frenchdrain2 as f
 };

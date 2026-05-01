@@ -1,7 +1,11 @@
+import { cities } from '$lib/seo/cities-data';
+
 const SITE_URL = 'https://miniexcavationserable.com';
 
 const staticPages = [
 	{ path: '', priority: '1.0', changefreq: 'weekly' },
+	{ path: 'urgences', priority: '1.0', changefreq: 'weekly' },
+	{ path: 'services', priority: '0.9', changefreq: 'weekly' },
 	{ path: 'services/excavation', priority: '0.9', changefreq: 'monthly' },
 	{ path: 'services/drain-francais', priority: '0.9', changefreq: 'monthly' },
 	{ path: 'services/reparation-fissures', priority: '0.9', changefreq: 'monthly' },
@@ -13,6 +17,14 @@ const staticPages = [
 	{ path: 'blog/waterproofing', priority: '0.7', changefreq: 'monthly' }
 ];
 
+const cityPages = cities.map((c) => ({
+	path: `excavation/${c.slug}`,
+	priority: '0.85',
+	changefreq: 'monthly' as const
+}));
+
+const allPages = [...staticPages, ...cityPages];
+
 const languages = ['fr', 'en', 'es'];
 
 export const prerender = true;
@@ -20,7 +32,7 @@ export const prerender = true;
 export async function GET() {
 	const today = new Date().toISOString().split('T')[0];
 
-	const urls = staticPages
+	const urls = allPages
 		.map((page) => {
 			const loc = page.path ? `${SITE_URL}/${page.path}` : SITE_URL;
 			const alternates = languages

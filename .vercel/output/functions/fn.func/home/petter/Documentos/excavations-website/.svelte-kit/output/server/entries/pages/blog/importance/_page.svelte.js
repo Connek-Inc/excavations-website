@@ -1,6 +1,6 @@
 import { c as create_ssr_component, a as subscribe, v as validate_component, e as escape, b as add_attribute } from "../../../../chunks/ssr.js";
 import { l as language } from "../../../../chunks/store.js";
-import { i as importance } from "../../../../chunks/frenchdrain2.js";
+import { f as frenchdrain2 } from "../../../../chunks/frenchdrain2.js";
 import { l as logo } from "../../../../chunks/logo.js";
 import { S as SITE, l as localBusinessJsonLd, b as breadcrumbJsonLd, a as SEO } from "../../../../chunks/SEO.js";
 import { F as Footer } from "../../../../chunks/Footer.js";
@@ -140,7 +140,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     },
     {},
     {}
-  )} <main class="bg-white dark:bg-black text-black dark:text-white min-h-screen"><article itemscope itemtype="https://schema.org/Article" class="pt-32 pb-16"><header class="text-center px-4 mb-12 max-w-4xl mx-auto"><p class="text-sm md:text-base text-[#febd17] font-bold tracking-wider uppercase mb-4"><time datetime="2024-07-04" itemprop="datePublished">${escape(data.subtitle)}</time> <span class="text-gray-400 mx-2" data-svelte-h="svelte-18s3iky">/</span>${escape(data.subtitle2)}</p> <h1 class="font-black text-3xl md:text-5xl lg:text-6xl tracking-tight" itemprop="headline">${escape(data.title)}</h1></header> <figure class="container max-w-6xl mx-auto px-4 mb-12"><img${add_attribute("src", importance, 0)}${add_attribute(
+  )} <main class="bg-white dark:bg-black text-black dark:text-white min-h-screen"><article itemscope itemtype="https://schema.org/Article" class="pt-32 pb-16"><header class="text-center px-4 mb-12 max-w-4xl mx-auto"><p class="text-sm md:text-base text-[#febd17] font-bold tracking-wider uppercase mb-4"><time datetime="2024-07-04" itemprop="datePublished">${escape(data.subtitle)}</time> <span class="text-gray-400 mx-2" data-svelte-h="svelte-18s3iky">/</span>${escape(data.subtitle2)}</p> <h1 class="font-black text-3xl md:text-5xl lg:text-6xl tracking-tight" itemprop="headline">${escape(data.title)}</h1></header> <figure class="container max-w-6xl mx-auto px-4 mb-12"><img${add_attribute("src", frenchdrain2, 0)}${add_attribute(
     "alt",
     lang === "fr" ? "Installation de drain français au Québec par Mini Excavations Érable" : lang === "es" ? "Instalación de drenaje francés en Quebec por Mini Excavations Érable" : "French drain installation in Quebec by Mini Excavations Érable",
     0

@@ -243,5 +243,6 @@ const Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 				${escape(c.rights)}</p> <div class="flex items-center gap-4"><a href="/sitemap.xml" class="hover:text-[#febd17] transition-colors" data-svelte-h="svelte-psbev1">Sitemap</a> <span class="opacity-30" data-svelte-h="svelte-1ayjybi">•</span> <p class="flex items-center">${escape(c.designed)} <a href="https://connek.ca" target="_blank" rel="noopener" class="font-bold text-[#febd17] ml-1 hover:underline" data-svelte-h="svelte-1hj2eq9">Connek</a></p></div></div></div></footer>`;
 });
 export {
-  Footer as F
+  Footer as F,
+  MapPin as M
 };

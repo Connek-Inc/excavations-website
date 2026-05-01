@@ -2,6 +2,193 @@
 	"version": 3,
 	"routes": [
 		{
+			"src": "/excavation/montreal",
+			"dest": "/excavation/montreal/"
+		},
+		{
+			"src": "/excavation/montreal/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/montreal"
+			}
+		},
+		{
+			"src": "/excavation/laval",
+			"dest": "/excavation/laval/"
+		},
+		{
+			"src": "/excavation/laval/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/laval"
+			}
+		},
+		{
+			"src": "/excavation/longueuil",
+			"dest": "/excavation/longueuil/"
+		},
+		{
+			"src": "/excavation/longueuil/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/longueuil"
+			}
+		},
+		{
+			"src": "/excavation/brossard",
+			"dest": "/excavation/brossard/"
+		},
+		{
+			"src": "/excavation/brossard/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/brossard"
+			}
+		},
+		{
+			"src": "/excavation/saint-jerome",
+			"dest": "/excavation/saint-jerome/"
+		},
+		{
+			"src": "/excavation/saint-jerome/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/saint-jerome"
+			}
+		},
+		{
+			"src": "/excavation/terrebonne",
+			"dest": "/excavation/terrebonne/"
+		},
+		{
+			"src": "/excavation/terrebonne/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/terrebonne"
+			}
+		},
+		{
+			"src": "/excavation/repentigny",
+			"dest": "/excavation/repentigny/"
+		},
+		{
+			"src": "/excavation/repentigny/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/repentigny"
+			}
+		},
+		{
+			"src": "/excavation/mascouche",
+			"dest": "/excavation/mascouche/"
+		},
+		{
+			"src": "/excavation/mascouche/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/mascouche"
+			}
+		},
+		{
+			"src": "/excavation/blainville",
+			"dest": "/excavation/blainville/"
+		},
+		{
+			"src": "/excavation/blainville/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/blainville"
+			}
+		},
+		{
+			"src": "/excavation/boisbriand",
+			"dest": "/excavation/boisbriand/"
+		},
+		{
+			"src": "/excavation/boisbriand/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/boisbriand"
+			}
+		},
+		{
+			"src": "/excavation/sainte-therese",
+			"dest": "/excavation/sainte-therese/"
+		},
+		{
+			"src": "/excavation/sainte-therese/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/sainte-therese"
+			}
+		},
+		{
+			"src": "/excavation/mirabel",
+			"dest": "/excavation/mirabel/"
+		},
+		{
+			"src": "/excavation/mirabel/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/mirabel"
+			}
+		},
+		{
+			"src": "/excavation/saint-eustache",
+			"dest": "/excavation/saint-eustache/"
+		},
+		{
+			"src": "/excavation/saint-eustache/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/saint-eustache"
+			}
+		},
+		{
+			"src": "/excavation/chateauguay",
+			"dest": "/excavation/chateauguay/"
+		},
+		{
+			"src": "/excavation/chateauguay/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/chateauguay"
+			}
+		},
+		{
+			"src": "/excavation/vaudreuil-dorion",
+			"dest": "/excavation/vaudreuil-dorion/"
+		},
+		{
+			"src": "/excavation/vaudreuil-dorion/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/vaudreuil-dorion"
+			}
+		},
+		{
+			"src": "/excavation/saint-hyacinthe",
+			"dest": "/excavation/saint-hyacinthe/"
+		},
+		{
+			"src": "/excavation/saint-hyacinthe/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/saint-hyacinthe"
+			}
+		},
+		{
+			"src": "/excavation/quebec-city",
+			"dest": "/excavation/quebec-city/"
+		},
+		{
+			"src": "/excavation/quebec-city/",
+			"status": 308,
+			"headers": {
+				"Location": "/excavation/quebec-city"
+			}
+		},
+		{
 			"src": "/services/drain-francais",
 			"dest": "/services/drain-francais/"
 		},
@@ -71,6 +258,57 @@
 		}
 	],
 	"overrides": {
+		"excavation/montreal.html": {
+			"path": "excavation/montreal"
+		},
+		"excavation/laval.html": {
+			"path": "excavation/laval"
+		},
+		"excavation/longueuil.html": {
+			"path": "excavation/longueuil"
+		},
+		"excavation/brossard.html": {
+			"path": "excavation/brossard"
+		},
+		"excavation/saint-jerome.html": {
+			"path": "excavation/saint-jerome"
+		},
+		"excavation/terrebonne.html": {
+			"path": "excavation/terrebonne"
+		},
+		"excavation/repentigny.html": {
+			"path": "excavation/repentigny"
+		},
+		"excavation/mascouche.html": {
+			"path": "excavation/mascouche"
+		},
+		"excavation/blainville.html": {
+			"path": "excavation/blainville"
+		},
+		"excavation/boisbriand.html": {
+			"path": "excavation/boisbriand"
+		},
+		"excavation/sainte-therese.html": {
+			"path": "excavation/sainte-therese"
+		},
+		"excavation/mirabel.html": {
+			"path": "excavation/mirabel"
+		},
+		"excavation/saint-eustache.html": {
+			"path": "excavation/saint-eustache"
+		},
+		"excavation/chateauguay.html": {
+			"path": "excavation/chateauguay"
+		},
+		"excavation/vaudreuil-dorion.html": {
+			"path": "excavation/vaudreuil-dorion"
+		},
+		"excavation/saint-hyacinthe.html": {
+			"path": "excavation/saint-hyacinthe"
+		},
+		"excavation/quebec-city.html": {
+			"path": "excavation/quebec-city"
+		},
 		"services/drain-francais.html": {
 			"path": "services/drain-francais"
 		},

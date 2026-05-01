@@ -70,6 +70,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentLang;
   let isAdmin;
   let jsonLdSchemas;
+  let isUrgences;
   let menuOptions;
   let $page, $$unsubscribe_page;
   let $language, $$unsubscribe_language;
@@ -83,24 +84,43 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     faqJsonLd(currentLang),
     breadcrumbJsonLd([{ name: "Accueil", url: SITE.url }])
   ];
-  menuOptions = currentLang === "fr" ? [
-    { text: "Services", link: "#services" },
-    { text: "Blogs", link: "#blogs" },
-    { text: "À propos", link: "#about-us" },
-    { text: "Contact", link: "#contact" }
+  isUrgences = $page.url.pathname.startsWith("/urgences");
+  menuOptions = isUrgences ? currentLang === "fr" ? [
+    { text: "Urgence", link: "#home" },
+    { text: "Inspection", link: "#inspection" },
+    { text: "Garantie", link: "#garantie" },
+    { text: "Avis", link: "#avis" }
   ] : currentLang === "es" ? [
-    { text: "Servicios", link: "#services" },
-    { text: "Blogs", link: "#blogs" },
+    { text: "Urgencia", link: "#home" },
+    {
+      text: "Inspección",
+      link: "#inspection"
+    },
+    { text: "Garantía", link: "#garantie" },
+    { text: "Reseñas", link: "#avis" }
+  ] : [
+    { text: "Emergency", link: "#home" },
+    { text: "Inspection", link: "#inspection" },
+    { text: "Warranty", link: "#garantie" },
+    { text: "Reviews", link: "#avis" }
+  ] : currentLang === "fr" ? [
+    { text: "Services", link: "/#services" },
+    { text: "Blogs", link: "/#blogs" },
+    { text: "À propos", link: "/#about-us" },
+    { text: "Contact", link: "/#contact" }
+  ] : currentLang === "es" ? [
+    { text: "Servicios", link: "/#services" },
+    { text: "Blogs", link: "/#blogs" },
     {
       text: "Sobre Nosotros",
-      link: "#about-us"
+      link: "/#about-us"
     },
-    { text: "Contacto", link: "#contact" }
+    { text: "Contacto", link: "/#contact" }
   ] : [
-    { text: "Services", link: "#services" },
-    { text: "Blogs", link: "#blogs" },
-    { text: "About Us", link: "#about-us" },
-    { text: "Contact", link: "#contact" }
+    { text: "Services", link: "/#services" },
+    { text: "Blogs", link: "/#blogs" },
+    { text: "About Us", link: "/#about-us" },
+    { text: "Contact", link: "/#contact" }
   ];
   $$unsubscribe_page();
   $$unsubscribe_language();

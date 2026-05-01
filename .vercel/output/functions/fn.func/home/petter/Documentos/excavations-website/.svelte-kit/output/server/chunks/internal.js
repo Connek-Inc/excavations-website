@@ -176,7 +176,60 @@ const options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!DOCTYPE html>\n<html lang="fr" class="">\n	<head>\n		<meta charset="utf-8" />\n		<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n		<meta name="theme-color" content="#febd17" />\n		<meta name="format-detection" content="telephone=yes" />\n\n		<!-- Favicons & Icons -->\n		<link rel="icon" type="image/png" href="' + assets2 + '/logo.png" />\n		<link rel="apple-touch-icon" href="' + assets2 + '/logo.png" />\n		<link rel="manifest" href="' + assets2 + '/site.webmanifest" />\n\n		<!-- Performance: Preconnect to critical origins -->\n		<link rel="preconnect" href="https://gateway.moneris.com" crossorigin />\n		<link rel="dns-prefetch" href="https://gateway.moneris.com" />\n		<link rel="preconnect" href="https://www.google.com" crossorigin />\n		<link rel="preconnect" href="https://www.gstatic.com" crossorigin />\n		<link rel="dns-prefetch" href="https://wa.me" />\n		<link rel="dns-prefetch" href="https://www.google.com/maps" />\n\n		<!-- Resource hints for hero image (LCP optimization) -->\n		<link rel="preload" as="image" href="/logo.png" fetchpriority="high" />\n\n		<!-- Prefetch likely-clicked routes -->\n		<link rel="prefetch" href="/services/drain-francais" />\n\n		<!-- SEO: Search engine directives -->\n		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n		<meta name="googlebot" content="index, follow" />\n		<meta name="bingbot" content="index, follow" />\n		<meta name="referrer" content="strict-origin-when-cross-origin" />\n\n		<!-- Geo targeting: Quebec, Canada -->\n		<meta name="geo.region" content="CA-QC" />\n		<meta name="geo.placename" content="Québec, Montréal, Laval, Laurentides" />\n		<meta name="geo.position" content="46.8139;-71.2080" />\n		<meta name="ICBM" content="46.8139, -71.2080" />\n\n		<!-- Author / Publisher -->\n		<meta name="author" content="Mini Excavations Érable" />\n		<meta name="publisher" content="Mini Excavations Érable" />\n		<meta name="copyright" content="Mini Excavations Érable" />\n\n		<script src="https://gateway.moneris.com/chktv2/js/chkt_v2.00.js" defer><\/script>\n\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover" data-theme="">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!DOCTYPE html>\n<html lang="fr" class="">\n	<head>\n		<meta charset="utf-8" />\n		<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n		<meta name="theme-color" content="#febd17" />\n		<meta name="format-detection" content="telephone=yes" />\n\n		<!-- Favicons & Icons -->\n		<link rel="icon" type="image/png" href="' + assets2 + '/logo.png" />\n		<link rel="apple-touch-icon" href="' + assets2 + '/logo.png" />\n		<link rel="manifest" href="' + assets2 + `/site.webmanifest" />
+
+		<!-- Performance: Preconnect to critical origins -->
+		<link rel="preconnect" href="https://gateway.moneris.com" crossorigin />
+		<link rel="dns-prefetch" href="https://gateway.moneris.com" />
+		<link rel="preconnect" href="https://www.google.com" crossorigin />
+		<link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+		<link rel="dns-prefetch" href="https://wa.me" />
+		<link rel="dns-prefetch" href="https://www.google.com/maps" />
+
+		<!-- Resource hints for hero image (LCP optimization) -->
+		<link rel="preload" as="image" href="/logo.png" fetchpriority="high" />
+
+		<!-- Prefetch likely-clicked routes -->
+		<link rel="prefetch" href="/services/drain-francais" />
+
+		<!-- SEO: Search engine directives -->
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="googlebot" content="index, follow" />
+		<meta name="bingbot" content="index, follow" />
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+
+		<!-- Geo targeting: Quebec, Canada -->
+		<meta name="geo.region" content="CA-QC" />
+		<meta name="geo.placename" content="Québec, Montréal, Laval, Laurentides" />
+		<meta name="geo.position" content="46.8139;-71.2080" />
+		<meta name="ICBM" content="46.8139, -71.2080" />
+
+		<!-- Author / Publisher -->
+		<meta name="author" content="Mini Excavations Érable" />
+		<meta name="publisher" content="Mini Excavations Érable" />
+		<meta name="copyright" content="Mini Excavations Érable" />
+
+		<script src="https://gateway.moneris.com/chktv2/js/chkt_v2.00.js" defer><\/script>
+
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18036493782"><\/script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  
+		  // Default Google Consent Mode v2
+		  gtag('consent', 'default', {
+		    'ad_storage': 'granted',
+		    'ad_user_data': 'granted',
+		    'ad_personalization': 'granted',
+		    'analytics_storage': 'granted'
+		  });
+
+		  gtag('js', new Date());
+		  gtag('config', 'AW-18036493782');
+		<\/script>
+
+		` + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover" data-theme="">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -248,7 +301,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "pe3da4"
+  version_hash: "1mvjdci"
 };
 async function get_hooks() {
   return {

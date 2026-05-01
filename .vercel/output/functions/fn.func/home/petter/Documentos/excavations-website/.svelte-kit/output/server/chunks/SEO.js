@@ -1,9 +1,12 @@
 import { c as create_ssr_component, e as escape, b as add_attribute, d as each } from "./ssr.js";
 const SITE = {
   url: "https://miniexcavationserable.com",
+  altUrl: "https://excavationserable.com",
   name: "Mini Excavations Érable",
+  legalName: "Mini Excavations Érable Inc.",
   logo: "https://miniexcavationserable.com/logo.png",
-  phone: "+1-514-000-0000",
+  phone: "+1-514-830-9973",
+  emergencyPhone: "+1-514-830-9973",
   email: "info@miniexcavationserable.com",
   address: {
     streetAddress: "",
@@ -13,43 +16,74 @@ const SITE = {
     addressCountry: "CA"
   },
   geo: {
-    latitude: 46.8139,
-    longitude: -71.208
+    latitude: 45.5019,
+    longitude: -73.5674
   },
+  geoRadius: 2e5,
+  // 200km radius
   areaServed: [
+    // Grandes regiones administrativas de Quebec
     "Québec",
     "Montréal",
     "Laval",
     "Laurentides",
     "Lanaudière",
     "Montérégie",
+    "Estrie",
+    "Outaouais",
+    "Mauricie",
+    "Centre-du-Québec",
     "Rive-Nord",
-    "Rive-Sud"
+    "Rive-Sud",
+    // Ciudades clave del Grand Montréal
+    "Longueuil",
+    "Brossard",
+    "Saint-Jérôme",
+    "Terrebonne",
+    "Repentigny",
+    "Mascouche",
+    "Blainville",
+    "Boisbriand",
+    "Sainte-Thérèse",
+    "Saint-Eustache",
+    "Mirabel",
+    "Vaudreuil-Dorion",
+    "Châteauguay",
+    "Saint-Hyacinthe",
+    "Saint-Jean-sur-Richelieu",
+    "Granby",
+    "Drummondville",
+    "Trois-Rivières",
+    "Sherbrooke",
+    "Gatineau",
+    // Provincia + país (para SEO Canadá)
+    "Quebec",
+    "Canada"
   ],
   priceRange: "$$",
   foundingDate: "2010",
   sameAs: [
     "https://www.facebook.com/miniexcavationserable",
-    "https://www.instagram.com/miniexcavationserable"
+    "https://www.instagram.com/mini_excavation_erable"
   ]
 };
 const seoData = {
   fr: {
     title: "Mini Excavations Érable | Drain Français, Excavation & Fondation Québec",
     description: "Entreprise d'excavation #1 au Québec ✓ Drain français, réparation fissures, démolition, inspection caméra. 15+ ans d'expérience, certifié RBQ. Soumission gratuite 24h.",
-    keywords: "excavation Québec, drain français Montréal, réparation fissure fondation, mini excavation, entrepreneur excavation certifié RBQ, imperméabilisation sous-sol, démolition résidentielle, inspection caméra drain, pompe puisard, excavation Laval, excavation Laurentides, drain agricole Québec, excavateur Montréal, excavation résidentielle commerciale",
+    keywords: "excavation Québec, drain français Montréal, réparation fissure fondation, mini excavation, entrepreneur excavation certifié RBQ, imperméabilisation sous-sol, démolition résidentielle, inspection caméra drain, pompe puisard, excavation Laval, excavation Laurentides, drain agricole Québec, excavateur Montréal, excavation résidentielle, excavation commerciale, urgence excavation, refoulement égout, réparation drain français, installation drain français prix, excavation Rive-Nord, excavation Rive-Sud, excavation Lanaudière, excavation Montérégie, travaux de terrassement, nivellement de terrain, excavation fondation, réparation solage, fissure injection époxy, drain bouché, urgence inondation sous-sol, excavation machinerie lourde, mini pelle, location excavatrice, démolition intérieure, démolition garage, entrée d'eau, raccordement égout, excavation piscine, excavation asphalte, pavage, murs de soutènement",
     ogLocale: "fr_CA"
   },
   en: {
     title: "Mini Excavations Érable | French Drain, Excavation & Foundation Quebec",
     description: "#1 Excavation contractor in Quebec ✓ French drain, foundation crack repair, demolition, camera inspection. 15+ years experience, RBQ certified. Free quote in 24h.",
-    keywords: "excavation Quebec, french drain Montreal, foundation crack repair, mini excavation, RBQ certified excavation contractor, basement waterproofing, residential demolition, sewer camera inspection, sump pump installation, excavation Laval, drainage solutions Quebec, residential commercial excavation",
+    keywords: "excavation Quebec, french drain Montreal, foundation crack repair, mini excavation, RBQ certified excavation contractor, basement waterproofing, residential demolition, sewer camera inspection, sump pump installation, excavation Laval, drainage solutions Quebec, residential excavation, commercial excavation, emergency excavation, sewer backup repair, french drain repair, french drain installation cost, excavation North Shore, excavation South Shore, excavation Laurentians, earthworks, land grading, foundation excavation, foundation repair, epoxy crack injection, clogged drain, basement flood emergency, heavy machinery excavation, mini excavator, excavator rental, interior demolition, garage demolition, water main entry, sewer connection, pool excavation, asphalt excavation, retaining walls",
     ogLocale: "en_CA"
   },
   es: {
     title: "Mini Excavations Érable | Drenaje Francés, Excavación y Cimientos Quebec",
     description: "Empresa de excavación #1 en Quebec ✓ Drenaje francés, reparación de grietas, demolición, inspección con cámara. +15 años de experiencia, certificada RBQ. Cotización gratuita 24h.",
-    keywords: "excavación Quebec, drenaje francés Montreal, reparación grietas cimientos, mini excavación, contratista excavación certificado RBQ, impermeabilización sótano, demolición residencial, inspección cámara drenaje, instalación bomba sumidero, excavación Laval, excavación residencial comercial",
+    keywords: "excavación Quebec, drenaje francés Montreal, reparación grietas cimientos, mini excavación, contratista excavación certificado RBQ, impermeabilización sótano, demolición residencial, inspección cámara drenaje, instalación bomba sumidero, excavación Laval, excavación residencial, excavación comercial, urgencia excavación, reparación respaldo alcantarillado, reparación drenaje francés, costo instalación drenaje francés, excavación Laurentides, excavación Rive-Nord, excavación Rive-Sud, movimiento de tierras, nivelación de terreno, excavación cimientos, reparación cimientos, inyección epoxi grietas, drenaje obstruido, emergencia inundación sótano, maquinaria pesada excavación, mini excavadora, alquiler excavadora, demolición interior, demolición garaje, entrada de agua, conexión alcantarillado, excavación piscina, muros de contención",
     ogLocale: "es_ES"
   }
 };
@@ -57,9 +91,11 @@ function localBusinessJsonLd(lang) {
   const data = seoData[lang];
   return {
     "@context": "https://schema.org",
-    "@type": ["LocalBusiness", "GeneralContractor"],
+    "@type": ["LocalBusiness", "GeneralContractor", "EmergencyService", "HomeAndConstructionBusiness"],
     "@id": `${SITE.url}/#organization`,
     name: SITE.name,
+    legalName: SITE.legalName,
+    alternateName: ["Excavations Érable", "Mini Excavation Érable", "Excavation Érable Québec"],
     image: SITE.logo,
     logo: SITE.logo,
     url: SITE.url,
@@ -68,6 +104,7 @@ function localBusinessJsonLd(lang) {
     priceRange: SITE.priceRange,
     description: data.description,
     foundingDate: SITE.foundingDate,
+    slogan: lang === "fr" ? "L'excellence en excavation depuis 2010" : lang === "es" ? "Excelencia en excavación desde 2010" : "Excellence in excavation since 2010",
     address: {
       "@type": "PostalAddress",
       addressLocality: SITE.address.addressLocality,
@@ -79,6 +116,38 @@ function localBusinessJsonLd(lang) {
       latitude: SITE.geo.latitude,
       longitude: SITE.geo.longitude
     },
+    serviceArea: {
+      "@type": "GeoCircle",
+      geoMidpoint: {
+        "@type": "GeoCoordinates",
+        latitude: SITE.geo.latitude,
+        longitude: SITE.geo.longitude
+      },
+      geoRadius: SITE.geoRadius
+    },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: SITE.phone,
+        contactType: "customer service",
+        areaServed: ["CA-QC", "CA"],
+        availableLanguage: ["French", "English", "Spanish"],
+        contactOption: "TollFree"
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: SITE.emergencyPhone,
+        contactType: "emergency",
+        areaServed: "CA-QC",
+        availableLanguage: ["French", "English"],
+        hoursAvailable: {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          opens: "00:00",
+          closes: "23:59"
+        }
+      }
+    ],
     areaServed: SITE.areaServed.map((a) => ({ "@type": "City", name: a })),
     sameAs: SITE.sameAs,
     openingHoursSpecification: [
@@ -115,9 +184,30 @@ function localBusinessJsonLd(lang) {
         {
           "@type": "Offer",
           itemOffered: { "@type": "Service", name: "Inspection par Caméra" }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: "Imperméabilisation de Sous-sol" }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: "Urgence Refoulement d'Égout" }
         }
       ]
     },
+    knowsAbout: [
+      "Excavation",
+      "French Drain Installation",
+      "Drain Français",
+      "Drenaje Francés",
+      "Foundation Repair",
+      "Réparation de Fondation",
+      "Crack Injection",
+      "Injection de Fissures",
+      "Demolition",
+      "Sewer Inspection",
+      "Waterproofing"
+    ],
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "4.9",
@@ -143,6 +233,46 @@ function websiteJsonLd(lang) {
       "query-input": "required name=search_term_string"
     }
   };
+}
+function siteNavigationJsonLd(lang) {
+  const items = lang === "fr" ? [
+    { name: "Garantie 15 Ans", url: `${SITE.url}/urgences#garantie`, description: "Totalement transférable. Protégez votre investissement." },
+    { name: "Inspection Gratuite", url: `${SITE.url}/urgences#inspection`, description: "Déplacement sans frais. Soumission rapide en 24h-48h." },
+    { name: "Nos Certifications", url: `${SITE.url}/urgences#certifications`, description: "Licences APCHQ, RBQ et CMTQ. Machinerie récente et sécuritaire." },
+    { name: "Avis de nos Clients", url: `${SITE.url}/urgences#avis`, description: "Plus de 127 avis positifs. Voyez nos travaux récents." },
+    { name: "Drain Français", url: `${SITE.url}/services/drain-francais`, description: "Installation et réparation de drain français." },
+    { name: "Excavation", url: `${SITE.url}/services/excavation`, description: "Excavation résidentielle et commerciale." },
+    { name: "Réparation de Fissures", url: `${SITE.url}/services/reparation-fissures`, description: "Injection époxy/polyuréthane." },
+    { name: "Démolition", url: `${SITE.url}/services/demolition`, description: "Démolition résidentielle sécuritaire." },
+    { name: "Inspection Caméra", url: `${SITE.url}/services/inspection-camera`, description: "Diagnostic précis sans excavation." }
+  ] : lang === "es" ? [
+    { name: "Garantía 15 Años", url: `${SITE.url}/urgences#garantie`, description: "Totalmente transferible." },
+    { name: "Inspección Gratuita", url: `${SITE.url}/urgences#inspection`, description: "Sin costo de desplazamiento." },
+    { name: "Certificaciones", url: `${SITE.url}/urgences#certifications`, description: "Licencias APCHQ, RBQ, CMTQ." },
+    { name: "Reseñas", url: `${SITE.url}/urgences#avis`, description: "+127 reseñas positivas." },
+    { name: "Drenaje Francés", url: `${SITE.url}/services/drain-francais`, description: "Instalación y reparación." },
+    { name: "Excavación", url: `${SITE.url}/services/excavation`, description: "Residencial y comercial." },
+    { name: "Reparación Grietas", url: `${SITE.url}/services/reparation-fissures`, description: "Inyección epoxi/poliuretano." },
+    { name: "Demolición", url: `${SITE.url}/services/demolition`, description: "Demolición segura." },
+    { name: "Inspección Cámara", url: `${SITE.url}/services/inspection-camera`, description: "Diagnóstico sin excavación." }
+  ] : [
+    { name: "15-Year Warranty", url: `${SITE.url}/urgences#garantie`, description: "Fully transferable. Protect your investment." },
+    { name: "Free Inspection", url: `${SITE.url}/urgences#inspection`, description: "No travel fee. Quick quote 24-48h." },
+    { name: "Our Certifications", url: `${SITE.url}/urgences#certifications`, description: "APCHQ, RBQ and CMTQ licenses." },
+    { name: "Client Reviews", url: `${SITE.url}/urgences#avis`, description: "Over 127 positive reviews." },
+    { name: "French Drain", url: `${SITE.url}/services/drain-francais`, description: "Installation and repair." },
+    { name: "Excavation", url: `${SITE.url}/services/excavation`, description: "Residential and commercial." },
+    { name: "Crack Repair", url: `${SITE.url}/services/reparation-fissures`, description: "Epoxy/polyurethane injection." },
+    { name: "Demolition", url: `${SITE.url}/services/demolition`, description: "Safe demolition services." },
+    { name: "Camera Inspection", url: `${SITE.url}/services/inspection-camera`, description: "Precise diagnostics." }
+  ];
+  return items.map((item) => ({
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    name: item.name,
+    description: item.description,
+    url: item.url
+  }));
 }
 function faqJsonLd(lang) {
   const faqs = {
@@ -387,18 +517,19 @@ const SEO = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       url: `${SITE.url}${path}`
     }
   ];
-  return `${$$result.head += `<!-- HEAD_svelte-1pfnrx0_START -->${$$result.title = `<title>${escape(finalTitle)}</title>`, ""}<meta name="description"${add_attribute("content", finalDescription, 0)}><meta name="keywords"${add_attribute("content", finalKeywords, 0)}><link rel="canonical"${add_attribute("href", canonical, 0)}>${noIndex ? `<meta name="robots" content="noindex, nofollow">` : `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"> <meta name="googlebot" content="index, follow, max-image-preview:large">`}${each(hreflangAlternates, (alt) => {
+  return `${$$result.head += `<!-- HEAD_svelte-126s7xo_START -->${$$result.title = `<title>${escape(finalTitle)}</title>`, ""}<meta name="description"${add_attribute("content", finalDescription, 0)}><meta name="keywords"${add_attribute("content", finalKeywords, 0)}><link rel="canonical"${add_attribute("href", canonical, 0)}><meta name="subject" content="Excavation and French Drain Services"><meta name="topic" content="Construction, Excavation, Fondation"><meta name="summary"${add_attribute("content", finalDescription, 0)}>${noIndex ? `<meta name="robots" content="noindex, nofollow">` : `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"> <meta name="googlebot" content="index, follow, max-image-preview:large">`}${each(hreflangAlternates, (alt) => {
     return `<link rel="alternate"${add_attribute("hreflang", alt.lang, 0)}${add_attribute("href", alt.url, 0)}>`;
   })}<meta property="og:type"${add_attribute("content", type, 0)}><meta property="og:site_name"${add_attribute("content", SITE.name, 0)}><meta property="og:title"${add_attribute("content", finalTitle, 0)}><meta property="og:description"${add_attribute("content", finalDescription, 0)}><meta property="og:url"${add_attribute("content", canonical, 0)}><meta property="og:image"${add_attribute("content", image, 0)}><meta property="og:image:secure_url"${add_attribute("content", image, 0)}><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt"${add_attribute("content", finalImageAlt, 0)}><meta property="og:locale"${add_attribute("content", ogLocale, 0)}><meta property="og:locale:alternate" content="fr_CA"><meta property="og:locale:alternate" content="en_CA"><meta property="og:locale:alternate" content="es_ES">${type === "article" ? `${publishedTime ? `<meta property="article:published_time"${add_attribute("content", publishedTime, 0)}>` : ``} ${modifiedTime ? `<meta property="article:modified_time"${add_attribute("content", modifiedTime, 0)}>` : ``} ${author ? `<meta property="article:author"${add_attribute("content", author, 0)}>` : ``} ${section ? `<meta property="article:section"${add_attribute("content", section, 0)}>` : ``} ${each(tags, (tag) => {
     return `<meta property="article:tag"${add_attribute("content", tag, 0)}>`;
   })}` : ``}<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@miniexcavationserable"><meta name="twitter:creator" content="@miniexcavationserable"><meta name="twitter:title"${add_attribute("content", finalTitle, 0)}><meta name="twitter:description"${add_attribute("content", finalDescription, 0)}><meta name="twitter:image"${add_attribute("content", image, 0)}><meta name="twitter:image:alt"${add_attribute("content", finalImageAlt, 0)}><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title"${add_attribute("content", SITE.name, 0)}><meta name="application-name"${add_attribute("content", SITE.name, 0)}><meta name="msapplication-TileColor" content="#febd17">${each(jsonLd, (schema) => {
     return `<!-- HTML_TAG_START -->${`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}<\/script>`}<!-- HTML_TAG_END -->`;
-  })}<!-- HEAD_svelte-1pfnrx0_END -->`, ""}`;
+  })}<!-- HEAD_svelte-126s7xo_END -->`, ""}`;
 });
 export {
   SITE as S,
   SEO as a,
   breadcrumbJsonLd as b,
+  siteNavigationJsonLd as c,
   faqJsonLd as f,
   howToJsonLd as h,
   localBusinessJsonLd as l,

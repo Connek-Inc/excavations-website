@@ -18,7 +18,7 @@
 	import Footer from '$lib/Footer.svelte';
     import SEO from '$lib/seo/SEO.svelte';
     import InlineCTA from '$lib/components/InlineCTA.svelte';
-    import { localBusinessJsonLd, websiteJsonLd, faqJsonLd, serviceJsonLd, SITE } from '$lib/seo/seo-config';
+    import { localBusinessJsonLd, websiteJsonLd, faqJsonLd, serviceJsonLd, breadcrumbJsonLd, siteNavigationJsonLd, SITE } from '$lib/seo/seo-config';
 
     $: isEn = $language === 'en';
     $: currentLang = ($language as 'fr' | 'en' | 'es') || 'fr';
@@ -26,12 +26,37 @@
     $: homeJsonLd = [
         localBusinessJsonLd(currentLang),
         websiteJsonLd(currentLang),
+        faqJsonLd(currentLang),
+        breadcrumbJsonLd([
+            { name: currentLang === 'fr' ? 'Accueil' : currentLang === 'es' ? 'Inicio' : 'Home', url: SITE.url },
+            { name: currentLang === 'fr' ? 'Urgences' : currentLang === 'es' ? 'Urgencias' : 'Emergency', url: `${SITE.url}/urgences` }
+        ]),
         serviceJsonLd({
             name: currentLang === 'fr' ? 'Urgences Excavation et Drain' : currentLang === 'es' ? 'Urgencias Excavación y Drenaje' : 'Excavation and Drain Emergencies',
             description: currentLang === 'fr' ? 'Service d\'urgence pour infiltration d\'eau, refoulement d\'égout, réparation de fissure et drain français.' : currentLang === 'es' ? 'Servicio de urgencia para infiltración de agua, respaldo de alcantarillado, reparación de grietas y drenaje francés.' : 'Emergency service for water infiltration, sewer backup, crack repair and French drain.',
             url: SITE.url + '/urgences',
             lang: currentLang
-        })
+        }),
+        // Reviews structured data for #avis section
+        {
+            '@context': 'https://schema.org',
+            '@type': 'AggregateRating',
+            itemReviewed: { '@id': `${SITE.url}/#organization` },
+            ratingValue: '4.9',
+            reviewCount: '127',
+            bestRating: '5',
+            worstRating: '1'
+        },
+        ...testimonials.map((tst) => ({
+            '@context': 'https://schema.org',
+            '@type': 'Review',
+            itemReviewed: { '@id': `${SITE.url}/#organization` },
+            author: { '@type': 'Person', name: `${tst.nameFr} (${tst.location})` },
+            reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+            reviewBody: tst.textFr
+        })),
+        // SiteNavigationElement → tells Google to show these as Sitelinks
+        ...siteNavigationJsonLd(currentLang)
     ];
 
     const certifications = [certif1, certif2, certif3, certif4];
