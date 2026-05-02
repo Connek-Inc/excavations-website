@@ -131,7 +131,9 @@
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-5 mb-10" style="animation: fadeInUp 0.8s ease-out 0.8s both;">
-                        <a href="tel:+15148309973" class="group flex-1 inline-flex items-center justify-center gap-3 px-8 py-6 rounded-full bg-red-600 text-white font-black text-xl shadow-[0_0_30px_rgba(239,68,68,0.4)] hover:shadow-[0_0_50px_rgba(239,68,68,0.6)] transition-all hover:scale-105 active:scale-95 relative overflow-hidden border border-red-400/50">
+                        <a href="tel:+15148309973" 
+                            onclick="return window.gtag_report_conversion ? window.gtag_report_conversion('tel:+15148309973') : true"
+                            class="group flex-1 inline-flex items-center justify-center gap-3 px-8 py-6 rounded-full bg-red-600 text-white font-black text-xl shadow-[0_0_30px_rgba(239,68,68,0.4)] hover:shadow-[0_0_50px_rgba(239,68,68,0.6)] transition-all hover:scale-105 active:scale-95 relative overflow-hidden border border-red-400/50">
                             <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                             <svg class="w-7 h-7 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                             (514) 830-9973

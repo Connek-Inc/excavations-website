@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Phone, MessageCircle, X, Sun, Moon } from 'lucide-svelte';
 	import { language, theme } from '$lib/store/store';
+	import { trackPhoneClick, trackWhatsAppClick } from '$lib/analytics/gtag';
 
 	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
 
@@ -54,6 +55,12 @@
 					)}"
 					target="_blank"
 					rel="noopener"
+					on:click={() => {
+						trackWhatsAppClick('floating_actions');
+						if (typeof window !== 'undefined' && window.gtag_report_conversion) {
+							window.gtag_report_conversion('https://wa.me/15148309973');
+						}
+					}}
 					aria-label={t[lang].whatsapp}
 					class="flex items-center gap-3 pl-4 pr-5 py-3 rounded-full shadow-2xl shadow-green-500/40 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold transition-all hover:scale-105"
 				>
@@ -62,6 +69,12 @@
 				</a>
 				<a
 					href="tel:+15148309973"
+					on:click={() => {
+						trackPhoneClick('+15148309973', 'floating_actions');
+						if (typeof window !== 'undefined' && window.gtag_report_conversion) {
+							window.gtag_report_conversion('tel:+15148309973');
+						}
+					}}
 					aria-label={t[lang].call}
 					class="flex items-center gap-3 pl-4 pr-5 py-3 rounded-full shadow-2xl shadow-blue-500/40 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold transition-all hover:scale-105"
 				>

@@ -16,6 +16,7 @@
 	import FloatingActions from '$lib/components/FloatingActions.svelte';
 	import StickyCTA from '$lib/components/StickyCTA.svelte';
 	import ExitIntentModal from '$lib/components/ExitIntentModal.svelte';
+	import ConsentBanner from '$lib/components/ConsentBanner.svelte';
 
 	onMount(() => {
 		const savedTheme = localStorage.getItem('theme');
@@ -107,4 +108,5 @@
 	<FloatingActions />
 	<StickyCTA />
 	<ExitIntentModal />
+	<ConsentBanner />
 {/if}

@@ -79,6 +79,17 @@
             }
             
             success = true;
+            
+            // 🎯 Track Google Ads conversion + GA4 lead event
+            import('$lib/analytics/gtag').then(({ trackContactFormSubmit }) => {
+                trackContactFormSubmit({
+                    value: 1.0,
+                    currency: 'CAD',
+                    serviceType: formData.problemType,
+                    lang: $language
+                });
+            });
+
             step = 4; // Move to success step
             setTimeout(() => { 
                 success = false; 
