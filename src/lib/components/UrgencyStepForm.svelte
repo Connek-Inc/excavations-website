@@ -2,7 +2,7 @@
     import { language } from '$lib/store/store';
     import { cn } from '$lib/lib-utils';
     
-    export let hideTitle = false;
+    export const hideTitle = false;
 
     let step = 1;
     const totalSteps = 3;
