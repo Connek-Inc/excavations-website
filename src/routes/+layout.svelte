@@ -11,6 +11,8 @@
 		websiteJsonLd,
 		faqJsonLd,
 		breadcrumbJsonLd,
+		organizationJsonLd,
+		professionalServiceJsonLd,
 		SITE
 	} from '$lib/seo/seo-config';
 	import FloatingActions from '$lib/components/FloatingActions.svelte';
@@ -44,7 +46,9 @@
 	$: currentLang = ($language as 'fr' | 'en' | 'es') || 'fr';
 
 	$: jsonLdSchemas = [
+		organizationJsonLd(),
 		localBusinessJsonLd(currentLang),
+		professionalServiceJsonLd(currentLang),
 		websiteJsonLd(currentLang),
 		faqJsonLd(currentLang),
 		breadcrumbJsonLd([{ name: 'Accueil', url: SITE.url }])

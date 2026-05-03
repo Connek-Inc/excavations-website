@@ -252,7 +252,37 @@ export const cities: CityData[] = [
 			en: 'excavation Quebec City, french drain Quebec',
 			es: 'excavación Quebec, drenaje francés Quebec'
 		}
-	}
+	},
+	// Grand Montréal — Île de Montréal (arrondissements clés)
+	{ slug: 'pointe-claire', name: 'Pointe-Claire', region: 'Montréal', postalArea: 'H9', lat: 45.4477, lng: -73.8163, population: 33488, keywords: { fr: 'excavation Pointe-Claire, drain français Pointe-Claire', en: 'excavation Pointe-Claire', es: 'excavación Pointe-Claire' } },
+	{ slug: 'dollard-des-ormeaux', name: 'Dollard-des-Ormeaux', region: 'Montréal', postalArea: 'H9', lat: 45.4938, lng: -73.8233, population: 48899, keywords: { fr: 'excavation Dollard-des-Ormeaux, drain français DDO', en: 'excavation DDO', es: 'excavación DDO' } },
+	{ slug: 'kirkland', name: 'Kirkland', region: 'Montréal', postalArea: 'H9', lat: 45.4533, lng: -73.8675, population: 21253, keywords: { fr: 'excavation Kirkland, drain français Kirkland', en: 'excavation Kirkland', es: 'excavación Kirkland' } },
+	{ slug: 'beaconsfield', name: 'Beaconsfield', region: 'Montréal', postalArea: 'H9', lat: 45.4329, lng: -73.8650, population: 19873, keywords: { fr: 'excavation Beaconsfield, fondation Beaconsfield', en: 'excavation Beaconsfield', es: 'excavación Beaconsfield' } },
+	{ slug: 'lasalle', name: 'LaSalle', region: 'Montréal', postalArea: 'H8', lat: 45.4375, lng: -73.6433, population: 78305, keywords: { fr: 'excavation LaSalle, drain français LaSalle', en: 'excavation LaSalle', es: 'excavación LaSalle' } },
+	{ slug: 'verdun', name: 'Verdun', region: 'Montréal', postalArea: 'H4', lat: 45.4581, lng: -73.5681, population: 72820, keywords: { fr: 'excavation Verdun, drain français Verdun, fondation Verdun', en: 'excavation Verdun', es: 'excavación Verdun' } },
+	{ slug: 'westmount', name: 'Westmount', region: 'Montréal', postalArea: 'H3', lat: 45.4843, lng: -73.5972, population: 20312, keywords: { fr: 'excavation Westmount, drain français Westmount', en: 'excavation Westmount', es: 'excavación Westmount' } },
+	{ slug: 'outremont', name: 'Outremont', region: 'Montréal', postalArea: 'H2', lat: 45.5142, lng: -73.6098, population: 26505, keywords: { fr: 'excavation Outremont, drain français Outremont', en: 'excavation Outremont', es: 'excavación Outremont' } },
+	{ slug: 'saint-laurent', name: 'Saint-Laurent', region: 'Montréal', postalArea: 'H4', lat: 45.5088, lng: -73.6927, population: 98828, keywords: { fr: 'excavation Saint-Laurent, drain français Ville Saint-Laurent', en: 'excavation Saint-Laurent', es: 'excavación Saint-Laurent' } },
+	{ slug: 'anjou', name: 'Anjou', region: 'Montréal', postalArea: 'H1', lat: 45.6147, lng: -73.5683, population: 42796, keywords: { fr: 'excavation Anjou, drain français Anjou', en: 'excavation Anjou', es: 'excavación Anjou' } },
+	{ slug: 'montreal-nord', name: 'Montréal-Nord', region: 'Montréal', postalArea: 'H1', lat: 45.5944, lng: -73.6256, population: 84234, keywords: { fr: 'excavation Montréal-Nord, drain français Montréal-Nord', en: 'excavation Montreal North', es: 'excavación Montreal Norte' } },
+	{ slug: 'rivieres-des-prairies', name: 'Rivière-des-Prairies', region: 'Montréal', postalArea: 'H1', lat: 45.6533, lng: -73.5217, population: 106743, keywords: { fr: 'excavation Rivière-des-Prairies, drain français RDP', en: 'excavation RDP', es: 'excavación RDP' } },
+	// Rive-Sud
+	{ slug: 'saint-lambert', name: 'Saint-Lambert', region: 'Montérégie', postalArea: 'J4', lat: 45.5042, lng: -73.5083, population: 21555, keywords: { fr: 'excavation Saint-Lambert, drain français Saint-Lambert Rive-Sud', en: 'excavation Saint-Lambert', es: 'excavación Saint-Lambert' } },
+	{ slug: 'greenfield-park', name: 'Greenfield Park', region: 'Montérégie', postalArea: 'J4', lat: 45.4906, lng: -73.4825, population: 17118, keywords: { fr: 'excavation Greenfield Park, drain français Greenfield Park', en: 'excavation Greenfield Park', es: 'excavación Greenfield Park' } },
+	{ slug: 'boucherville', name: 'Boucherville', region: 'Montérégie', postalArea: 'J4', lat: 45.5947, lng: -73.4364, population: 41671, keywords: { fr: 'excavation Boucherville, drain français Boucherville, fondation Boucherville', en: 'excavation Boucherville', es: 'excavación Boucherville' } },
+	{ slug: 'saint-bruno', name: 'Saint-Bruno-de-Montarville', region: 'Montérégie', postalArea: 'J3', lat: 45.5333, lng: -73.35, population: 26900, keywords: { fr: 'excavation Saint-Bruno, drain français Saint-Bruno-de-Montarville', en: 'excavation Saint-Bruno', es: 'excavación Saint-Bruno' } },
+	{ slug: 'sainte-julie', name: 'Sainte-Julie', region: 'Montérégie', postalArea: 'J3', lat: 45.5833, lng: -73.3333, population: 30133, keywords: { fr: 'excavation Sainte-Julie, drain français Sainte-Julie', en: 'excavation Sainte-Julie', es: 'excavación Sainte-Julie' } },
+	{ slug: 'la-prairie', name: 'La Prairie', region: 'Montérégie', postalArea: 'J5', lat: 45.4147, lng: -73.5031, population: 26556, keywords: { fr: 'excavation La Prairie, drain français La Prairie', en: 'excavation La Prairie', es: 'excavación La Prairie' } },
+	{ slug: 'candiac', name: 'Candiac', region: 'Montérégie', postalArea: 'J5', lat: 45.3833, lng: -73.5167, population: 22072, keywords: { fr: 'excavation Candiac, drain français Candiac', en: 'excavation Candiac', es: 'excavación Candiac' } },
+	{ slug: 'beloeil', name: 'Beloeil', region: 'Montérégie', postalArea: 'J3', lat: 45.5667, lng: -73.2, population: 22849, keywords: { fr: 'excavation Beloeil, drain français Beloeil', en: 'excavation Beloeil', es: 'excavación Beloeil' } },
+	// Laurentides Nord
+	{ slug: 'mont-tremblant', name: 'Mont-Tremblant', region: 'Laurentides', postalArea: 'J8', lat: 46.1185, lng: -74.5962, population: 9842, keywords: { fr: 'excavation Mont-Tremblant, drain français Mont-Tremblant chalet', en: 'excavation Mont-Tremblant', es: 'excavación Mont-Tremblant' } },
+	{ slug: 'sainte-agathe', name: 'Sainte-Agathe-des-Monts', region: 'Laurentides', postalArea: 'J8', lat: 46.05, lng: -74.2833, population: 11000, keywords: { fr: 'excavation Sainte-Agathe, drain français Sainte-Agathe-des-Monts', en: 'excavation Sainte-Agathe', es: 'excavación Sainte-Agathe' } },
+	{ slug: 'prevost', name: 'Prévost', region: 'Laurentides', postalArea: 'J0', lat: 45.8667, lng: -74, population: 13692, keywords: { fr: 'excavation Prévost, drain français Prévost', en: 'excavation Prevost', es: 'excavación Prévost' } },
+	{ slug: 'sainte-adele', name: 'Sainte-Adèle', region: 'Laurentides', postalArea: 'J8', lat: 45.95, lng: -74.13, population: 12891, keywords: { fr: 'excavation Sainte-Adèle, drain français Sainte-Adèle', en: 'excavation Sainte-Adele', es: 'excavación Sainte-Adèle' } },
+	// Lanaudière
+	{ slug: 'joliette', name: 'Joliette', region: 'Lanaudière', postalArea: 'J6', lat: 46.0167, lng: -73.4333, population: 20484, keywords: { fr: 'excavation Joliette, drain français Joliette', en: 'excavation Joliette', es: 'excavación Joliette' } },
+	{ slug: 'lassomption', name: "L'Assomption", region: 'Lanaudière', postalArea: 'J5', lat: 45.8217, lng: -73.4242, population: 23517, keywords: { fr: "excavation L'Assomption, drain français L'Assomption", en: 'excavation L\'Assomption', es: "excavación L'Assomption" } }
 ];
 
 export interface ServiceMeta {

@@ -12,7 +12,7 @@
 	import Footer from '$lib/Footer.svelte';
 	import ContactUs from '$lib/ContactUs.svelte';
 	import InlineCTA from '$lib/components/InlineCTA.svelte';
-	import { servicesGeo } from '$lib/seo/cities-data';
+	import { servicesGeo, cities as allCities } from '$lib/seo/cities-data';
 	import { Phone, MapPin, Calendar, ArrowRight, CheckCircle2, Star } from 'lucide-svelte';
 
 	export let data: { city: import('$lib/seo/cities-data').CityData };
@@ -285,6 +285,30 @@
 	</section>
 
 	<InlineCTA variant="banner" />
+
+	<!-- Internal linking — other cities (SEO juice + UX) -->
+	<section class="py-16 px-4 bg-white dark:bg-black border-t border-gray-200 dark:border-zinc-800" aria-labelledby="other-cities">
+		<div class="container max-w-6xl">
+			<h2 id="other-cities" class="text-2xl md:text-3xl font-black mb-2">
+				{lang === 'fr' ? 'Excavation dans d\'autres villes' : lang === 'es' ? 'Excavación en otras ciudades' : 'Excavation in other cities'}
+			</h2>
+			<p class="text-sm text-gray-500 dark:text-zinc-500 mb-8">
+				{lang === 'fr' ? 'Nous desservons toute la grande région métropolitaine du Québec' : lang === 'es' ? 'Servimos toda el área metropolitana de Quebec' : 'We serve the entire Quebec metropolitan area'}
+			</p>
+			<div class="flex flex-wrap gap-2">
+				{#each allCities.filter(c2 => c2.slug !== city.slug) as otherCity}
+					<a
+						href={`/excavation/${otherCity.slug}`}
+						class="inline-flex items-center px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-zinc-900 hover:bg-[#febd17] hover:text-black text-gray-700 dark:text-zinc-300 text-xs font-semibold transition-colors border border-gray-200 dark:border-zinc-800"
+						title={`Excavation à ${otherCity.name}`}
+					>
+						<MapPin class="w-3 h-3 mr-1 opacity-60" />
+						{otherCity.name}
+					</a>
+				{/each}
+			</div>
+		</div>
+	</section>
 
 	<section id="contact" class="py-16 px-4 bg-gray-50 dark:bg-zinc-950">
 		<div class="container max-w-5xl">

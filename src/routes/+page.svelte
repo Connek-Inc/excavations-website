@@ -97,82 +97,197 @@
 <SEO lang={currentLang} path="/" jsonLd={homeJsonLd} />
 
 <main class="flex flex-col min-h-screen bg-background font-sans" itemscope itemtype="https://schema.org/LocalBusiness">
-    <!-- Hero Section -->
-    <section class="relative bg-white dark:bg-black text-black dark:text-white overflow-hidden pb-16 lg:pb-24 pt-20" id="home" aria-labelledby="hero-heading">
-        <!-- Background Decor -->
-        <div class="absolute inset-0 z-0">
-             <div class="absolute top-0 left-0 w-1/2 h-full bg-white dark:bg-black"></div>
+    <!-- 🎨 HERO PREMIUM — Bento-style with floating cards -->
+    <section class="relative min-h-screen flex items-center bg-gradient-to-br from-white via-yellow-50/40 to-white dark:from-black dark:via-zinc-950 dark:to-black text-black dark:text-white overflow-hidden pt-20 pb-16 lg:pt-32 lg:pb-24" id="home" aria-labelledby="hero-heading">
+
+        <!-- Animated background: grid + blobs + gradient mesh -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-0 -left-40 w-[500px] h-[500px] bg-[#febd17] rounded-full blur-[120px] opacity-20 dark:opacity-15 animate-blob"></div>
+            <div class="absolute top-1/3 right-0 w-[600px] h-[600px] bg-yellow-400 rounded-full blur-[140px] opacity-15 dark:opacity-10 animate-blob" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-orange-400 rounded-full blur-[100px] opacity-10 dark:opacity-10 animate-blob" style="animation-delay: 4s;"></div>
+            <!-- Grid pattern with mask -->
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_50%,transparent_100%)]"></div>
         </div>
 
-        <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-                <!-- Left Content -->
-                <div class="lg:col-span-6 flex flex-col justify-center text-left py-12 lg:py-32">
-                    <div class="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-900 px-4 py-1.5 text-sm font-medium text-gray-800 dark:text-gray-300 mb-8 self-start border border-gray-200 dark:border-gray-800">
-                        <span class="flex h-2 w-2 rounded-full bg-[#febd17] mr-2"></span>
-                         {currentLang === 'en' ? 'Professional Excavation Services' : currentLang === 'es' ? 'Servicios Profesionales de Excavación' : "Services d'Excavation Professionnels"}
+        <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+            <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+                <!-- LEFT — Content -->
+                <div class="lg:col-span-7 flex flex-col text-left">
+
+                    <!-- Live availability pill -->
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-green-300 dark:border-green-500/30 shadow-lg w-fit mb-7" style="animation: heroFadeIn 0.6s ease-out;">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                        <span class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wider">
+                            {currentLang === 'fr' ? "Équipe disponible — Soumission en 24h" : currentLang === 'es' ? "Equipo disponible — Cotización en 24h" : "Team available — Quote in 24h"}
+                        </span>
                     </div>
 
-                    <h1 id="hero-heading" class="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight mb-6" itemprop="name">
-                        <span class="block text-black dark:text-white">Mini Excavations</span>
-                        <span class="block text-[#febd17]"> Érable</span>
+                    <!-- Pre-headline tag -->
+                    <div class="inline-flex items-center gap-2 mb-5" style="animation: heroFadeIn 0.6s ease-out 0.1s both;">
+                        <span class="text-[#febd17] font-black tracking-[0.2em] uppercase text-xs md:text-sm">
+                            {currentLang === 'fr' ? "★ #1 Excavation au Québec ★" : currentLang === 'es' ? "★ #1 Excavación en Quebec ★" : "★ #1 Excavation in Quebec ★"}
+                        </span>
+                    </div>
+
+                    <!-- H1 with gradient + emphasis -->
+                    <h1 id="hero-heading" class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 leading-[0.95]" itemprop="name" style="animation: heroFadeIn 0.7s ease-out 0.2s both;">
+                        <span class="block text-black dark:text-white">
+                            {currentLang === 'fr' ? 'Excavation' : currentLang === 'es' ? 'Excavación' : 'Excavation'}
+                        </span>
+                        <span class="block bg-gradient-to-br from-[#febd17] via-yellow-500 to-orange-500 bg-clip-text text-transparent drop-shadow-sm pb-1">
+                            {currentLang === 'fr' ? 'sans surprises.' : currentLang === 'es' ? 'sin sorpresas.' : 'no surprises.'}
+                        </span>
                     </h1>
-                    <p class="text-2xl md:text-3xl font-bold text-black dark:text-white mb-4">
-                        {currentLang === 'fr' ? 'Drain Français, Excavation & Réparation de Fondation au Québec' : currentLang === 'es' ? 'Drenaje Francés, Excavación y Reparación de Cimientos en Quebec' : 'French Drain, Excavation & Foundation Repair in Quebec'}
-                    </p>
 
-                    <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl leading-relaxed font-light" itemprop="description">
-                        {texts.heroSubtitle}
+                    <!-- Subtitle with strong value prop -->
+                    <p class="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-3 max-w-2xl leading-snug font-medium" style="animation: heroFadeIn 0.7s ease-out 0.3s both;">
                         {currentLang === 'fr'
-                            ? " Entrepreneur certifié RBQ desservant Montréal, Laval, Laurentides et Lanaudière. Soumission gratuite en 24h."
+                            ? "Drain français, fondation, fissures et démolition partout au Québec."
                             : currentLang === 'es'
-                                ? " Contratista certificado RBQ que sirve Montreal, Laval, Laurentides y Lanaudière. Cotización gratuita en 24h."
-                                : " RBQ-certified contractor serving Montreal, Laval, Laurentians and Lanaudière. Free quote within 24 hours."}
+                                ? 'Drenaje francés, cimientos, grietas y demolición en todo Quebec.'
+                                : 'French drain, foundation, cracks and demolition across Quebec.'}
+                    </p>
+                    <p class="text-base md:text-lg text-gray-500 dark:text-zinc-400 mb-8 max-w-2xl leading-relaxed" itemprop="description" style="animation: heroFadeIn 0.7s ease-out 0.4s both;">
+                        {currentLang === 'fr'
+                            ? "15+ ans d'expertise, garantie écrite 15 ans transférable, certifié RBQ. Une seule visite et vous saurez exactement combien va coûter votre projet."
+                            : currentLang === 'es'
+                                ? "+15 años de experiencia, garantía escrita 15 años transferible, certificado RBQ. Una sola visita y sabrá exactamente cuánto costará su proyecto."
+                                : "15+ years experience, transferable 15-year warranty, RBQ certified. One visit and you'll know exactly how much your project will cost."}
                     </p>
 
-                    <!-- Trust badges row -->
-                    <div class="flex flex-wrap gap-2 mb-8 text-xs">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 text-green-700 dark:text-green-400 font-semibold">
-                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                            {currentLang === 'fr' ? 'Disponible maintenant' : currentLang === 'es' ? 'Disponible ahora' : 'Available now'}
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/30 text-yellow-700 dark:text-yellow-400 font-semibold">
-                            ★ 4.9/5 (127 {currentLang === 'fr' ? 'avis' : currentLang === 'es' ? 'reseñas' : 'reviews'})
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 font-semibold">
-                            ✓ RBQ
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 text-orange-700 dark:text-orange-400 font-semibold">
-                            ⚡ {currentLang === 'fr' ? 'Réponse 24h' : currentLang === 'es' ? 'Respuesta 24h' : '24h response'}
-                        </span>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="#contact" class="group inline-flex items-center justify-center gap-2 px-8 py-5 rounded-full bg-gradient-to-r from-[#febd17] to-yellow-500 hover:from-yellow-400 hover:to-[#febd17] text-black font-black text-lg shadow-2xl shadow-yellow-500/40 hover:shadow-yellow-500/60 transition-all hover:scale-105 active:scale-95 relative overflow-hidden">
-                            <span class="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-10 transition-opacity"></span>
-                            <span class="relative">📋 {currentLang === 'fr' ? 'Soumission gratuite' : currentLang === 'es' ? 'Cotización gratuita' : 'Free quote'}</span>
-                            <svg class="w-5 h-5 relative group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    <!-- Mega CTA group -->
+                    <div class="flex flex-col sm:flex-row gap-3 mb-6" style="animation: heroFadeIn 0.7s ease-out 0.5s both;">
+                        <a href="#contact" class="group relative inline-flex items-center justify-center gap-2 px-8 py-5 rounded-2xl bg-gradient-to-r from-[#febd17] via-yellow-400 to-[#febd17] bg-[length:200%_100%] text-black font-black text-lg shadow-[0_20px_60px_-15px_rgba(254,189,23,0.6)] hover:shadow-[0_25px_70px_-15px_rgba(254,189,23,0.8)] transition-all hover:scale-[1.03] active:scale-[0.98] hover:bg-[position:100%_0] overflow-hidden">
+                            <span class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"></span>
+                            <span class="relative z-10 flex items-center gap-2">
+                                📋 {currentLang === 'fr' ? 'Ma soumission gratuite' : currentLang === 'es' ? 'Mi cotización gratuita' : 'My free quote'}
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </span>
                         </a>
-                        <a href="tel:+15148309973" class="group inline-flex items-center justify-center gap-2 px-8 py-5 rounded-full border-2 border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-bold text-lg transition-all hover:scale-105 active:scale-95">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                            (514) 830-9973
+                        <a href="tel:+15148309973" class="group inline-flex items-center justify-center gap-2 px-8 py-5 rounded-2xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-2 border-gray-200 dark:border-zinc-700 hover:border-black dark:hover:border-white text-black dark:text-white font-bold text-lg transition-all hover:scale-[1.03] active:scale-[0.98]">
+                            <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span>(514) 830-9973</span>
                         </a>
                     </div>
 
-                    <p class="mt-4 text-xs text-gray-500 dark:text-zinc-500 flex items-center gap-1.5">
-                        <svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        {currentLang === 'fr' ? 'Sans engagement · Réponse rapide · Devis détaillé' : currentLang === 'es' ? 'Sin compromiso · Respuesta rápida · Cotización detallada' : 'No obligation · Fast response · Detailed quote'}
-                    </p>
+                    <!-- Microproof bar -->
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-gray-600 dark:text-zinc-400" style="animation: heroFadeIn 0.7s ease-out 0.6s both;">
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            {currentLang === 'fr' ? 'Sans engagement' : currentLang === 'es' ? 'Sin compromiso' : 'No obligation'}
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            {currentLang === 'fr' ? 'Garantie 15 ans' : currentLang === 'es' ? 'Garantía 15 años' : '15-year warranty'}
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            {currentLang === 'fr' ? 'Devis détaillé en 24h' : currentLang === 'es' ? 'Cotización en 24h' : 'Detailed quote in 24h'}
+                        </div>
+                    </div>
+
+                    <!-- Quick service tags (SEO link juice) -->
+                    <nav aria-label="Quick services" class="mt-8 flex flex-wrap gap-2" style="animation: heroFadeIn 0.7s ease-out 0.7s both;">
+                        {#each [
+                            { url: '/services/drain-francais', label: currentLang === 'fr' ? 'Drain Français' : currentLang === 'es' ? 'Drenaje Francés' : 'French Drain' },
+                            { url: '/services/excavation', label: 'Excavation' },
+                            { url: '/services/reparation-fissures', label: currentLang === 'fr' ? 'Fissures' : currentLang === 'es' ? 'Grietas' : 'Cracks' },
+                            { url: '/services/demolition', label: currentLang === 'fr' ? 'Démolition' : currentLang === 'es' ? 'Demolición' : 'Demolition' },
+                            { url: '/urgences', label: currentLang === 'fr' ? '🚨 Urgence 24/7' : currentLang === 'es' ? '🚨 Urgencia 24/7' : '🚨 24/7 Emergency', highlight: true }
+                        ] as svc}
+                            <a href={svc.url} class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105 {svc.highlight ? 'bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/30' : 'bg-gray-100 dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 hover:bg-[#febd17] hover:text-black border border-gray-200 dark:border-zinc-800'}">
+                                {svc.label}
+                            </a>
+                        {/each}
+                    </nav>
                 </div>
 
-                <!-- Right Image (Angled) -->
-                <div class="relative lg:col-span-6 lg:-mr-8 xl:absolute xl:inset-y-0 xl:right-0 xl:w-1/2">
-                    <div class="aspect-[3/2] w-full bg-gray-50 object-cover lg:absolute lg:inset-0 lg:aspect-auto lg:h-full clip-path-slant">
-                        <img class="h-full w-full object-cover" src={banner} alt={currentLang === 'fr' ? "Excavation et installation de drain français à Montréal par Mini Excavations Érable" : currentLang === 'es' ? "Excavación e instalación de drenaje francés en Montreal por Mini Excavations Érable" : "Excavation and French drain installation in Montreal by Mini Excavations Érable"} width="1200" height="800" loading="eager" fetchpriority="high" itemprop="image">
-                        <!-- Gradient Overlay for Image to blend slightly if needed -->
-                         <div class="absolute inset-0 bg-gradient-to-l from-transparent to-white/30 dark:to-black/30 lg:to-white/60 dark:lg:to-black/60 opacity-50"></div>
+                <!-- RIGHT — Bento card stack with image + floating reviews -->
+                <div class="lg:col-span-5 relative" style="animation: heroFadeIn 1s ease-out 0.4s both;">
+
+                    <!-- Main image card with glow -->
+                    <div class="relative">
+                        <!-- Glow halo -->
+                        <div class="absolute -inset-6 bg-gradient-to-tr from-[#febd17] via-yellow-400 to-orange-400 rounded-[2.5rem] blur-2xl opacity-30 animate-pulse"></div>
+
+                        <!-- Main image -->
+                        <div class="relative aspect-[4/5] sm:aspect-[3/4] rounded-[2rem] overflow-hidden border border-white/40 dark:border-zinc-700 shadow-2xl group">
+                            <img
+                                src={banner}
+                                alt={currentLang === 'fr' ? "Excavation et installation de drain français à Montréal par Mini Excavations Érable" : currentLang === 'es' ? "Excavación e instalación de drenaje francés en Montreal por Mini Excavations Érable" : "Excavation and French drain installation in Montreal by Mini Excavations Érable"}
+                                width="800"
+                                height="1000"
+                                loading="eager"
+                                fetchpriority="high"
+                                itemprop="image"
+                                class="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-[1.5s]"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+                            <!-- On-image bottom card: live counter -->
+                            <div class="absolute bottom-5 left-5 right-5 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-white/50 dark:border-zinc-700">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex -space-x-2">
+                                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#febd17] to-yellow-600 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-black font-black text-xs">M</div>
+                                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-red-500 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-white font-black text-xs">JF</div>
+                                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-white font-black text-xs">SL</div>
+                                        <div class="w-9 h-9 rounded-full bg-zinc-800 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-white font-black text-xs">+</div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center gap-1 mb-0.5">
+                                            <span class="text-[#febd17]">★★★★★</span>
+                                            <span class="text-xs font-bold">4.9</span>
+                                        </div>
+                                        <p class="text-xs text-gray-600 dark:text-zinc-400 truncate">
+                                            <span class="font-bold text-gray-900 dark:text-white">127</span>
+                                            {currentLang === 'fr' ? 'clients satisfaits au Québec' : currentLang === 'es' ? 'clientes satisfechos en Quebec' : 'happy clients in Quebec'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating cert badge top-left -->
+                        <div class="absolute -top-4 -left-4 lg:-left-6 bg-white dark:bg-zinc-900 rounded-2xl px-4 py-3 shadow-2xl border border-gray-200 dark:border-zinc-700 flex items-center gap-2 animate-float-slow">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-bold">Certifié</p>
+                                <p class="text-sm font-black">RBQ · APCHQ</p>
+                            </div>
+                        </div>
+
+                        <!-- Floating "24h" badge top-right -->
+                        <div class="absolute -top-4 -right-4 lg:-right-6 bg-gradient-to-br from-[#febd17] to-yellow-600 rounded-2xl px-4 py-3 shadow-2xl shadow-yellow-500/40 flex items-center gap-2 animate-float-slow" style="animation-delay: 1.5s;">
+                            <span class="text-2xl">⚡</span>
+                            <div>
+                                <p class="text-[10px] text-black/70 uppercase tracking-wider font-bold">{currentLang === 'fr' ? 'Réponse' : currentLang === 'es' ? 'Respuesta' : 'Response'}</p>
+                                <p class="text-sm font-black text-black">24h max</p>
+                            </div>
+                        </div>
+
+                        <!-- Floating warranty badge bottom-right -->
+                        <div class="hidden sm:flex absolute -bottom-6 -right-2 lg:-right-6 bg-white dark:bg-zinc-900 rounded-2xl px-4 py-3 shadow-2xl border border-gray-200 dark:border-zinc-700 items-center gap-2 animate-float-slow" style="animation-delay: 3s;">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black text-base">15</div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-bold">{currentLang === 'fr' ? 'Garantie' : currentLang === 'es' ? 'Garantía' : 'Warranty'}</p>
+                                <p class="text-sm font-black">{currentLang === 'fr' ? 'ans transférable' : currentLang === 'es' ? 'años transferible' : 'years transferable'}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="hidden lg:block absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-gray-400 dark:text-zinc-600">
+            <div class="w-6 h-10 rounded-full border-2 border-current flex items-start justify-center p-1.5">
+                <div class="w-1 h-2 rounded-full bg-current animate-scroll-dot"></div>
             </div>
         </div>
     </section>
@@ -183,6 +298,32 @@
             .clip-path-slant {
                 clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
             }
+        }
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes blob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -30px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.95); }
+        }
+        :global(.animate-blob) {
+            animation: blob 10s ease-in-out infinite;
+        }
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(-1deg); }
+        }
+        :global(.animate-float-slow) {
+            animation: float-slow 4s ease-in-out infinite;
+        }
+        @keyframes scroll-dot {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(12px); opacity: 0; }
+        }
+        :global(.animate-scroll-dot) {
+            animation: scroll-dot 1.5s ease-in-out infinite;
         }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }

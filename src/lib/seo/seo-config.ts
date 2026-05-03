@@ -256,6 +256,99 @@ export function websiteJsonLd(lang: Lang) {
 	};
 }
 
+// Organization schema — separate from LocalBusiness, helps Knowledge Panel
+export function organizationJsonLd() {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		'@id': `${SITE.url}/#organization`,
+		name: SITE.name,
+		legalName: SITE.legalName,
+		alternateName: ['Excavations Érable', 'Mini Excavation Érable'],
+		url: SITE.url,
+		logo: {
+			'@type': 'ImageObject',
+			url: SITE.logo,
+			width: 200,
+			height: 200
+		},
+		image: SITE.logo,
+		description: 'Quebec\'s leading excavation, French drain and foundation contractor since 2010.',
+		foundingDate: SITE.foundingDate,
+		founders: [
+			{
+				'@type': 'Person',
+				name: 'Mini Excavations Érable Team'
+			}
+		],
+		address: {
+			'@type': 'PostalAddress',
+			addressLocality: SITE.address.addressLocality,
+			addressRegion: SITE.address.addressRegion,
+			addressCountry: SITE.address.addressCountry
+		},
+		contactPoint: {
+			'@type': 'ContactPoint',
+			telephone: SITE.phone,
+			contactType: 'customer service',
+			email: SITE.email,
+			areaServed: ['CA-QC', 'CA'],
+			availableLanguage: ['French', 'English', 'Spanish']
+		},
+		sameAs: SITE.sameAs,
+		knowsLanguage: ['fr-CA', 'en-CA', 'es'],
+		taxID: 'NEQ',
+		award: ['RBQ Certified', 'APCHQ Member', 'CMTQ Licensed', '4.9★ Google Rating'],
+		memberOf: [
+			{ '@type': 'Organization', name: 'APCHQ — Association des professionnels de la construction et de l\'habitation du Québec' },
+			{ '@type': 'Organization', name: 'CMTQ — Corporation des maîtres mécaniciens en tuyauterie du Québec' }
+		]
+	};
+}
+
+// ProfessionalService schema (more specific than LocalBusiness, ranks better)
+export function professionalServiceJsonLd(lang: Lang) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'ProfessionalService',
+		'@id': `${SITE.url}/#service`,
+		name: SITE.name,
+		image: SITE.logo,
+		url: SITE.url,
+		telephone: SITE.phone,
+		priceRange: SITE.priceRange,
+		address: {
+			'@type': 'PostalAddress',
+			addressLocality: SITE.address.addressLocality,
+			addressRegion: SITE.address.addressRegion,
+			addressCountry: SITE.address.addressCountry
+		},
+		areaServed: SITE.areaServed.map((a) => ({ '@type': 'AdministrativeArea', name: a })),
+		serviceType: lang === 'fr'
+			? ['Excavation', 'Drain Français', 'Réparation de Fondation', 'Démolition', 'Inspection par Caméra']
+			: lang === 'es'
+				? ['Excavación', 'Drenaje Francés', 'Reparación de Cimientos', 'Demolición', 'Inspección con Cámara']
+				: ['Excavation', 'French Drain', 'Foundation Repair', 'Demolition', 'Camera Inspection'],
+		hasCredential: [
+			{
+				'@type': 'EducationalOccupationalCredential',
+				credentialCategory: 'license',
+				name: 'RBQ — Régie du bâtiment du Québec'
+			},
+			{
+				'@type': 'EducationalOccupationalCredential',
+				credentialCategory: 'membership',
+				name: 'APCHQ Member'
+			},
+			{
+				'@type': 'EducationalOccupationalCredential',
+				credentialCategory: 'license',
+				name: 'CMTQ Licensed'
+			}
+		]
+	};
+}
+
 // SiteNavigationElement — produces "Sitelinks" in Google search results
 export function siteNavigationJsonLd(lang: Lang) {
 	const items = lang === 'fr'
