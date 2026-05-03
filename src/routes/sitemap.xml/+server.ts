@@ -1,6 +1,6 @@
 import { cities } from '$lib/seo/cities-data';
 
-const SITE_URL = 'https://miniexcavationserable.com';
+const SITE_URL = 'https://excavationserable.com';
 
 const staticPages = [
 	{ path: '', priority: '1.0', changefreq: 'weekly' },

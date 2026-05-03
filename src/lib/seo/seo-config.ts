@@ -1,12 +1,12 @@
 export const SITE = {
-	url: 'https://miniexcavationserable.com',
-	altUrl: 'https://excavationserable.com',
+	url: 'https://excavationserable.com',
+	altUrl: 'https://miniexcavationserable.com',
 	name: 'Mini Excavations Érable',
 	legalName: 'Mini Excavations Érable Inc.',
-	logo: 'https://miniexcavationserable.com/logo.png',
+	logo: 'https://excavationserable.com/logo.png',
 	phone: '+1-514-830-9973',
 	emergencyPhone: '+1-514-830-9973',
-	email: 'info@miniexcavationserable.com',
+	email: 'miniexcavationerables@gmail.com',
 	address: {
 		streetAddress: '',
 		addressLocality: 'Montréal',
