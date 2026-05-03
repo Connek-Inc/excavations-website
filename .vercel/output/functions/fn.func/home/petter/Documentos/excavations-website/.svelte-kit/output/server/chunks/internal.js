@@ -211,22 +211,48 @@ const options = {
 
 		<script src="https://gateway.moneris.com/chktv2/js/chkt_v2.00.js" defer><\/script>
 
-		<!-- Google tag (gtag.js) -->
+		<!-- Google tag (gtag.js) - Google Ads + Consent Mode v2 -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18036493782"><\/script>
 		<script>
 		  window.dataLayer = window.dataLayer || [];
 		  function gtag(){dataLayer.push(arguments);}
-		  
-		  // Default Google Consent Mode v2
+		  window.gtag = gtag;
+
+		  // Consent Mode v2 — Loi 25 Quebec compliant
+		  // Default: denied. User must explicitly grant via consent banner.
+		  // Stored consent (if any) overrides this on subsequent visits.
+		  var stored = null;
+		  try { stored = localStorage.getItem('mi_consent'); } catch(e) {}
+		  var initialConsent = stored === 'granted' ? 'granted' : 'denied';
+
 		  gtag('consent', 'default', {
-		    'ad_storage': 'granted',
-		    'ad_user_data': 'granted',
-		    'ad_personalization': 'granted',
-		    'analytics_storage': 'granted'
+		    'ad_storage': initialConsent,
+		    'ad_user_data': initialConsent,
+		    'ad_personalization': initialConsent,
+		    'analytics_storage': initialConsent,
+		    'wait_for_update': 500
 		  });
 
 		  gtag('js', new Date());
-		  gtag('config', 'AW-18036493782');
+		  gtag('config', 'AW-18036493782', {
+		    'allow_enhanced_conversions': true,
+		    'anonymize_ip': true
+		  });
+
+		  // Event snippet for Contact conversion page
+		  function gtag_report_conversion(url) {
+		    var callback = function () {
+		      if (typeof(url) != 'undefined') {
+		        window.location = url;
+		      }
+		    };
+		    gtag('event', 'conversion', {
+		        'send_to': 'AW-18036493782/1_cdCLOF6qUcENabvJhD',
+		        'event_callback': callback
+		    });
+		    return false;
+		  }
+		  window.gtag_report_conversion = gtag_report_conversion;
 		<\/script>
 
 		` + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover" data-theme="">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
@@ -301,7 +327,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1mvjdci"
+  version_hash: "1tf8w1g"
 };
 async function get_hooks() {
   return {

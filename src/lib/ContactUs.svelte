@@ -2,6 +2,7 @@
     import { contactUsSchema } from "$lib/yup/contactUsSchema";
     import { translate } from "$lib/lib-utils"
     import { language } from "./store/store";
+    import { trackContactFormSubmit } from "$lib/analytics/gtag";
 
     const today = new Date()
     export let nDays: number = 7;
@@ -117,9 +118,17 @@
             }
             
             success = true;
+
+            // 🎯 Track Google Ads conversion + GA4 lead event
+            trackContactFormSubmit({
+                value: 1.0,
+                currency: 'CAD',
+                lang: $language
+            });
+
             formData = { name: '', email: '', phone: '', messageText: '', bookedTimes: [] };
             formDataValid = { name: false, email: false, phone: false, messageText: false, bookedTimes: true };
-            
+
             console.log('--- FORM SUBMIT V4 SUCCESS ---');
             setTimeout(() => { success = false; }, 5000);
         } catch (err) {

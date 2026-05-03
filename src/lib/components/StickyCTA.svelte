@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Phone, Calendar } from 'lucide-svelte';
 	import { language } from '$lib/store/store';
+	import { trackPhoneClick, trackCTAClick } from '$lib/analytics/gtag';
 
 	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
 
@@ -42,6 +43,12 @@
 		<div class="px-3 py-3 flex items-center gap-2">
 			<a
 				href="tel:+15148309973"
+				on:click={() => {
+					trackPhoneClick('+15148309973', 'sticky_mobile');
+					if (typeof window !== 'undefined' && window.gtag_report_conversion) {
+						window.gtag_report_conversion('tel:+15148309973');
+					}
+				}}
 				class="flex-shrink-0 flex items-center gap-2 px-4 py-3 rounded-xl bg-white text-black font-bold text-sm hover:bg-gray-100 transition-colors"
 				aria-label={t[lang].tel}
 			>
@@ -50,6 +57,7 @@
 			</a>
 			<a
 				href="#contact"
+				on:click={() => trackCTAClick(t[lang].cta, 'sticky_mobile')}
 				class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#febd17] to-yellow-500 text-black font-black text-sm shadow-lg"
 			>
 				<Calendar class="w-4 h-4" />

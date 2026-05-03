@@ -8,6 +8,7 @@ const InlineCTA = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   let $language, $$unsubscribe_language;
   $$unsubscribe_language = subscribe(language, (value) => $language = value);
   let { variant = "banner" } = $$props;
+  let { location = "inline_cta" } = $$props;
   const t = {
     fr: {
       title: "Besoin d'une soumission ?",
@@ -36,6 +37,8 @@ const InlineCTA = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   };
   if ($$props.variant === void 0 && $$bindings.variant && variant !== void 0)
     $$bindings.variant(variant);
+  if ($$props.location === void 0 && $$bindings.location && location !== void 0)
+    $$bindings.location(location);
   lang = $language || "fr";
   $$unsubscribe_language();
   return `${variant === "banner" ? `<section class="relative my-16 px-4" aria-label="Call to action"><div class="container max-w-5xl"><div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-black via-zinc-900 to-black border border-[#febd17]/30 p-8 md:p-12 shadow-2xl"><div class="absolute top-0 right-0 w-96 h-96 bg-[#febd17] rounded-full blur-3xl opacity-20 -z-0"></div> <div class="absolute bottom-0 left-0 w-64 h-64 bg-yellow-500 rounded-full blur-3xl opacity-10 -z-0"></div> <div class="absolute inset-0 bg-[linear-gradient(rgba(254,189,23,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(254,189,23,0.03)_1px,transparent_1px)] bg-[size:30px_30px]"></div> <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 justify-between"><div class="flex-1 text-center md:text-left"><span class="inline-block text-[#febd17] font-bold uppercase tracking-widest text-xs mb-3">${escape(t[lang].urgent)}</span> <h3 class="text-3xl md:text-4xl font-black text-white mb-2">${escape(t[lang].title)}</h3> <p class="text-zinc-300 text-lg">${escape(t[lang].subtitle)}</p></div> <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto"><a href="#contact" class="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[#febd17] to-yellow-500 hover:from-yellow-400 hover:to-[#febd17] text-black font-black text-base transition-all hover:scale-105 shadow-2xl shadow-yellow-500/40 whitespace-nowrap">${validate_component(Calendar, "Calendar").$$render($$result, { class: "w-5 h-5" }, {}, {})} ${escape(t[lang].cta)} ${validate_component(ArrowRight, "ArrowRight").$$render(

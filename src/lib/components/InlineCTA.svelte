@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { ArrowRight, Phone, Calendar } from 'lucide-svelte';
 	import { language } from '$lib/store/store';
+	import { trackCTAClick, trackPhoneClick } from '$lib/analytics/gtag';
 
 	export let variant: 'banner' | 'card' | 'minimal' = 'banner';
+	export let location: string = 'inline_cta';
 
 	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
 
@@ -57,6 +59,7 @@
 					<div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
 						<a
 							href="#contact"
+							on:click={() => trackCTAClick(t[lang].cta, location)}
 							class="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[#febd17] to-yellow-500 hover:from-yellow-400 hover:to-[#febd17] text-black font-black text-base transition-all hover:scale-105 shadow-2xl shadow-yellow-500/40 whitespace-nowrap"
 						>
 							<Calendar class="w-5 h-5" />
@@ -65,6 +68,7 @@
 						</a>
 						<a
 							href="tel:+15148309973"
+							on:click={() => trackPhoneClick('+15148309973', location)}
 							class="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-white/20 text-white hover:bg-white/10 font-bold text-base transition-all whitespace-nowrap"
 						>
 							<Phone class="w-5 h-5" />

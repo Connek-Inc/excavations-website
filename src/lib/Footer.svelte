@@ -203,6 +203,7 @@
 				<div class="space-y-3 text-sm">
 					<a
 						href="tel:+15148309973"
+						onclick="return window.gtag_report_conversion ? window.gtag_report_conversion('tel:+15148309973') : true"
 						class="flex items-center gap-2 text-white font-bold hover:text-[#febd17] transition-colors group"
 						itemprop="telephone"
 					>
