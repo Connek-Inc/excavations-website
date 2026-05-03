@@ -55,27 +55,34 @@
         errorMessage = '';
         
         try {
-            // Combine data into a message string to reuse existing backend
-            const combinedMessage = `PROBLÈME: ${formData.problemType}\nURGENCE: ${formData.urgencyLevel}\nDÉTAILS: ${formData.messageText || 'Aucun détail'}`;
-            
-            const payloadData = {
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
-                messageText: combinedMessage,
-                bookedTimes: ['Urgence Web']
-            };
+            // Web3Forms — frontend-only contact form
+            const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE';
 
-            const response = await fetch('/send-contact-form', {
+            const combinedMessage = `PROBLÈME: ${formData.problemType}\nURGENCE: ${formData.urgencyLevel}\nDÉTAILS: ${formData.messageText || 'Aucun détail'}`;
+
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ formData: payloadData })
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify({
+                    access_key: WEB3FORMS_ACCESS_KEY,
+                    subject: `🚨 URGENCE — ${formData.name} — Mini Excavations Érable`,
+                    from_name: formData.name,
+                    replyto: formData.email,
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    message: combinedMessage,
+                    problem_type: formData.problemType,
+                    urgency_level: formData.urgencyLevel,
+                    source: 'urgences_step_form',
+                    language: $language
+                })
             });
 
             const payload = await response.json();
 
-            if (!response.ok || payload?.success === false) {
-                throw new Error(payload?.error || 'Server error');
+            if (!response.ok || !payload.success) {
+                throw new Error(payload.message || 'Server error');
             }
             
             success = true;

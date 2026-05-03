@@ -42,7 +42,6 @@
 	});
 
 	$: currentLang = ($language as 'fr' | 'en' | 'es') || 'fr';
-	$: isAdmin = $page.url.pathname.startsWith('/mi/');
 
 	$: jsonLdSchemas = [
 		localBusinessJsonLd(currentLang),
@@ -96,17 +95,13 @@
 					];
 </script>
 
-{#if isAdmin}
-	<slot />
-{:else}
-	<SEO lang={currentLang} jsonLd={jsonLdSchemas} />
+<SEO lang={currentLang} jsonLd={jsonLdSchemas} />
 
-	<Topbar2 {menuOptions} {logo} />
+<Topbar2 {menuOptions} {logo} />
 
-	<slot />
+<slot />
 
-	<FloatingActions />
-	<StickyCTA />
-	<ExitIntentModal />
-	<ConsentBanner />
-{/if}
+<FloatingActions />
+<StickyCTA />
+<ExitIntentModal />
+<ConsentBanner />

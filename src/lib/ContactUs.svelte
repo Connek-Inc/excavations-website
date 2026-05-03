@@ -89,37 +89,55 @@
     let errorMessage = ''
     let success = false
 
+    // Web3Forms: free, frontend-only contact form service.
+    // Get your access key at https://web3forms.com (no signup needed)
+    // Replace ACCESS_KEY below with your real key from https://web3forms.com
+    const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE';
+
     const sendContactForm = async () => {
         if (sending) return;
-        
-        console.log('--- FORM SUBMIT V4 START ---');
+
         sending = true;
         errorMessage = '';
         success = false;
 
         try {
-            console.log('Data to send:', formData);
+            const bookedTimesText = (formData.bookedTimes || [])
+                .map((t: any) => `${t.date} ${t.time || ''}`.trim())
+                .join(', ');
 
-            const response = await fetch('/send-contact-form', {
+            const payload = {
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: `Nouveau contact: ${formData.name} — Mini Excavations Érable`,
+                from_name: formData.name,
+                replyto: formData.email,
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                message: formData.messageText,
+                preferred_dates: bookedTimesText || 'Non spécifié',
+                language: $language,
+                source: 'website'
+            };
+
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
                 },
-                body: JSON.stringify({ formData })
+                body: JSON.stringify(payload)
             });
 
-            console.log('Response status:', response.status);
-            
-            const payload = await response.json();
-            console.log('Result from server:', payload);
+            const result = await response.json();
 
-            if (!response.ok || payload?.success === false) {
-                throw new Error(payload?.error || 'Server error');
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || 'Submission failed');
             }
-            
+
             success = true;
 
-            // 🎯 Track Google Ads conversion + GA4 lead event
+            // Google Ads conversion + GA4 lead event
             trackContactFormSubmit({
                 value: 1.0,
                 currency: 'CAD',
@@ -129,10 +147,9 @@
             formData = { name: '', email: '', phone: '', messageText: '', bookedTimes: [] };
             formDataValid = { name: false, email: false, phone: false, messageText: false, bookedTimes: true };
 
-            console.log('--- FORM SUBMIT V4 SUCCESS ---');
             setTimeout(() => { success = false; }, 5000);
-        } catch (err) {
-            console.error('--- FORM SUBMIT V4 ERROR ---', err);
+        } catch (err: any) {
+            console.error('Form submit error:', err);
             errorMessage = $language === 'en' ? `Error: ${err.message}` : `Erreur: ${err.message}`;
         } finally {
             sending = false;
