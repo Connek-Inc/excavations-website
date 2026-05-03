@@ -238,6 +238,21 @@ const options = {
 		    'allow_enhanced_conversions': true,
 		    'anonymize_ip': true
 		  });
+
+		  // Event snippet for Contact conversion page
+		  function gtag_report_conversion(url) {
+		    var callback = function () {
+		      if (typeof(url) != 'undefined') {
+		        window.location = url;
+		      }
+		    };
+		    gtag('event', 'conversion', {
+		        'send_to': 'AW-18036493782/1_cdCLOF6qUcENabvJhD',
+		        'event_callback': callback
+		    });
+		    return false;
+		  }
+		  window.gtag_report_conversion = gtag_report_conversion;
 		<\/script>
 
 		` + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover" data-theme="">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
@@ -312,7 +327,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "t83gkb"
+  version_hash: "1tf8w1g"
 };
 async function get_hooks() {
   return {
