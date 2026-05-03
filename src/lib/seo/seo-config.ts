@@ -78,19 +78,19 @@ export const seoData: Record<
 	}
 > = {
 	fr: {
-		title: 'Mini Excavations Érable | Drain Français, Excavation & Fondation Québec',
+		title: 'Mini Excavations Érable | Drain Français #1 Québec | Excavation, Fondation, Démolition',
 		description:
-			"Entreprise d'excavation #1 au Québec ✓ Drain français, réparation fissures, démolition, inspection caméra. 15+ ans d'expérience, certifié RBQ. Soumission gratuite 24h.",
+			"Entreprise d'excavation #1 au Québec depuis 15 ans ✓ Drain français, réparation fissures fondation, démolition, inspection caméra. Certifié RBQ APCHQ CMTQ. Garantie 15 ans. Soumission gratuite 24h. Montréal, Laval, Rive-Sud, Rive-Nord.",
 		keywords:
-			"excavation Québec, drain français Montréal, réparation fissure fondation, mini excavation, entrepreneur excavation certifié RBQ, imperméabilisation sous-sol, démolition résidentielle, inspection caméra drain, pompe puisard, excavation Laval, excavation Laurentides, drain agricole Québec, excavateur Montréal, excavation résidentielle, excavation commerciale, urgence excavation, refoulement égout, réparation drain français, installation drain français prix, excavation Rive-Nord, excavation Rive-Sud, excavation Lanaudière, excavation Montérégie, travaux de terrassement, nivellement de terrain, excavation fondation, réparation solage, fissure injection époxy, drain bouché, urgence inondation sous-sol, excavation machinerie lourde, mini pelle, location excavatrice, démolition intérieure, démolition garage, entrée d'eau, raccordement égout, excavation piscine, excavation asphalte, pavage, murs de soutènement",
+			"construction Québec, excavation Québec, drain français Québec, drain français Montréal, drain français Laval, mini excavation, mini excavation Montréal, entrepreneur excavation Québec, entrepreneur excavation Montréal, entrepreneur excavation certifié RBQ, contracteur excavation, compagnie excavation Québec, meilleure entreprise excavation Québec, réparation fissure fondation, réparation fissure béton, réparation solage, fissure horizontale, fissure verticale, fissure escalier, injection époxy, injection polyuréthane, imperméabilisation sous-sol, étanchéité fondation, membrane drainante, démolition résidentielle, démolition commerciale, démolition maison, démolition garage, démolition intérieure, démolition piscine, inspection caméra drain, inspection drain français, inspection vidéo conduit, pompe puisard, installation pompe puisard, batterie secours pompe, drain agricole, drain pluvial, drain sanitaire, raccordement égout, raccordement aqueduc, excavateur Montréal, mini pelle Montréal, location mini pelle, location excavatrice, excavation résidentielle, excavation commerciale, excavation industrielle, excavation municipale, urgence excavation 24/7, refoulement égout urgence, infiltration eau urgence, inondation sous-sol urgence, excavation Rive-Nord, excavation Rive-Sud, excavation Lanaudière, excavation Montérégie, excavation Laurentides, excavation Outaouais, excavation Estrie, travaux de terrassement, terrassement Québec, nivellement de terrain, excavation fondation neuve, fondation maison, agrandissement maison, drain bouché, débouchage drain, fosse septique installation, champ épuration, excavation piscine creusée, excavation piscine béton, excavation asphalte, pavage uni, pavé uni installation, murs de soutènement, mur soutènement béton, paysagement excavation, soumission drain français prix, soumission excavation gratuite, prix drain français Québec 2026, coût installation drain français, devis excavation, devis fondation, contracteur résidentiel, sous-traitant excavation, excavatrice 8 tonnes, mini-pelle 3 tonnes, excavation accès difficile, excavation cour arrière, excavation manuelle",
 		ogLocale: 'fr_CA'
 	},
 	en: {
-		title: 'Mini Excavations Érable | French Drain, Excavation & Foundation Quebec',
+		title: 'Mini Excavations Érable | #1 French Drain & Excavation Quebec | Foundation, Demolition',
 		description:
-			'#1 Excavation contractor in Quebec ✓ French drain, foundation crack repair, demolition, camera inspection. 15+ years experience, RBQ certified. Free quote in 24h.',
+			'#1 Excavation contractor in Quebec for 15 years ✓ French drain, foundation crack repair, demolition, camera inspection. RBQ APCHQ CMTQ certified. 15-year warranty. Free quote 24h. Montreal, Laval, North Shore, South Shore.',
 		keywords:
-			'excavation Quebec, french drain Montreal, foundation crack repair, mini excavation, RBQ certified excavation contractor, basement waterproofing, residential demolition, sewer camera inspection, sump pump installation, excavation Laval, drainage solutions Quebec, residential excavation, commercial excavation, emergency excavation, sewer backup repair, french drain repair, french drain installation cost, excavation North Shore, excavation South Shore, excavation Laurentians, earthworks, land grading, foundation excavation, foundation repair, epoxy crack injection, clogged drain, basement flood emergency, heavy machinery excavation, mini excavator, excavator rental, interior demolition, garage demolition, water main entry, sewer connection, pool excavation, asphalt excavation, retaining walls',
+			'construction Quebec, excavation Quebec, excavation Montreal, french drain Quebec, french drain Montreal, french drain Laval, mini excavation, mini excavation Montreal, excavation contractor Quebec, RBQ certified excavation contractor, best excavation company Quebec, top excavation contractor Montreal, foundation crack repair, foundation crack injection, concrete crack repair, horizontal crack, vertical crack, step crack, epoxy injection, polyurethane injection, basement waterproofing, foundation waterproofing, drainage membrane, residential demolition, commercial demolition, house demolition, garage demolition, interior demolition, pool demolition, drain camera inspection, sewer camera inspection, video pipe inspection, sump pump installation, backup battery sump pump, agricultural drain, storm drain, sanitary drain, sewer connection, water main connection, mini excavator Montreal, mini excavator rental, excavator rental, residential excavation, commercial excavation, industrial excavation, municipal excavation, 24/7 emergency excavation, emergency sewer backup, water infiltration emergency, basement flooding emergency, excavation North Shore, excavation South Shore, excavation Laurentians, excavation Lanaudiere, excavation Monteregie, excavation Outaouais, earthworks Quebec, land grading, new foundation excavation, home foundation, home addition, clogged drain, drain unclogging, septic tank installation, leach field, in-ground pool excavation, concrete pool excavation, asphalt excavation, paver installation, retaining walls, concrete retaining wall, landscaping excavation, french drain quote price, free excavation quote, french drain cost Quebec 2026, residential contractor, excavation subcontractor, 8-ton excavator, 3-ton mini excavator, tight access excavation, backyard excavation, manual excavation',
 		ogLocale: 'en_CA'
 	},
 	es: {
@@ -253,6 +253,29 @@ export function websiteJsonLd(lang: Lang) {
 			target: `${SITE.url}/?q={search_term_string}`,
 			'query-input': 'required name=search_term_string'
 		}
+	};
+}
+
+// VideoObject schema — Google ranks pages with videos higher
+export function videoObjectJsonLd(opts: {
+	name: string;
+	description: string;
+	thumbnailUrl: string;
+	contentUrl: string;
+	uploadDate?: string;
+	duration?: string;
+}) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'VideoObject',
+		name: opts.name,
+		description: opts.description,
+		thumbnailUrl: opts.thumbnailUrl,
+		contentUrl: opts.contentUrl,
+		uploadDate: opts.uploadDate || '2026-05-01',
+		duration: opts.duration || 'PT22S',
+		publisher: { '@id': `${SITE.url}/#organization` },
+		regionsAllowed: 'CA'
 	};
 }
 

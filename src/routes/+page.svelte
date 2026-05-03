@@ -4,15 +4,15 @@
 	import * as Card from "$lib/components/ui/card";
 	import { cn } from "$lib/lib-utils";
     
-    // Images
-	import banner from '$lib/images/banner.jpg';
-	import excavation2 from "$lib/images/excavation2.jpg";
-	import frenchdrain2 from "$lib/images/frenchdrain2.jpg";
-	import fissure2 from "$lib/images/fissure2.jpg";
-	import demolition2 from "$lib/images/demolition2.jpg";
-	import inspection2 from "$lib/images/inspection2.jpg";
+    // Images — WebP optimized (~70% smaller than JPG/PNG)
+	import banner from '$lib/images/banner.webp';
+	import excavation2 from "$lib/images/excavation2.webp";
+	import frenchdrain2 from "$lib/images/frenchdrain2.webp";
+	import fissure2 from "$lib/images/fissure2.webp";
+	import demolition2 from "$lib/images/demolition2.webp";
+	import inspection2 from "$lib/images/inspection2.webp";
     import partner1 from "$lib/images/partner1.jpg";
-	import partner2 from "$lib/images/partner2.jpg";
+	import partner2 from "$lib/images/partner2.webp";
 	import partner3 from "$lib/images/partner3.jpg";
     import certif1 from "$lib/images/neq.png";
 	import certif2 from "$lib/images/RBQ.png";
@@ -26,12 +26,19 @@
     import Blogs from './blog/blogs.svelte';
     import SEO from '$lib/seo/SEO.svelte';
     import InlineCTA from '$lib/components/InlineCTA.svelte';
-    import { localBusinessJsonLd, websiteJsonLd, faqJsonLd, serviceJsonLd, SITE } from '$lib/seo/seo-config';
+    import VideoShowcase from '$lib/components/VideoShowcase.svelte';
+    import { localBusinessJsonLd, websiteJsonLd, faqJsonLd, serviceJsonLd, videoObjectJsonLd, SITE } from '$lib/seo/seo-config';
 
     $: isEn = $language === 'en';
     $: currentLang = ($language as 'fr' | 'en' | 'es') || 'fr';
 
     $: homeJsonLd = [
+        videoObjectJsonLd({
+            name: currentLang === 'fr' ? 'Installation Drain Français Montréal — Mini Excavations Érable' : currentLang === 'es' ? 'Instalación Drenaje Francés Montreal' : 'French Drain Installation Montreal',
+            description: currentLang === 'fr' ? "Vidéo réelle d'installation de drain français au Québec par Mini Excavations Érable. Excavation périphérique avec mini-pelle." : currentLang === 'es' ? 'Video real de instalación de drenaje francés en Quebec.' : 'Real video of French drain installation in Quebec.',
+            thumbnailUrl: `${SITE.url}/videos/work-1-poster.jpg`,
+            contentUrl: `${SITE.url}/videos/work-1.mp4`
+        }),
         localBusinessJsonLd(currentLang),
         websiteJsonLd(currentLang),
         faqJsonLd(currentLang),
@@ -92,6 +99,15 @@
 
     const partners = [partner2, partner3, partner1];
     const certifications = [certif1, certif2, certif3, certif4];
+
+    // Featured services data (premium grid)
+    $: serviceData = [
+        { title: currentLang === 'fr' ? 'Drain Français' : currentLang === 'es' ? 'Drenaje Francés' : 'French Drain', desc: currentLang === 'fr' ? "L'expertise #1 au Québec pour protéger votre fondation contre l'eau." : currentLang === 'es' ? 'Expertise #1 en Quebec para proteger sus cimientos del agua.' : 'Quebec\'s #1 expertise to protect your foundation from water.', image: frenchdrain2, slug: 'drain-francais', icon: '💧', priceFrom: '4 000$', tag: currentLang === 'fr' ? 'POPULAIRE' : currentLang === 'es' ? 'POPULAR' : 'POPULAR' },
+        { title: 'Excavation', desc: currentLang === 'fr' ? 'Mini-pelles, excavatrices, terrains difficiles. On passe partout.' : currentLang === 'es' ? 'Mini-excavadoras, terrenos difíciles. Pasamos por todos lados.' : 'Mini-excavators, tough terrain. We get through anywhere.', image: excavation2, slug: 'excavation', icon: '🚜', priceFrom: '125$/h', tag: '' },
+        { title: currentLang === 'fr' ? 'Réparation Fissures' : currentLang === 'es' ? 'Reparación Grietas' : 'Crack Repair', desc: currentLang === 'fr' ? 'Injection époxy ou polyuréthane. Étanche à vie, garantie 10 ans.' : currentLang === 'es' ? 'Inyección epoxi o poliuretano. Estanco de por vida, garantía 10 años.' : 'Epoxy or polyurethane injection. Watertight for life, 10-year warranty.', image: fissure2, slug: 'reparation-fissures', icon: '🔧', priceFrom: '450$', tag: '' },
+        { title: currentLang === 'fr' ? 'Démolition' : currentLang === 'es' ? 'Demolición' : 'Demolition', desc: currentLang === 'fr' ? 'Maison, garage, piscine. Rapide, propre, écoresponsable.' : currentLang === 'es' ? 'Casa, garaje, piscina. Rápido, limpio, ecoresponsable.' : 'House, garage, pool. Fast, clean, eco-friendly.', image: demolition2, slug: 'demolition', icon: '🔨', priceFrom: '12 000$', tag: '' },
+        { title: currentLang === 'fr' ? 'Inspection Caméra' : currentLang === 'es' ? 'Inspección Cámara' : 'Camera Inspection', desc: currentLang === 'fr' ? 'Diagnostic HD sans excavation. Rapport vidéo complet inclus.' : currentLang === 'es' ? 'Diagnóstico HD sin excavación. Reporte de video incluido.' : 'HD diagnostic without excavation. Full video report included.', image: inspection2, slug: 'inspection-camera', icon: '📹', priceFrom: '250$', tag: '' }
+    ];
 </script>
 
 <SEO lang={currentLang} path="/" jsonLd={homeJsonLd} />
@@ -134,7 +150,7 @@
                     </div>
 
                     <!-- H1 with gradient + emphasis -->
-                    <h1 id="hero-heading" class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 leading-[0.95]" itemprop="name" style="animation: heroFadeIn 0.7s ease-out 0.2s both;">
+                    <h1 id="hero-heading" class="text-[2.75rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter mb-5 md:mb-6 leading-[0.95]" itemprop="name" style="animation: heroFadeIn 0.7s ease-out 0.2s both;">
                         <span class="block text-black dark:text-white">
                             {currentLang === 'fr' ? 'Excavation' : currentLang === 'es' ? 'Excavación' : 'Excavation'}
                         </span>
@@ -144,14 +160,14 @@
                     </h1>
 
                     <!-- Subtitle with strong value prop -->
-                    <p class="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-3 max-w-2xl leading-snug font-medium" style="animation: heroFadeIn 0.7s ease-out 0.3s both;">
+                    <p class="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-3 max-w-2xl leading-snug font-medium" style="animation: heroFadeIn 0.7s ease-out 0.3s both;">
                         {currentLang === 'fr'
                             ? "Drain français, fondation, fissures et démolition partout au Québec."
                             : currentLang === 'es'
                                 ? 'Drenaje francés, cimientos, grietas y demolición en todo Quebec.'
                                 : 'French drain, foundation, cracks and demolition across Quebec.'}
                     </p>
-                    <p class="text-base md:text-lg text-gray-500 dark:text-zinc-400 mb-8 max-w-2xl leading-relaxed" itemprop="description" style="animation: heroFadeIn 0.7s ease-out 0.4s both;">
+                    <p class="text-sm md:text-base lg:text-lg text-gray-500 dark:text-zinc-400 mb-6 md:mb-8 max-w-2xl leading-relaxed" itemprop="description" style="animation: heroFadeIn 0.7s ease-out 0.4s both;">
                         {currentLang === 'fr'
                             ? "15+ ans d'expertise, garantie écrite 15 ans transférable, certifié RBQ. Une seule visite et vous saurez exactement combien va coûter votre projet."
                             : currentLang === 'es'
@@ -159,16 +175,16 @@
                                 : "15+ years experience, transferable 15-year warranty, RBQ certified. One visit and you'll know exactly how much your project will cost."}
                     </p>
 
-                    <!-- Mega CTA group -->
-                    <div class="flex flex-col sm:flex-row gap-3 mb-6" style="animation: heroFadeIn 0.7s ease-out 0.5s both;">
-                        <a href="#contact" class="group relative inline-flex items-center justify-center gap-2 px-8 py-5 rounded-2xl bg-gradient-to-r from-[#febd17] via-yellow-400 to-[#febd17] bg-[length:200%_100%] text-black font-black text-lg shadow-[0_20px_60px_-15px_rgba(254,189,23,0.6)] hover:shadow-[0_25px_70px_-15px_rgba(254,189,23,0.8)] transition-all hover:scale-[1.03] active:scale-[0.98] hover:bg-[position:100%_0] overflow-hidden">
+                    <!-- Mega CTA group — bigger tap targets on mobile -->
+                    <div class="flex flex-col sm:flex-row gap-2.5 md:gap-3 mb-5 md:mb-6" style="animation: heroFadeIn 0.7s ease-out 0.5s both;">
+                        <a href="#contact" class="group relative inline-flex items-center justify-center gap-2 px-6 md:px-8 py-4 md:py-5 min-h-[56px] rounded-2xl bg-gradient-to-r from-[#febd17] via-yellow-400 to-[#febd17] bg-[length:200%_100%] text-black font-black text-base md:text-lg shadow-[0_20px_60px_-15px_rgba(254,189,23,0.6)] hover:shadow-[0_25px_70px_-15px_rgba(254,189,23,0.8)] transition-all hover:scale-[1.03] active:scale-[0.98] hover:bg-[position:100%_0] overflow-hidden">
                             <span class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"></span>
                             <span class="relative z-10 flex items-center gap-2">
-                                📋 {currentLang === 'fr' ? 'Ma soumission gratuite' : currentLang === 'es' ? 'Mi cotización gratuita' : 'My free quote'}
+                                📋 {currentLang === 'fr' ? 'Soumission gratuite' : currentLang === 'es' ? 'Cotización gratuita' : 'Free quote'}
                                 <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                             </span>
                         </a>
-                        <a href="tel:+15148309973" class="group inline-flex items-center justify-center gap-2 px-8 py-5 rounded-2xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-2 border-gray-200 dark:border-zinc-700 hover:border-black dark:hover:border-white text-black dark:text-white font-bold text-lg transition-all hover:scale-[1.03] active:scale-[0.98]">
+                        <a href="tel:+15148309973" class="group inline-flex items-center justify-center gap-2 px-6 md:px-8 py-4 md:py-5 min-h-[56px] rounded-2xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-2 border-gray-200 dark:border-zinc-700 hover:border-black dark:hover:border-white text-black dark:text-white font-bold text-base md:text-lg transition-all hover:scale-[1.03] active:scale-[0.98]">
                             <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                             <span>(514) 830-9973</span>
                         </a>
@@ -210,12 +226,12 @@
                 <div class="lg:col-span-5 relative" style="animation: heroFadeIn 1s ease-out 0.4s both;">
 
                     <!-- Main image card with glow -->
-                    <div class="relative">
-                        <!-- Glow halo -->
-                        <div class="absolute -inset-6 bg-gradient-to-tr from-[#febd17] via-yellow-400 to-orange-400 rounded-[2.5rem] blur-2xl opacity-30 animate-pulse"></div>
+                    <div class="relative max-w-md mx-auto lg:max-w-none">
+                        <!-- Glow halo (less intense on mobile for perf) -->
+                        <div class="absolute -inset-3 md:-inset-6 bg-gradient-to-tr from-[#febd17] via-yellow-400 to-orange-400 rounded-[2rem] md:rounded-[2.5rem] blur-xl md:blur-2xl opacity-25 md:opacity-30 hidden md:block"></div>
 
                         <!-- Main image -->
-                        <div class="relative aspect-[4/5] sm:aspect-[3/4] rounded-[2rem] overflow-hidden border border-white/40 dark:border-zinc-700 shadow-2xl group">
+                        <div class="relative aspect-[4/3] sm:aspect-[3/4] rounded-2xl md:rounded-[2rem] overflow-hidden border border-white/40 dark:border-zinc-700 shadow-2xl group">
                             <img
                                 src={banner}
                                 alt={currentLang === 'fr' ? "Excavation et installation de drain français à Montréal par Mini Excavations Érable" : currentLang === 'es' ? "Excavación e instalación de drenaje francés en Montreal por Mini Excavations Érable" : "Excavation and French drain installation in Montreal by Mini Excavations Érable"}
@@ -251,28 +267,28 @@
                             </div>
                         </div>
 
-                        <!-- Floating cert badge top-left -->
-                        <div class="absolute -top-4 -left-4 lg:-left-6 bg-white dark:bg-zinc-900 rounded-2xl px-4 py-3 shadow-2xl border border-gray-200 dark:border-zinc-700 flex items-center gap-2 animate-float-slow">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <!-- Floating cert badge top-left (smaller on mobile) -->
+                        <div class="absolute -top-3 -left-2 md:-top-4 md:-left-4 lg:-left-6 bg-white dark:bg-zinc-900 rounded-xl md:rounded-2xl px-2.5 py-2 md:px-4 md:py-3 shadow-xl md:shadow-2xl border border-gray-200 dark:border-zinc-700 flex items-center gap-1.5 md:gap-2 animate-float-slow">
+                            <div class="w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white">
+                                <svg class="w-3.5 h-3.5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                             </div>
                             <div>
-                                <p class="text-[10px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-bold">Certifié</p>
-                                <p class="text-sm font-black">RBQ · APCHQ</p>
+                                <p class="text-[8px] md:text-[10px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-bold leading-tight">Certifié</p>
+                                <p class="text-[11px] md:text-sm font-black leading-tight">RBQ · APCHQ</p>
                             </div>
                         </div>
 
-                        <!-- Floating "24h" badge top-right -->
-                        <div class="absolute -top-4 -right-4 lg:-right-6 bg-gradient-to-br from-[#febd17] to-yellow-600 rounded-2xl px-4 py-3 shadow-2xl shadow-yellow-500/40 flex items-center gap-2 animate-float-slow" style="animation-delay: 1.5s;">
-                            <span class="text-2xl">⚡</span>
+                        <!-- Floating "24h" badge top-right (smaller on mobile) -->
+                        <div class="absolute -top-3 -right-2 md:-top-4 md:-right-4 lg:-right-6 bg-gradient-to-br from-[#febd17] to-yellow-600 rounded-xl md:rounded-2xl px-2.5 py-2 md:px-4 md:py-3 shadow-xl md:shadow-2xl shadow-yellow-500/40 flex items-center gap-1.5 md:gap-2 animate-float-slow" style="animation-delay: 1.5s;">
+                            <span class="text-base md:text-2xl">⚡</span>
                             <div>
-                                <p class="text-[10px] text-black/70 uppercase tracking-wider font-bold">{currentLang === 'fr' ? 'Réponse' : currentLang === 'es' ? 'Respuesta' : 'Response'}</p>
-                                <p class="text-sm font-black text-black">24h max</p>
+                                <p class="text-[8px] md:text-[10px] text-black/70 uppercase tracking-wider font-bold leading-tight">{currentLang === 'fr' ? 'Réponse' : currentLang === 'es' ? 'Respuesta' : 'Response'}</p>
+                                <p class="text-[11px] md:text-sm font-black text-black leading-tight">24h max</p>
                             </div>
                         </div>
 
-                        <!-- Floating warranty badge bottom-right -->
-                        <div class="hidden sm:flex absolute -bottom-6 -right-2 lg:-right-6 bg-white dark:bg-zinc-900 rounded-2xl px-4 py-3 shadow-2xl border border-gray-200 dark:border-zinc-700 items-center gap-2 animate-float-slow" style="animation-delay: 3s;">
+                        <!-- Floating warranty badge bottom-right (only tablet+) -->
+                        <div class="hidden md:flex absolute -bottom-6 -right-2 lg:-right-6 bg-white dark:bg-zinc-900 rounded-2xl px-4 py-3 shadow-2xl border border-gray-200 dark:border-zinc-700 items-center gap-2 animate-float-slow" style="animation-delay: 3s;">
                             <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black text-base">15</div>
                             <div>
                                 <p class="text-[10px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-bold">{currentLang === 'fr' ? 'Garantie' : currentLang === 'es' ? 'Garantía' : 'Warranty'}</p>
@@ -337,6 +353,27 @@
             0% { background-position: -1000px 0; }
             100% { background-position: 1000px 0; }
         }
+
+        /* 🚀 Performance: disable expensive blob animations on mobile */
+        @media (max-width: 768px) {
+            :global(.animate-blob) {
+                animation: none;
+            }
+        }
+
+        /* ♿ Accessibility: respect prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            :global(.animate-blob),
+            :global(.animate-float-slow),
+            :global(.animate-scroll-dot),
+            :global(.animate-pulse) {
+                animation: none !important;
+            }
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 
     <!-- Trust Stats Bar -->
@@ -379,41 +416,106 @@
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="py-24 bg-white dark:bg-background transition-colors duration-300" id="services" aria-labelledby="services-heading">
-        <div class="container px-4 md:px-6">
-            <div class="mb-16 max-w-3xl">
-                <span class="text-[#febd17] font-bold tracking-wider uppercase text-sm mb-2 block">{texts.servicesCta}</span>
-                <h2 id="services-heading" class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black dark:text-white mb-6">
-                    {currentLang === 'fr' ? 'Services d\'Excavation Professionnels au Québec' : currentLang === 'es' ? 'Servicios Profesionales de Excavación en Quebec' : 'Professional Excavation Services in Quebec'}
+    <!-- 🎨 SERVICES — Premium Bento Grid (mobile-optimized) -->
+    <section class="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-white via-yellow-50/30 to-white dark:from-black dark:via-zinc-950 dark:to-black relative overflow-hidden" id="services" aria-labelledby="services-heading">
+        <!-- Background decoration -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-[#febd17] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="container max-w-7xl px-4 md:px-6 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#febd17]/10 border border-[#febd17]/30 mb-5">
+                    <span class="text-[#febd17] font-black tracking-[0.2em] uppercase text-[10px] md:text-xs">{texts.servicesCta}</span>
+                </div>
+                <h2 id="services-heading" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-black dark:text-white mb-4 leading-[1.05]">
+                    {currentLang === 'fr' ? 'Tout ce dont' : currentLang === 'es' ? 'Todo lo que' : 'Everything'}
+                    <span class="bg-gradient-to-r from-[#febd17] to-orange-500 bg-clip-text text-transparent">
+                        {currentLang === 'fr' ? 'votre projet a besoin' : currentLang === 'es' ? 'tu proyecto necesita' : 'your project needs'}
+                    </span>
                 </h2>
-                <p class="text-gray-600 dark:text-gray-400 text-xl font-light">
-                    {texts.servicesSubtitle}
+                <p class="text-base md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {currentLang === 'fr' ? 'Une équipe certifiée, des prix transparents, et 15 ans de garantie sur chaque travail.' : currentLang === 'es' ? 'Equipo certificado, precios transparentes, y garantía de 15 años en cada trabajo.' : 'A certified team, transparent pricing, and a 15-year warranty on every job.'}
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 auto-rows-[minmax(300px,_auto)]">
-                {#each services as service, i}
-                    <article class="group relative overflow-hidden rounded-3xl bg-gray-100 dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 transition-all hover:shadow-lg dark:hover:bg-zinc-900 {i === 0 ? 'lg:col-span-4 md:col-span-2' : (i === 1 ? 'lg:col-span-2 md:col-span-1' : 'lg:col-span-2 md:col-span-1')}" itemscope itemtype="https://schema.org/Service">
+            <!-- Bento Grid: 1col mobile → 2col tablet → 3col desktop with featured first -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6">
+                {#each serviceData as svc, i}
+                    {@const isFeatured = i === 0}
+                    {@const colSpan = isFeatured ? 'sm:col-span-2 lg:col-span-3 lg:row-span-2' : 'lg:col-span-3 sm:col-span-1'}
+                    <a
+                        href={`/services/${svc.slug}`}
+                        class="group relative overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 transition-all duration-500 hover:shadow-2xl hover:shadow-yellow-500/20 hover:-translate-y-1 hover:border-[#febd17]/50 dark:hover:border-[#febd17]/50 {colSpan} {isFeatured ? 'min-h-[420px] md:min-h-[500px]' : 'min-h-[280px] md:min-h-[240px]'} flex flex-col"
+                        itemscope itemtype="https://schema.org/Service"
+                        style="animation: fadeInUp 0.6s ease-out {i * 0.08}s both;"
+                    >
+                        <!-- Tag (only on featured) -->
+                        {#if svc.tag}
+                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-[#febd17] to-yellow-500 text-black text-[10px] font-black tracking-wider shadow-lg">
+                                ⭐ {svc.tag}
+                            </div>
+                        {/if}
 
-                        <div class="absolute inset-0 z-0">
-                            <img src={service.image} alt={`${service.title} - ${currentLang === 'fr' ? 'Service professionnel par Mini Excavations Érable au Québec' : currentLang === 'es' ? 'Servicio profesional por Mini Excavations Érable en Quebec' : 'Professional service by Mini Excavations Érable in Quebec'}`} class="h-full w-full object-cover opacity-30 dark:opacity-40 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-40 dark:group-hover:opacity-50" loading="lazy" width="800" height="600" itemprop="image" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-zinc-950 dark:via-zinc-950/80 dark:to-transparent"></div>
+                        <!-- Image with mobile-friendly overlay -->
+                        <div class="relative {isFeatured ? 'h-64 md:h-80' : 'h-44 md:h-40'} overflow-hidden">
+                            <img
+                                src={svc.image}
+                                alt={`${svc.title} — Mini Excavations Érable Québec`}
+                                class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+                                loading="lazy"
+                                width={isFeatured ? "800" : "400"}
+                                height={isFeatured ? "500" : "300"}
+                                decoding="async"
+                                itemprop="image"
+                            />
+                            <!-- Bottom gradient for legibility -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                            <!-- Icon badge bottom-left -->
+                            <div class="absolute bottom-3 left-3 w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-center text-xl md:text-2xl shadow-lg">
+                                {svc.icon}
+                            </div>
+                            <!-- Price badge bottom-right -->
+                            <div class="absolute bottom-3 right-3 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-bold border border-white/20">
+                                {currentLang === 'fr' ? 'Dès' : currentLang === 'es' ? 'Desde' : 'From'} {svc.priceFrom}
+                            </div>
                         </div>
 
-                        <div class="relative z-10 flex flex-col justify-end h-full p-8">
-                            <div class="mb-4">
-                                <span class="inline-block h-1 w-12 bg-[#febd17] rounded-full mb-4"></span>
-                                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" itemprop="name">{service.title}</h3>
-                            </div>
-                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed font-light text-sm md:text-base" itemprop="description">
-                                {service.description}
+                        <!-- Content -->
+                        <div class="flex-1 flex flex-col p-5 md:p-6">
+                            <h3 class="text-xl md:text-2xl font-black text-black dark:text-white mb-2 leading-tight" itemprop="name">
+                                {svc.title}
+                            </h3>
+                            <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed flex-1" itemprop="description">
+                                {svc.desc}
                             </p>
+
+                            <!-- CTA at bottom -->
+                            <div class="mt-4 flex items-center justify-between pt-4 border-t border-gray-100 dark:border-zinc-800">
+                                <span class="text-xs font-bold text-[#febd17] uppercase tracking-wider flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                                    {currentLang === 'fr' ? 'Disponible' : currentLang === 'es' ? 'Disponible' : 'Available'}
+                                </span>
+                                <span class="inline-flex items-center gap-1 text-sm font-bold text-black dark:text-white group-hover:text-[#febd17] transition-colors">
+                                    {currentLang === 'fr' ? 'Voir détails' : currentLang === 'es' ? 'Ver detalles' : 'See details'}
+                                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </span>
+                            </div>
                             <meta itemprop="areaServed" content="Québec, Montréal, Laval, Laurentides" />
                             <meta itemprop="provider" content="Mini Excavations Érable" />
                         </div>
-                    </article>
+                    </a>
                 {/each}
+            </div>
+
+            <!-- View all + emergency CTA at bottom -->
+            <div class="mt-10 md:mt-14 flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <a href="/services" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black font-bold text-sm hover:scale-105 transition-transform">
+                    {currentLang === 'fr' ? 'Voir tous les services' : currentLang === 'es' ? 'Ver todos los servicios' : 'View all services'}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+                <a href="/urgences" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-red-500 text-white font-bold text-sm hover:bg-red-600 hover:scale-105 transition-all shadow-lg shadow-red-500/30">
+                    🚨 {currentLang === 'fr' ? 'Service d\'urgence 24/7' : currentLang === 'es' ? 'Servicio de urgencia 24/7' : '24/7 emergency service'}
+                </a>
             </div>
         </div>
     </section>
@@ -609,6 +711,57 @@
                         </div>
                     </article>
                 {/each}
+            </div>
+        </div>
+    </section>
+
+    <!-- 🎬 VIDEO SHOWCASE — Real work in action -->
+    <section class="py-16 md:py-24 bg-gradient-to-b from-zinc-950 to-black text-white relative overflow-hidden" aria-labelledby="videos-heading">
+        <!-- Decorative -->
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-[#febd17] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="container max-w-6xl px-4 relative z-10">
+            <div class="text-center mb-10 md:mb-14 max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#febd17]/15 border border-[#febd17]/30 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="text-[#febd17] font-black tracking-wider uppercase text-xs">{currentLang === 'fr' ? 'Vidéos de chantier' : currentLang === 'es' ? 'Videos de obra' : 'Job site videos'}</span>
+                </div>
+                <h2 id="videos-heading" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3 leading-tight">
+                    {currentLang === 'fr' ? 'Nos travaux,' : currentLang === 'es' ? 'Nuestros trabajos,' : 'Our work,'}
+                    <span class="bg-gradient-to-r from-[#febd17] to-orange-400 bg-clip-text text-transparent">
+                        {currentLang === 'fr' ? 'en direct.' : currentLang === 'es' ? 'en directo.' : 'live.'}
+                    </span>
+                </h2>
+                <p class="text-base md:text-lg text-zinc-400 leading-relaxed">
+                    {currentLang === 'fr' ? 'Découvrez la qualité de notre travail en action. Pas de Photoshop, pas de stock — uniquement nos vrais chantiers au Québec.' : currentLang === 'es' ? 'Descubra la calidad de nuestro trabajo en acción. Sin Photoshop, sin stock — solo nuestras obras reales en Quebec.' : 'See the quality of our work in action. No Photoshop, no stock — just our real job sites across Quebec.'}
+                </p>
+            </div>
+
+            <!-- Video grid -->
+            <div class="max-w-4xl mx-auto">
+                <VideoShowcase
+                    src="/videos/work-1.mp4"
+                    mobileSrc="/videos/work-1-mobile.mp4"
+                    poster="/videos/work-1-poster.jpg"
+                    title={currentLang === 'fr' ? 'Installation Drain Français — Montréal' : currentLang === 'es' ? 'Instalación Drenaje Francés — Montreal' : 'French Drain Installation — Montreal'}
+                    description={currentLang === 'fr' ? "Excavation périphérique avec mini-pelle, certifié RBQ" : currentLang === 'es' ? "Excavación perimetral con mini-excavadora, certificado RBQ" : "Perimeter excavation with mini-excavator, RBQ certified"}
+                />
+            </div>
+
+            <!-- Stats below video -->
+            <div class="grid grid-cols-3 gap-4 mt-10 md:mt-14 max-w-3xl mx-auto">
+                <div class="text-center">
+                    <p class="text-3xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">500+</p>
+                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Projets' : currentLang === 'es' ? 'Proyectos' : 'Projects'}</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-3xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">15</p>
+                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Ans expertise' : currentLang === 'es' ? 'Años' : 'Years'}</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-3xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">4.9★</p>
+                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Satisfaction' : currentLang === 'es' ? 'Satisfacción' : 'Rating'}</p>
+                </div>
             </div>
         </div>
     </section>
