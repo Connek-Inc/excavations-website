@@ -95,8 +95,8 @@
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:site" content="@miniexcavationserable" />
-	<meta name="twitter:creator" content="@miniexcavationserable" />
+	<meta name="twitter:site" content="@excavationserable" />
+	<meta name="twitter:creator" content="@excavationserable" />
 	<meta name="twitter:title" content={finalTitle} />
 	<meta name="twitter:description" content={finalDescription} />
 	<meta name="twitter:image" content={image} />

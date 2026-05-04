@@ -1,9 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /send-contact-form
 
-# Block aggressive AI scrapers (optional - remove if you want AI visibility)
+# Reputable AI crawlers — visibility in ChatGPT, Claude, Perplexity, Bing AI
 User-agent: GPTBot
 Allow: /
 
@@ -13,11 +12,26 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: anthropic-ai
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
-# Sitemap
-Sitemap: https://miniexcavationserable.com/sitemap.xml
+User-agent: CCBot
+Allow: /
 
-# Crawl optimization
-Crawl-delay: 1
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemap
+Sitemap: https://excavationserable.com/sitemap.xml
+
+# Host
+Host: https://excavationserable.com
