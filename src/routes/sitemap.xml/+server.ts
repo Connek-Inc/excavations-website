@@ -50,7 +50,14 @@ const cityPages: PageEntry[] = cities.map((c) => ({
 	changefreq: 'monthly'
 }));
 
-const allPages: PageEntry[] = [...staticPages, ...cityPages];
+// Mini excavation + city combined pages (for "mini excavation Longueuil" type queries)
+const miniExcavationCityPages: PageEntry[] = cities.map((c) => ({
+	path: `mini-excavation/${c.slug}`,
+	priority: '0.9',
+	changefreq: 'monthly'
+}));
+
+const allPages: PageEntry[] = [...staticPages, ...cityPages, ...miniExcavationCityPages];
 
 const languages = ['fr', 'en', 'es'];
 
