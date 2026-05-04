@@ -6,6 +6,8 @@
     
     // Images — WebP optimized (~70% smaller than JPG/PNG)
 	import banner from '$lib/images/banner.webp';
+	import banner480 from '$lib/images/banner-480.webp';
+	import banner800 from '$lib/images/banner-800.webp';
 	import excavation2 from "$lib/images/excavation2.webp";
 	import frenchdrain2 from "$lib/images/frenchdrain2.webp";
 	import fissure2 from "$lib/images/fissure2.webp";
@@ -26,7 +28,6 @@
     import Blogs from './blog/blogs.svelte';
     import SEO from '$lib/seo/SEO.svelte';
     import InlineCTA from '$lib/components/InlineCTA.svelte';
-    import VideoShowcase from '$lib/components/VideoShowcase.svelte';
     import TrendingTopics from '$lib/components/TrendingTopics.svelte';
     import { localBusinessJsonLd, websiteJsonLd, faqJsonLd, serviceJsonLd, videoObjectJsonLd, SITE } from '$lib/seo/seo-config';
 
@@ -231,18 +232,42 @@
                         <!-- Glow halo (less intense on mobile for perf) -->
                         <div class="absolute -inset-3 md:-inset-6 bg-gradient-to-tr from-[#febd17] via-yellow-400 to-orange-400 rounded-[2rem] md:rounded-[2.5rem] blur-xl md:blur-2xl opacity-25 md:opacity-30 hidden md:block"></div>
 
-                        <!-- Main image -->
+                        <!-- 🎬 Hero VIDEO en directo — trabajos reales -->
                         <div class="relative aspect-[4/3] sm:aspect-[3/4] rounded-2xl md:rounded-[2rem] overflow-hidden border border-white/40 dark:border-zinc-700 shadow-2xl group">
-                            <img
-                                src={banner}
-                                alt={currentLang === 'fr' ? "Excavation et installation de drain français à Montréal par Mini Excavations Érable" : currentLang === 'es' ? "Excavación e instalación de drenaje francés en Montreal por Mini Excavations Érable" : "Excavation and French drain installation in Montreal by Mini Excavations Érable"}
-                                width="800"
-                                height="1000"
-                                loading="eager"
-                                fetchpriority="high"
-                                itemprop="image"
+                            <!-- LIVE WORK badge -->
+                            <div class="absolute top-3 left-3 md:top-4 md:left-4 z-20 inline-flex items-center gap-1.5 px-2.5 py-1 md:px-3 md:py-1.5 rounded-full bg-red-500/90 backdrop-blur-md text-white text-[10px] md:text-xs font-black uppercase tracking-wider shadow-lg border border-white/20">
+                                <span class="relative flex h-2 w-2">
+                                    <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 animate-ping"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                                </span>
+                                {currentLang === 'fr' ? 'Travail en direct' : currentLang === 'es' ? 'Trabajo en vivo' : 'Live work'}
+                            </div>
+
+                            <!-- Video con poster (poster = fallback si video no carga) -->
+                            <video
+                                autoplay
+                                loop
+                                muted
+                                playsinline
+                                preload="metadata"
+                                poster="/videos/work-1-poster.jpg"
+                                aria-label={currentLang === 'fr' ? "Vidéo en direct: installation de drain français au Québec par Mini Excavations Érable" : currentLang === 'es' ? "Video en vivo: instalación de drenaje francés en Quebec por Mini Excavations Érable" : "Live video: French drain installation in Quebec by Mini Excavations Érable"}
                                 class="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-[1.5s]"
-                            />
+                                itemprop="video"
+                            >
+                                <source src="/videos/work-1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
+                                <source src="/videos/work-1.mp4" type="video/mp4" />
+                                <!-- Fallback img -->
+                                <img
+                                    src={banner}
+                                    alt={currentLang === 'fr' ? "Excavation drain français Montréal" : currentLang === 'es' ? "Excavación drenaje francés Montreal" : "Excavation french drain Montreal"}
+                                    width="800"
+                                    height="1000"
+                                    loading="eager"
+                                    fetchpriority="high"
+                                    class="h-full w-full object-cover"
+                                />
+                            </video>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
 
                             <!-- On-image bottom card: live counter -->
@@ -719,52 +744,36 @@
         </div>
     </section>
 
-    <!-- 🎬 VIDEO SHOWCASE — Real work in action -->
-    <section class="py-16 md:py-24 bg-gradient-to-b from-zinc-950 to-black text-white relative overflow-hidden" aria-labelledby="videos-heading">
-        <!-- Decorative -->
+    <!-- 📊 STATS — performance + trust -->
+    <section class="py-16 md:py-20 bg-gradient-to-b from-zinc-950 to-black text-white relative overflow-hidden" aria-labelledby="stats-heading">
         <div class="absolute top-0 left-1/4 w-96 h-96 bg-[#febd17] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
 
         <div class="container max-w-6xl px-4 relative z-10">
-            <div class="text-center mb-10 md:mb-14 max-w-3xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#febd17]/15 border border-[#febd17]/30 mb-4">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                    <span class="text-[#febd17] font-black tracking-wider uppercase text-xs">{currentLang === 'fr' ? 'Vidéos de chantier' : currentLang === 'es' ? 'Videos de obra' : 'Job site videos'}</span>
-                </div>
-                <h2 id="videos-heading" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3 leading-tight">
-                    {currentLang === 'fr' ? 'Nos travaux,' : currentLang === 'es' ? 'Nuestros trabajos,' : 'Our work,'}
+            <div class="text-center mb-10 max-w-3xl mx-auto">
+                <h2 id="stats-heading" class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3">
+                    {currentLang === 'fr' ? 'Les chiffres' : currentLang === 'es' ? 'Los números' : 'The numbers'}
                     <span class="bg-gradient-to-r from-[#febd17] to-orange-400 bg-clip-text text-transparent">
-                        {currentLang === 'fr' ? 'en direct.' : currentLang === 'es' ? 'en directo.' : 'live.'}
+                        {currentLang === 'fr' ? 'qui parlent.' : currentLang === 'es' ? 'que hablan.' : 'that speak.'}
                     </span>
                 </h2>
-                <p class="text-base md:text-lg text-zinc-400 leading-relaxed">
-                    {currentLang === 'fr' ? 'Découvrez la qualité de notre travail en action. Pas de Photoshop, pas de stock — uniquement nos vrais chantiers au Québec.' : currentLang === 'es' ? 'Descubra la calidad de nuestro trabajo en acción. Sin Photoshop, sin stock — solo nuestras obras reales en Quebec.' : 'See the quality of our work in action. No Photoshop, no stock — just our real job sites across Quebec.'}
-                </p>
             </div>
 
-            <!-- Video grid -->
-            <div class="max-w-4xl mx-auto">
-                <VideoShowcase
-                    src="/videos/work-1.mp4"
-                    mobileSrc="/videos/work-1-mobile.mp4"
-                    poster="/videos/work-1-poster.jpg"
-                    title={currentLang === 'fr' ? 'Installation Drain Français — Montréal' : currentLang === 'es' ? 'Instalación Drenaje Francés — Montreal' : 'French Drain Installation — Montreal'}
-                    description={currentLang === 'fr' ? "Excavation périphérique avec mini-pelle, certifié RBQ" : currentLang === 'es' ? "Excavación perimetral con mini-excavadora, certificado RBQ" : "Perimeter excavation with mini-excavator, RBQ certified"}
-                />
-            </div>
-
-            <!-- Stats below video -->
-            <div class="grid grid-cols-3 gap-4 mt-10 md:mt-14 max-w-3xl mx-auto">
-                <div class="text-center">
-                    <p class="text-3xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">500+</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
+                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">500+</p>
                     <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Projets' : currentLang === 'es' ? 'Proyectos' : 'Projects'}</p>
                 </div>
-                <div class="text-center">
-                    <p class="text-3xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">15</p>
-                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Ans expertise' : currentLang === 'es' ? 'Años' : 'Years'}</p>
+                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">15</p>
+                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? "Ans d'expertise" : currentLang === 'es' ? 'Años' : 'Years'}</p>
                 </div>
-                <div class="text-center">
-                    <p class="text-3xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">4.9★</p>
-                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Satisfaction' : currentLang === 'es' ? 'Satisfacción' : 'Rating'}</p>
+                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">4.9★</p>
+                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Note Google' : currentLang === 'es' ? 'Google' : 'Google rating'}</p>
+                </div>
+                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black bg-gradient-to-br from-[#febd17] to-orange-500 bg-clip-text text-transparent">24h</p>
+                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Soumission' : currentLang === 'es' ? 'Cotización' : 'Quote'}</p>
                 </div>
             </div>
         </div>

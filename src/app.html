@@ -11,15 +11,17 @@
 		<link rel="apple-touch-icon" href="%sveltekit.assets%/logo.png" />
 		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
 
-		<!-- Performance: Preconnect to critical origins -->
-		<link rel="preconnect" href="https://gateway.moneris.com" crossorigin />
+		<!-- ⚡ PERFORMANCE: Critical preconnects (LCP optimization) -->
+		<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+		<link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin />
 		<link rel="dns-prefetch" href="https://gateway.moneris.com" />
-		<link rel="preconnect" href="https://www.google.com" crossorigin />
-		<link rel="preconnect" href="https://www.gstatic.com" crossorigin />
 		<link rel="dns-prefetch" href="https://wa.me" />
 		<link rel="dns-prefetch" href="https://www.google.com/maps" />
 
-		<!-- Performance: priority hints + early hints -->
+		<!-- ⚡ Preload critical hero image (LCP boost) -->
+		<link rel="preload" as="image" href="/_app/immutable/assets/banner-800.webp" type="image/webp" fetchpriority="high" media="(max-width: 768px)" />
+
+		<!-- ⚡ Resource hints -->
 		<meta http-equiv="x-dns-prefetch-control" content="on" />
 		<meta name="format-detection" content="telephone=no" />
 
@@ -43,7 +45,18 @@
 		<meta name="publisher" content="Mini Excavations Érable" />
 		<meta name="copyright" content="Mini Excavations Érable" />
 
-		<script src="https://gateway.moneris.com/chktv2/js/chkt_v2.00.js" defer></script>
+		<!-- ⚡ Moneris: load only when needed (not on first paint) -->
+		<script>
+		  // Lazy-load Moneris only on pages that need it (defer 3s after load)
+		  window.addEventListener('load', function() {
+		    setTimeout(function() {
+		      var s = document.createElement('script');
+		      s.src = 'https://gateway.moneris.com/chktv2/js/chkt_v2.00.js';
+		      s.async = true;
+		      document.body.appendChild(s);
+		    }, 3000);
+		  });
+		</script>
 
 		<!-- Google tag (gtag.js) - Google Ads + Consent Mode v2 -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18036493782"></script>

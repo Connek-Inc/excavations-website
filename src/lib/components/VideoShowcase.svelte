@@ -64,7 +64,7 @@
 		{loop}
 		muted={isMuted}
 		playsinline
-		preload="metadata"
+		preload="none"
 		aria-label={title}
 		class="w-full h-full object-cover aspect-video"
 	>
