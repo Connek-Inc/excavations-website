@@ -115,6 +115,16 @@
 <SEO lang={currentLang} path="/" jsonLd={homeJsonLd} />
 
 <main class="flex flex-col min-h-screen bg-background font-sans" itemscope itemtype="https://schema.org/LocalBusiness">
+
+    <!-- 🔍 SEO body intro — visible para crawlers + accesible (sr-only para usuarios sighted, lectores screenreader y crawlers SI lo leen) -->
+    <p class="sr-only">
+        Mini Excavations Érable — Entreprise spécialisée en drain français, excavation, fondation et démolition au Québec.
+        Drain français Montréal, Laval, Longueuil. Excavation résidentielle et commerciale.
+        Réparation de fissure de fondation, injection époxy, imperméabilisation sous-sol.
+        Démolition résidentielle, inspection caméra de drain. Certifié RBQ APCHQ CMTQ.
+        Garantie 15 ans transférable. Service d'urgence 24/7. Soumission gratuite en 24h.
+    </p>
+
     <!-- 🎨 HERO PREMIUM — Bento-style with floating cards -->
     <section class="relative min-h-screen flex items-center bg-gradient-to-br from-white via-yellow-50/40 to-white dark:from-black dark:via-zinc-950 dark:to-black text-black dark:text-white overflow-hidden pt-20 pb-16 lg:pt-32 lg:pb-24" id="home" aria-labelledby="hero-heading">
 

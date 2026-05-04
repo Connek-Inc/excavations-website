@@ -90,9 +90,9 @@ export const seoData: Record<
 	}
 > = {
 	fr: {
-		title: 'Mini Excavations Érable | Drain Français #1 Québec | Excavation, Fondation, Démolition',
+		title: 'Drain Français #1 Québec | Mini Excavations Érable RBQ',
 		description:
-			"Entreprise d'excavation #1 au Québec depuis 15 ans ✓ Drain français, réparation fissures fondation, démolition, inspection caméra. Certifié RBQ APCHQ CMTQ. Garantie 15 ans. Soumission gratuite 24h. Montréal, Laval, Rive-Sud, Rive-Nord.",
+			"⭐ Drain français, excavation, fondation, démolition au Québec. 15 ans d'expertise, certifié RBQ APCHQ. Garantie 15 ans. Soumission gratuite 24h. ☎ (514) 830-9973",
 		keywords:
 			// CORE — Excavation generic
 			"excavation, excavation Québec, excavation Montréal, excavation Laval, excavation Longueuil, excavation Brossard, excavation Saint-Jérôme, excavation Terrebonne, excavation Repentigny, excavation Mascouche, excavation Blainville, excavation Boisbriand, excavation Sainte-Thérèse, excavation Mirabel, excavation Saint-Eustache, excavation Châteauguay, excavation Vaudreuil-Dorion, excavation Saint-Hyacinthe, excavation ville de Québec, excavation Pointe-Claire, excavation Dollard-des-Ormeaux, excavation Kirkland, excavation Beaconsfield, excavation LaSalle, excavation Verdun, excavation Westmount, excavation Outremont, excavation Saint-Laurent, excavation Anjou, excavation Montréal-Nord, excavation Rivière-des-Prairies, excavation Saint-Lambert, excavation Greenfield Park, excavation Boucherville, excavation Saint-Bruno, excavation Sainte-Julie, excavation La Prairie, excavation Candiac, excavation Beloeil, excavation Mont-Tremblant, excavation Sainte-Agathe, excavation Prévost, excavation Sainte-Adèle, excavation Joliette, excavation L'Assomption, excavation Rive-Nord, excavation Rive-Sud, excavation Lanaudière, excavation Montérégie, excavation Laurentides, excavation Outaouais, excavation Estrie, excavation Mauricie, excavation Centre-du-Québec, excavation Gatineau, excavation Sherbrooke, excavation Trois-Rivières, excavation Drummondville, excavation Granby, " +
@@ -261,9 +261,9 @@ export const seoData: Record<
 		ogLocale: 'fr_CA'
 	},
 	en: {
-		title: 'Mini Excavations Érable | #1 French Drain & Excavation Quebec | Foundation, Demolition',
+		title: 'French Drain #1 Quebec | Mini Excavations Érable RBQ',
 		description:
-			'#1 Excavation contractor in Quebec for 15 years ✓ French drain, foundation crack repair, demolition, camera inspection. RBQ APCHQ CMTQ certified. 15-year warranty. Free quote 24h. Montreal, Laval, North Shore, South Shore.',
+			'⭐ French drain, excavation, foundation, demolition in Quebec. 15 years expertise, RBQ APCHQ certified. 15-year warranty. Free quote 24h. ☎ (514) 830-9973',
 		keywords:
 			// Excavation by city
 			"excavation, excavation Quebec, excavation Montreal, excavation Laval, excavation Longueuil, excavation Brossard, excavation Saint-Jerome, excavation Terrebonne, excavation Repentigny, excavation Mascouche, excavation Blainville, excavation Boisbriand, excavation Sainte-Therese, excavation Mirabel, excavation Saint-Eustache, excavation Chateauguay, excavation Vaudreuil-Dorion, excavation Saint-Hyacinthe, excavation Quebec City, excavation Pointe-Claire, excavation Dollard-des-Ormeaux, excavation Kirkland, excavation Beaconsfield, excavation LaSalle, excavation Verdun, excavation Westmount, excavation Outremont, excavation Saint-Laurent, excavation Anjou, excavation Boucherville, excavation Saint-Bruno, excavation Mont-Tremblant, excavation Joliette, excavation North Shore, excavation South Shore, excavation Laurentians, excavation Lanaudiere, excavation Monteregie, excavation Outaouais, excavation Eastern Townships, excavation Mauricie, excavation Gatineau, excavation Sherbrooke, excavation Trois-Rivieres, " +
@@ -410,9 +410,9 @@ export const seoData: Record<
 		ogLocale: 'en_CA'
 	},
 	es: {
-		title: 'Mini Excavations Érable | Drenaje Francés #1 Quebec | Excavación, Cimientos, Demolición',
+		title: 'Drenaje Francés #1 Quebec | Mini Excavations Érable RBQ',
 		description:
-			'Empresa de excavación #1 en Quebec desde hace 15 años ✓ Drenaje francés, reparación grietas cimientos, demolición, inspección con cámara. Certificado RBQ APCHQ CMTQ. Garantía 15 años. Cotización gratuita 24h. Montreal, Laval, Rive-Sud, Rive-Nord.',
+			'⭐ Drenaje francés, excavación, cimientos, demolición en Quebec. 15 años de experiencia, certificado RBQ APCHQ. Garantía 15 años. Cotización gratuita 24h. ☎ (514) 830-9973',
 		keywords:
 			// Excavación por ciudad
 			"excavación, excavación Quebec, excavación Montreal, excavación Laval, excavación Longueuil, excavación Brossard, excavación Saint-Jérôme, excavación Terrebonne, excavación Repentigny, excavación Mascouche, excavación Blainville, excavación Boisbriand, excavación Sainte-Thérèse, excavación Mirabel, excavación Saint-Eustache, excavación Châteauguay, excavación Vaudreuil-Dorion, excavación Saint-Hyacinthe, excavación ciudad de Quebec, excavación Pointe-Claire, excavación Dollard-des-Ormeaux, excavación Kirkland, excavación Beaconsfield, excavación LaSalle, excavación Verdun, excavación Westmount, excavación Outremont, excavación Saint-Laurent, excavación Anjou, excavación Boucherville, excavación Saint-Bruno, excavación Mont-Tremblant, excavación Joliette, excavación Rive-Nord, excavación Rive-Sud, excavación Lanaudière, excavación Montérégie, excavación Laurentides, excavación Outaouais, excavación Estrie, excavación Mauricie, excavación Gatineau, excavación Sherbrooke, excavación Trois-Rivières, " +
