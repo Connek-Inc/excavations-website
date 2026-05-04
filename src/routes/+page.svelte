@@ -116,15 +116,6 @@
 
 <main class="flex flex-col min-h-screen bg-background font-sans" itemscope itemtype="https://schema.org/LocalBusiness">
 
-    <!-- 🔍 SEO body intro — visible para crawlers + accesible (sr-only para usuarios sighted, lectores screenreader y crawlers SI lo leen) -->
-    <p class="sr-only">
-        Mini Excavations Érable — Entreprise spécialisée en drain français, excavation, fondation et démolition au Québec.
-        Drain français Montréal, Laval, Longueuil. Excavation résidentielle et commerciale.
-        Réparation de fissure de fondation, injection époxy, imperméabilisation sous-sol.
-        Démolition résidentielle, inspection caméra de drain. Certifié RBQ APCHQ CMTQ.
-        Garantie 15 ans transférable. Service d'urgence 24/7. Soumission gratuite en 24h.
-    </p>
-
     <!-- 🎨 HERO PREMIUM — Bento-style with floating cards -->
     <section class="relative min-h-screen flex items-center bg-gradient-to-br from-white via-yellow-50/40 to-white dark:from-black dark:via-zinc-950 dark:to-black text-black dark:text-white overflow-hidden pt-20 pb-16 lg:pt-32 lg:pb-24" id="home" aria-labelledby="hero-heading">
 
@@ -161,15 +152,22 @@
                         </span>
                     </div>
 
-                    <!-- H1 with gradient + emphasis -->
-                    <h1 id="hero-heading" class="text-[2.75rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter mb-5 md:mb-6 leading-[0.95]" itemprop="name" style="animation: heroFadeIn 0.7s ease-out 0.2s both;">
+                    <!-- H1 with gradient + emphasis (BRAND + KEY SERVICES visible for SEO) -->
+                    <h1 id="hero-heading" class="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter mb-5 md:mb-6 leading-[0.95]" itemprop="name" style="animation: heroFadeIn 0.7s ease-out 0.2s both;">
                         <span class="block text-black dark:text-white">
-                            {currentLang === 'fr' ? 'Excavation' : currentLang === 'es' ? 'Excavación' : 'Excavation'}
+                            Mini Excavations
                         </span>
                         <span class="block bg-gradient-to-br from-[#febd17] via-yellow-500 to-orange-500 bg-clip-text text-transparent drop-shadow-sm pb-1">
-                            {currentLang === 'fr' ? 'sans surprises.' : currentLang === 'es' ? 'sin sorpresas.' : 'no surprises.'}
+                            Érable
                         </span>
                     </h1>
+                    <p class="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white mb-4 md:mb-5 leading-tight" style="animation: heroFadeIn 0.7s ease-out 0.25s both;">
+                        {currentLang === 'fr'
+                            ? "Drain Français · Excavation · Fissure · Démolition"
+                            : currentLang === 'es'
+                                ? "Drenaje Francés · Excavación · Grietas · Demolición"
+                                : "French Drain · Excavation · Crack · Demolition"}
+                    </p>
 
                     <!-- Subtitle with strong value prop -->
                     <p class="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-3 max-w-2xl leading-snug font-medium" style="animation: heroFadeIn 0.7s ease-out 0.3s both;">

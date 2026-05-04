@@ -5,7 +5,7 @@
 	import logo from '$lib/logo.png';
 	import { language, theme } from '../lib/store/store';
 	import { onMount } from 'svelte';
-	import SEO from '$lib/seo/SEO.svelte';
+	import GlobalSchemas from '$lib/seo/GlobalSchemas.svelte';
 	import {
 		localBusinessJsonLd,
 		websiteJsonLd,
@@ -112,7 +112,7 @@
 					];
 </script>
 
-<SEO lang={currentLang} jsonLd={jsonLdSchemas} />
+<GlobalSchemas jsonLd={jsonLdSchemas} />
 
 <Topbar2 {menuOptions} {logo} />
 
