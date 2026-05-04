@@ -27,6 +27,7 @@
     import SEO from '$lib/seo/SEO.svelte';
     import InlineCTA from '$lib/components/InlineCTA.svelte';
     import VideoShowcase from '$lib/components/VideoShowcase.svelte';
+    import TrendingTopics from '$lib/components/TrendingTopics.svelte';
     import { localBusinessJsonLd, websiteJsonLd, faqJsonLd, serviceJsonLd, videoObjectJsonLd, SITE } from '$lib/seo/seo-config';
 
     $: isEn = $language === 'en';
@@ -375,6 +376,9 @@
             }
         }
     </style>
+
+    <!-- 🔥 Trending Topics 2026 (SEO + UX boost) -->
+    <TrendingTopics />
 
     <!-- Trust Stats Bar -->
     <section class="bg-white dark:bg-zinc-950 border-y border-gray-200 dark:border-zinc-800 py-10" aria-label="Stats de confiance">

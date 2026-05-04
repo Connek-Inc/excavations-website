@@ -3,19 +3,28 @@
 
 RewriteEngine On
 
+# 0. Force www OR non-www canonical (we choose non-www → SEO consistency)
+RewriteCond %{HTTP_HOST} ^www\.excavationserable\.com$ [NC]
+RewriteRule ^(.*)$ https://excavationserable.com/$1 [L,R=301]
+
 # 1. Force HTTPS
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# 2. Remove trailing slash (except for the root)
+# 2. Remove trailing slash from URLs (canonical: /services NOT /services/)
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.+)/$ /$1 [L,R=301]
+RewriteRule ^(.+?)/+$ /$1 [R=301,L]
 
 # 3. If a clean URL like /urgences exists as /urgences.html, serve it
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteRule ^(.*)$ $1.html [L]
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)/?$ /$1.html [L]
+
+# 3b. Same for old domain redirects (mini... → main domain)
+RewriteCond %{HTTP_HOST} ^miniexcavationserable\.com$ [NC]
+RewriteRule ^(.*)$ https://excavationserable.com/$1 [L,R=301]
 
 # 4. Custom 404 page (SvelteKit fallback)
 ErrorDocument 404 /404.html
