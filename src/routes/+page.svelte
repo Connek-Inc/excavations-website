@@ -145,10 +145,10 @@
                         </span>
                     </div>
 
-                    <!-- Pre-headline tag -->
+                    <!-- Pre-headline tag — focus keyword "Mini Excavation" -->
                     <div class="inline-flex items-center gap-2 mb-5" style="animation: heroFadeIn 0.6s ease-out 0.1s both;">
                         <span class="text-[#febd17] font-black tracking-[0.2em] uppercase text-xs md:text-sm">
-                            {currentLang === 'fr' ? "★ #1 Excavation au Québec ★" : currentLang === 'es' ? "★ #1 Excavación en Quebec ★" : "★ #1 Excavation in Quebec ★"}
+                            {currentLang === 'fr' ? "★ Mini Excavation #1 au Québec ★" : currentLang === 'es' ? "★ Mini Excavación #1 en Quebec ★" : "★ Mini Excavation #1 in Quebec ★"}
                         </span>
                     </div>
 
@@ -216,16 +216,17 @@
                         </div>
                     </div>
 
-                    <!-- Quick service tags (SEO link juice) -->
+                    <!-- Quick service tags (SEO link juice — Mini Excavation prioritized) -->
                     <nav aria-label="Quick services" class="mt-8 flex flex-wrap gap-2" style="animation: heroFadeIn 0.7s ease-out 0.7s both;">
                         {#each [
+                            { url: '/mini-excavation', label: currentLang === 'fr' ? '⭐ Mini Excavation' : currentLang === 'es' ? '⭐ Mini Excavación' : '⭐ Mini Excavation', primary: true },
                             { url: '/services/drain-francais', label: currentLang === 'fr' ? 'Drain Français' : currentLang === 'es' ? 'Drenaje Francés' : 'French Drain' },
                             { url: '/services/excavation', label: 'Excavation' },
                             { url: '/services/reparation-fissures', label: currentLang === 'fr' ? 'Fissures' : currentLang === 'es' ? 'Grietas' : 'Cracks' },
                             { url: '/services/demolition', label: currentLang === 'fr' ? 'Démolition' : currentLang === 'es' ? 'Demolición' : 'Demolition' },
                             { url: '/urgences', label: currentLang === 'fr' ? '🚨 Urgence 24/7' : currentLang === 'es' ? '🚨 Urgencia 24/7' : '🚨 24/7 Emergency', highlight: true }
                         ] as svc}
-                            <a href={svc.url} class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105 {svc.highlight ? 'bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/30' : 'bg-gray-100 dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 hover:bg-[#febd17] hover:text-black border border-gray-200 dark:border-zinc-800'}">
+                            <a href={svc.url} class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105 {svc.highlight ? 'bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/30' : svc.primary ? 'bg-gradient-to-r from-[#febd17] to-yellow-500 text-black shadow-lg shadow-yellow-500/30' : 'bg-gray-100 dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 hover:bg-[#febd17] hover:text-black border border-gray-200 dark:border-zinc-800'}">
                                 {svc.label}
                             </a>
                         {/each}

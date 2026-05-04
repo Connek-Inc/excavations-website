@@ -31,6 +31,7 @@ const staticPages: PageEntry[] = [
 		}
 	},
 	{ path: 'urgences', priority: '1.0', changefreq: 'weekly' },
+	{ path: 'mini-excavation', priority: '1.0', changefreq: 'weekly' },
 	{ path: 'services', priority: '0.95', changefreq: 'weekly' },
 	{ path: 'services/excavation', priority: '0.9', changefreq: 'monthly' },
 	{ path: 'services/drain-francais', priority: '0.95', changefreq: 'monthly' },

@@ -90,27 +90,27 @@ export const seoData: Record<
 	}
 > = {
 	fr: {
-		title: "Mini Excavations Érable | Drain Français, Excavation & Fissure Québec",
+		title: "Mini Excavation Québec | Drain Français & Fissure | Érable RBQ",
 		description:
-			"⭐ Mini Excavation #1 Québec | Drain français, excavation, réparation fissure fondation, démolition. Certifié RBQ APCHQ. Soumission gratuite 24h ☎ 514-830-9973",
+			"⭐ Mini Excavation #1 au Québec depuis 15 ans. Drain français, excavation, réparation fissure fondation, démolition. Certifié RBQ APCHQ. Soumission gratuite 24h ☎ 514-830-9973",
 		keywords:
-			"mini excavation, excavation, drain français, fissure, réparation fissure, mini excavation Montréal, mini excavation Québec, drain français Montréal, drain français Québec, excavation Montréal, excavation Québec, fissure fondation, réparation fissure fondation, Mini Excavations Érable, RBQ",
+			"mini excavation, mini excavation Québec, mini excavation Montréal, mini excavations, mini-excavation, mini-pelle, drain français, drain français Québec, drain français Montréal, excavation Québec, excavation Montréal, fissure fondation, réparation fissure, Mini Excavations Érable, RBQ Québec",
 		ogLocale: "fr_CA"
 	},
 	en: {
-		title: "Mini Excavations Érable | French Drain, Excavation & Crack Quebec",
+		title: "Mini Excavation Quebec | French Drain & Crack Repair | Érable RBQ",
 		description:
-			"⭐ Mini Excavation #1 Quebec | French drain, excavation, foundation crack repair, demolition. RBQ APCHQ certified. Free quote 24h ☎ 514-830-9973",
+			"⭐ Mini Excavation #1 in Quebec for 15 years. French drain, excavation, foundation crack repair, demolition. RBQ APCHQ certified. Free quote 24h ☎ 514-830-9973",
 		keywords:
-			"mini excavation, excavation, french drain, crack, crack repair, mini excavation Montreal, mini excavation Quebec, french drain Montreal, french drain Quebec, excavation Montreal, excavation Quebec, foundation crack, foundation crack repair, Mini Excavations Erable, RBQ",
+			"mini excavation, mini excavation Quebec, mini excavation Montreal, mini excavations, mini-excavation, mini-excavator, french drain, french drain Quebec, french drain Montreal, excavation Quebec, excavation Montreal, foundation crack, crack repair, Mini Excavations Erable, RBQ Quebec",
 		ogLocale: "en_CA"
 	},
 	es: {
-		title: "Mini Excavations Érable | Drenaje Francés, Excavación y Grietas Quebec",
+		title: "Mini Excavación Quebec | Drenaje Francés y Grietas | Érable RBQ",
 		description:
-			"⭐ Mini Excavación #1 Quebec | Drenaje francés, excavación, reparación grietas cimientos, demolición. Certificado RBQ APCHQ. Cotización gratuita 24h ☎ 514-830-9973",
+			"⭐ Mini Excavación #1 en Quebec desde hace 15 años. Drenaje francés, excavación, reparación grietas cimientos, demolición. Certificado RBQ APCHQ. Cotización gratuita 24h ☎ 514-830-9973",
 		keywords:
-			"mini excavación, excavación, drenaje francés, grieta, reparación grieta, mini excavación Montreal, mini excavación Quebec, drenaje francés Montreal, drenaje francés Quebec, excavación Montreal, excavación Quebec, grieta cimientos, reparación grieta cimientos, Mini Excavations Erable, RBQ",
+			"mini excavación, mini excavación Quebec, mini excavación Montreal, mini excavaciones, mini-excavación, mini-excavadora, drenaje francés, drenaje francés Quebec, drenaje francés Montreal, excavación Quebec, excavación Montreal, grieta cimientos, reparación grieta, Mini Excavations Erable, RBQ Quebec",
 		ogLocale: "es_ES"
 	}
 };
