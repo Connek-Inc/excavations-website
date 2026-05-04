@@ -60,10 +60,22 @@ export const SITE = {
 	],
 	priceRange: '$$',
 	foundingDate: '2010',
+	founder: 'Mini Excavations Érable Team',
 	sameAs: [
 		'https://www.facebook.com/miniexcavationserable',
-		'https://www.instagram.com/mini_excavation_erable'
-	]
+		'https://www.instagram.com/mini_excavation_erable',
+		'https://www.facebook.com/share/XDdWREBZZxgCwBnT/',
+		// TODO: agregar cuando estén creados:
+		// 'https://maps.google.com/?cid=YOUR_GOOGLE_PLACE_ID',
+		// 'https://www.linkedin.com/company/mini-excavations-erable',
+		// 'https://www.youtube.com/@miniexcavationserable',
+	],
+	openingHours: [
+		{ days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '07:00', closes: '18:00' },
+		{ days: ['Saturday'], opens: '08:00', closes: '15:00' }
+	],
+	paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'Bank Transfer', 'Cheque'],
+	currenciesAccepted: 'CAD'
 } as const;
 
 type Lang = 'fr' | 'en' | 'es';
@@ -351,7 +363,25 @@ export function localBusinessJsonLd(lang: Lang) {
 			reviewCount: '127',
 			bestRating: '5',
 			worstRating: '1'
-		}
+		},
+		paymentAccepted: SITE.paymentAccepted,
+		currenciesAccepted: SITE.currenciesAccepted,
+		makesOffer: [
+			{
+				'@type': 'Offer',
+				name: lang === 'fr' ? 'Soumission gratuite 24h' : lang === 'es' ? 'Cotización gratuita 24h' : '24h free quote',
+				price: '0',
+				priceCurrency: 'CAD',
+				availability: 'https://schema.org/InStock'
+			}
+		],
+		potentialAction: [
+			{
+				'@type': 'ReserveAction',
+				target: `${SITE.url}/#contact`,
+				name: lang === 'fr' ? 'Demander une soumission' : lang === 'es' ? 'Solicitar cotización' : 'Request a quote'
+			}
+		]
 	};
 }
 
@@ -370,6 +400,91 @@ export function websiteJsonLd(lang: Lang) {
 			target: `${SITE.url}/?q={search_term_string}`,
 			'query-input': 'required name=search_term_string'
 		}
+	};
+}
+
+// WebPage schema — every internal page should declare itself
+export function webPageJsonLd(opts: {
+	url: string;
+	name: string;
+	description: string;
+	lang: Lang;
+	datePublished?: string;
+	dateModified?: string;
+	primaryImageOfPage?: string;
+}) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': `${opts.url}#webpage`,
+		url: opts.url,
+		name: opts.name,
+		description: opts.description,
+		isPartOf: { '@id': `${SITE.url}/#website` },
+		about: { '@id': `${SITE.url}/#organization` },
+		inLanguage: opts.lang === 'fr' ? 'fr-CA' : opts.lang === 'es' ? 'es-ES' : 'en-CA',
+		datePublished: opts.datePublished || '2024-01-01',
+		dateModified: opts.dateModified || new Date().toISOString().split('T')[0],
+		...(opts.primaryImageOfPage && {
+			primaryImageOfPage: {
+				'@type': 'ImageObject',
+				url: opts.primaryImageOfPage,
+				width: 1200,
+				height: 630
+			}
+		}),
+		potentialAction: [
+			{
+				'@type': 'ReadAction',
+				target: [opts.url]
+			}
+		]
+	};
+}
+
+// Speakable schema — for voice assistants (Google Assistant, Alexa, Siri)
+export function speakableJsonLd(opts: { url: string }) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': `${opts.url}#speakable`,
+		url: opts.url,
+		speakable: {
+			'@type': 'SpeakableSpecification',
+			cssSelector: ['h1', 'h2', '[itemprop="description"]', '.speakable']
+		}
+	};
+}
+
+// Person schema — for E-E-A-T (Experience, Expertise, Authority, Trust)
+export function personJsonLd() {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		'@id': `${SITE.url}/#founder`,
+		name: SITE.founder,
+		jobTitle: 'Founder & Lead Excavation Expert',
+		worksFor: { '@id': `${SITE.url}/#organization` },
+		url: SITE.url,
+		image: SITE.logo,
+		knowsAbout: [
+			'Excavation',
+			'French Drain Installation',
+			'Foundation Repair',
+			'Crack Injection',
+			'Demolition',
+			'Camera Inspection',
+			'Waterproofing',
+			'Construction Quebec',
+			'RBQ Regulations'
+		],
+		hasCredential: [
+			{
+				'@type': 'EducationalOccupationalCredential',
+				name: 'RBQ License — Régie du bâtiment du Québec',
+				credentialCategory: 'license'
+			}
+		]
 	};
 }
 

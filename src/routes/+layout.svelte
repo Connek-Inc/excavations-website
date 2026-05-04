@@ -13,6 +13,9 @@
 		breadcrumbJsonLd,
 		organizationJsonLd,
 		professionalServiceJsonLd,
+		webPageJsonLd,
+		speakableJsonLd,
+		personJsonLd,
 		SITE
 	} from '$lib/seo/seo-config';
 	import FloatingActions from '$lib/components/FloatingActions.svelte';
@@ -45,11 +48,21 @@
 
 	$: currentLang = ($language as 'fr' | 'en' | 'es') || 'fr';
 
+	$: currentUrl = `${SITE.url}${$page.url.pathname.replace(/\/$/, '')}`;
+
 	$: jsonLdSchemas = [
 		organizationJsonLd(),
+		personJsonLd(),
 		localBusinessJsonLd(currentLang),
 		professionalServiceJsonLd(currentLang),
 		websiteJsonLd(currentLang),
+		webPageJsonLd({
+			url: currentUrl || SITE.url,
+			name: SITE.name,
+			description: 'Excavation Quebec',
+			lang: currentLang
+		}),
+		speakableJsonLd({ url: currentUrl || SITE.url }),
 		faqJsonLd(currentLang),
 		breadcrumbJsonLd([{ name: 'Accueil', url: SITE.url }])
 	];

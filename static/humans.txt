@@ -1,0 +1,45 @@
+/* TEAM */
+Company: Mini Excavations Érable
+Site: https://excavationserable.com
+Location: Montréal, QC, Canada
+Phone: +1 (514) 830-9973
+Contact: miniexcavationerables@gmail.com
+Languages: French, English, Spanish
+
+/* SERVICES */
+Excavation
+French Drain Installation
+Foundation Repair
+Crack Injection
+Demolition
+Camera Inspection
+Sump Pump Installation
+24/7 Emergency Service
+
+/* CERTIFICATIONS */
+RBQ — Régie du bâtiment du Québec
+APCHQ — Association des professionnels de la construction et de l'habitation du Québec
+CMTQ — Corporation des maîtres mécaniciens en tuyauterie du Québec
+CCQ — Commission de la construction du Québec
+NEQ — Numéro d'entreprise du Québec
+
+/* SERVICE AREA */
+Montréal, Laval, Longueuil, Brossard, Boucherville,
+Saint-Jérôme, Terrebonne, Mascouche, Repentigny,
+Blainville, Boisbriand, Mirabel, Mont-Tremblant,
+Joliette, Châteauguay, Vaudreuil-Dorion,
+Saint-Hyacinthe, Sherbrooke, Trois-Rivières, Gatineau
++ all of Greater Montreal Area, Rive-Sud, Rive-Nord,
+Laurentides, Lanaudière, Montérégie, Outaouais
+
+/* SITE */
+Standards: HTML5, CSS3, JavaScript ES2020, JSON-LD Schema.org
+Components: Svelte, SvelteKit
+CSS framework: Tailwind CSS
+Hosting: Hostinger
+Languages: French (FR-CA), English (EN-CA), Spanish (ES)
+Last update: 2026
+
+/* THANKS */
+Hosting: Hostinger
+Tools: Google Search Console, Google Ads
