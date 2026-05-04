@@ -34,6 +34,26 @@
     $: isEn = $language === 'en';
     $: currentLang = ($language as 'fr' | 'en' | 'es') || 'fr';
 
+    // Video loads only when user clicks play (saves 1.5-2MB on mobile load)
+    let videoLoaded = false;
+
+    // Auto-load video after 4s if connection is fast (Network Information API)
+    import { onMount } from 'svelte';
+    onMount(() => {
+        if (typeof navigator === 'undefined') return;
+        // @ts-ignore - connection API is experimental
+        const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const isFast = !conn || (conn.effectiveType !== 'slow-2g' && conn.effectiveType !== '2g' && conn.effectiveType !== '3g' && !conn.saveData);
+        if (isFast) {
+            const timer = setTimeout(() => {
+                if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+                    videoLoaded = true;
+                }
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    });
+
     $: homeJsonLd = [
         videoObjectJsonLd({
             name: currentLang === 'fr' ? 'Installation Drain Français Montréal — Mini Excavations Érable' : currentLang === 'es' ? 'Instalación Drenaje Francés Montreal' : 'French Drain Installation Montreal',
@@ -119,13 +139,16 @@
     <!-- 🎨 HERO PREMIUM — Bento-style with floating cards -->
     <section class="relative min-h-screen flex items-center bg-gradient-to-br from-white via-yellow-50/40 to-white dark:from-black dark:via-zinc-950 dark:to-black text-black dark:text-white overflow-hidden pt-20 pb-16 lg:pt-32 lg:pb-24" id="home" aria-labelledby="hero-heading">
 
-        <!-- Animated background: grid + blobs + gradient mesh -->
-        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <!-- Animated background: blobs ONLY desktop (mobile = static for perf) -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none hidden md:block">
             <div class="absolute top-0 -left-40 w-[500px] h-[500px] bg-[#febd17] rounded-full blur-[120px] opacity-20 dark:opacity-15 animate-blob"></div>
             <div class="absolute top-1/3 right-0 w-[600px] h-[600px] bg-yellow-400 rounded-full blur-[140px] opacity-15 dark:opacity-10 animate-blob" style="animation-delay: 2s;"></div>
             <div class="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-orange-400 rounded-full blur-[100px] opacity-10 dark:opacity-10 animate-blob" style="animation-delay: 4s;"></div>
-            <!-- Grid pattern with mask -->
             <div class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_50%,transparent_100%)]"></div>
+        </div>
+        <!-- Mobile: simple static gradient -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none md:hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-[#febd17] rounded-full blur-3xl opacity-15 dark:opacity-10"></div>
         </div>
 
         <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
@@ -241,7 +264,7 @@
                         <!-- Glow halo (less intense on mobile for perf) -->
                         <div class="absolute -inset-3 md:-inset-6 bg-gradient-to-tr from-[#febd17] via-yellow-400 to-orange-400 rounded-[2rem] md:rounded-[2.5rem] blur-xl md:blur-2xl opacity-25 md:opacity-30 hidden md:block"></div>
 
-                        <!-- 🎬 Hero VIDEO en directo — trabajos reales -->
+                        <!-- 🎬 Hero IMAGEN (default) + Video lazy on click — PERF optimized -->
                         <div class="relative aspect-[4/3] sm:aspect-[3/4] rounded-2xl md:rounded-[2rem] overflow-hidden border border-white/40 dark:border-zinc-700 shadow-2xl group">
                             <!-- LIVE WORK badge -->
                             <div class="absolute top-3 left-3 md:top-4 md:left-4 z-20 inline-flex items-center gap-1.5 px-2.5 py-1 md:px-3 md:py-1.5 rounded-full bg-red-500/90 backdrop-blur-md text-white text-[10px] md:text-xs font-black uppercase tracking-wider shadow-lg border border-white/20">
@@ -252,31 +275,49 @@
                                 {currentLang === 'fr' ? 'Travail en direct' : currentLang === 'es' ? 'Trabajo en vivo' : 'Live work'}
                             </div>
 
-                            <!-- Video con poster (poster = fallback si video no carga) -->
-                            <video
-                                autoplay
-                                loop
-                                muted
-                                playsinline
-                                preload="metadata"
-                                poster="/videos/work-1-poster.jpg"
-                                aria-label={currentLang === 'fr' ? "Vidéo en direct: installation de drain français au Québec par Mini Excavations Érable" : currentLang === 'es' ? "Video en vivo: instalación de drenaje francés en Quebec por Mini Excavations Érable" : "Live video: French drain installation in Quebec by Mini Excavations Érable"}
-                                class="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-[1.5s]"
-                                itemprop="video"
-                            >
-                                <source src="/videos/work-1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
-                                <source src="/videos/work-1.mp4" type="video/mp4" />
-                                <!-- Fallback img -->
-                                <img
-                                    src={banner}
-                                    alt={currentLang === 'fr' ? "Excavation drain français Montréal" : currentLang === 'es' ? "Excavación drenaje francés Montreal" : "Excavation french drain Montreal"}
-                                    width="800"
-                                    height="1000"
-                                    loading="eager"
-                                    fetchpriority="high"
-                                    class="h-full w-full object-cover"
-                                />
-                            </video>
+                            <!-- Imagen por defecto (LCP rápido) — video se reemplaza on-demand -->
+                            {#if videoLoaded}
+                                <video
+                                    autoplay
+                                    loop
+                                    muted
+                                    playsinline
+                                    preload="metadata"
+                                    poster="/videos/work-1-poster.jpg"
+                                    aria-label={currentLang === 'fr' ? "Vidéo en direct: installation de drain français au Québec" : currentLang === 'es' ? "Video en vivo: instalación de drenaje francés" : "Live video: French drain installation"}
+                                    class="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-[1.5s]"
+                                    itemprop="video"
+                                >
+                                    <source src="/videos/work-1-mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
+                                    <source src="/videos/work-1.mp4" type="video/mp4" />
+                                </video>
+                            {:else}
+                                <picture>
+                                    <source media="(max-width: 480px)" srcset={banner480} type="image/webp" />
+                                    <source media="(max-width: 1024px)" srcset={banner800} type="image/webp" />
+                                    <img
+                                        src={banner}
+                                        alt={currentLang === 'fr' ? "Excavation drain français Montréal" : currentLang === 'es' ? "Excavación drenaje francés Montreal" : "Excavation french drain Montreal"}
+                                        width="800"
+                                        height="1000"
+                                        loading="eager"
+                                        fetchpriority="high"
+                                        decoding="async"
+                                        class="h-full w-full object-cover"
+                                    />
+                                </picture>
+                                <!-- Play button overlay — click para cargar video -->
+                                <button
+                                    type="button"
+                                    on:click={() => videoLoaded = true}
+                                    class="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors group/play"
+                                    aria-label={currentLang === 'fr' ? 'Voir la vidéo' : currentLang === 'es' ? 'Ver el video' : 'Watch video'}
+                                >
+                                    <span class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center shadow-2xl group-hover/play:scale-110 transition-transform">
+                                        <svg class="w-7 h-7 md:w-8 md:h-8 text-black ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                    </span>
+                                </button>
+                            {/if}
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
 
                             <!-- On-image bottom card: live counter -->
