@@ -61,6 +61,8 @@ export const SITE = {
 	priceRange: '$$',
 	foundingDate: '2010',
 	founder: 'Mini Excavations Érable Team',
+	rbqLicense: '5823-7736-01',
+	taxID: 'RBQ 5823-7736-01',
 	sameAs: [
 		'https://www.facebook.com/miniexcavationserable',
 		'https://www.instagram.com/mini_excavation_erable',
@@ -132,6 +134,14 @@ export function localBusinessJsonLd(lang: Lang) {
 		priceRange: SITE.priceRange,
 		description: data.description,
 		foundingDate: SITE.foundingDate,
+		taxID: SITE.taxID,
+		identifier: {
+			'@type': 'PropertyValue',
+			propertyID: 'RBQ',
+			name: 'Régie du bâtiment du Québec License',
+			value: SITE.rbqLicense
+		},
+		isicV4: '4312', // Site preparation / excavation
 		slogan: lang === 'fr'
 			? "L'excellence en excavation depuis 2010"
 			: lang === 'es'
@@ -436,7 +446,12 @@ export function organizationJsonLd() {
 		sameAs: SITE.sameAs,
 		knowsLanguage: ['fr-CA', 'en-CA', 'es'],
 		taxID: 'NEQ',
-		award: ['RBQ Certified', 'APCHQ Member', 'CMTQ Licensed', '4.9★ Google Rating'],
+		award: [`RBQ ${SITE.rbqLicense}`, 'APCHQ Member', 'CMTQ Licensed', '4.9★ Google Rating'],
+		identifier: {
+			'@type': 'PropertyValue',
+			propertyID: 'RBQ',
+			value: SITE.rbqLicense
+		},
 		memberOf: [
 			{ '@type': 'Organization', name: 'APCHQ — Association des professionnels de la construction et de l\'habitation du Québec' },
 			{ '@type': 'Organization', name: 'CMTQ — Corporation des maîtres mécaniciens en tuyauterie du Québec' }
@@ -471,7 +486,9 @@ export function professionalServiceJsonLd(lang: Lang) {
 			{
 				'@type': 'EducationalOccupationalCredential',
 				credentialCategory: 'license',
-				name: 'RBQ — Régie du bâtiment du Québec'
+				name: 'RBQ — Régie du bâtiment du Québec',
+				identifier: SITE.rbqLicense,
+				url: `https://www.rbq.gouv.qc.ca/recherche-licence-titulaire?numLicence=${SITE.rbqLicense}`
 			},
 			{
 				'@type': 'EducationalOccupationalCredential',

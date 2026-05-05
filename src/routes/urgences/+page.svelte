@@ -279,7 +279,10 @@
                         <div class="text-4xl">📜</div>
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Licences APCHQ, RBQ et CMTQ.</h3>
-                            <p class="text-gray-600 dark:text-gray-400">Faites affaire avec un véritable professionnel. Nous détenons toutes les licences requises pour exécuter les travaux selon les normes de l'industrie du Québec.</p>
+                            <p class="text-gray-600 dark:text-gray-400 mb-3">Faites affaire avec un véritable professionnel. Nous détenons toutes les licences requises pour exécuter les travaux selon les normes de l'industrie du Québec.</p>
+                            <a href="https://www.rbq.gouv.qc.ca/recherche-licence-titulaire?numLicence=5823-7736-01" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#febd17]/10 border border-[#febd17]/30 text-[#febd17] font-bold text-sm hover:bg-[#febd17]/20 transition-colors">
+                                ✓ R.B.Q. <span class="font-mono">5823-7736-01</span>
+                            </a>
                         </div>
                     </div>
                     <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800">

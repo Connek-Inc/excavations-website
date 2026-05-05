@@ -251,6 +251,21 @@
 		</div>
 	</div>
 
+	<!-- RBQ License Bar -->
+	<div class="border-t border-zinc-800 bg-zinc-900/50">
+		<div class="container mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-center gap-3 text-xs text-zinc-400">
+			<span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#febd17]/10 border border-[#febd17]/30 text-[#febd17] font-bold">
+				✓ Licence RBQ : <span class="font-mono tracking-wider">5823-7736-01</span>
+			</span>
+			<span class="hidden sm:inline opacity-30">•</span>
+			<span>Membre APCHQ</span>
+			<span class="hidden sm:inline opacity-30">•</span>
+			<span>Certifié CMTQ</span>
+			<span class="hidden sm:inline opacity-30">•</span>
+			<span>Pleinement assurés</span>
+		</div>
+	</div>
+
 	<!-- Bottom Bar -->
 	<div class="border-t border-zinc-800">
 		<div class="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-zinc-500">
