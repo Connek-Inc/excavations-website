@@ -52,7 +52,7 @@
   </div>
   <div class="hidden lg:flex items-center space-x-6 font-bold">
     {#each menuOptions as opt}
-      <a href="../{opt.link}" class="h-full">
+      <a href={opt.link} class="h-full">
         <div class="h-full flex items-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black sm:p-4 p-2 sm:px-8 rounded sm:text-lg transition-colors text-sm">{opt.text}</div>
       </a>
     {/each}
@@ -76,7 +76,7 @@
 {#if showMenu}
   <div class="lg:hidden mt-4 font-bold bg-[#febd17] dark:bg-zinc-900 border-t border-black/10 dark:border-zinc-800 py-4 px-6 transition-colors duration-300">
     {#each menuOptions as opt}
-      <a href="../{opt.link}" class="block mb-2" on:click={closeMenu}>
+      <a href={opt.link} class="block mb-2" on:click={closeMenu}>
         <div class="flex items-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black text-black dark:text-white p-2 rounded text-sm transition-colors">{opt.text}</div>
       </a>
     {/each}

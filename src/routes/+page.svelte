@@ -157,15 +157,27 @@
                 <!-- LEFT — Content -->
                 <div class="lg:col-span-7 flex flex-col text-left">
 
-                    <!-- Live availability pill -->
-                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-green-300 dark:border-green-500/30 shadow-lg w-fit mb-7" style="animation: heroFadeIn 0.6s ease-out;">
-                        <span class="relative flex h-2.5 w-2.5">
-                            <span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
-                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                        </span>
-                        <span class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wider">
-                            {currentLang === 'fr' ? "Équipe disponible — Soumission en 24h" : currentLang === 'es' ? "Equipo disponible — Cotización en 24h" : "Team available — Quote in 24h"}
-                        </span>
+                    <!-- Top pills: Live availability + RBQ License -->
+                    <div class="flex flex-wrap items-center gap-2 mb-6" style="animation: heroFadeIn 0.6s ease-out;">
+                        <!-- Live availability pill -->
+                        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-green-300 dark:border-green-500/30 shadow-lg">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                            </span>
+                            <span class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wider">
+                                {currentLang === 'fr' ? "Équipe disponible 24h" : currentLang === 'es' ? "Equipo disponible 24h" : "Team available 24h"}
+                            </span>
+                        </div>
+
+                        <!-- RBQ License pill — verifiable -->
+                        <a href="https://www.rbq.gouv.qc.ca/recherche-licence-titulaire?numLicence=5823-7736-01" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#febd17]/20 to-yellow-500/20 dark:from-[#febd17]/15 dark:to-yellow-500/15 backdrop-blur-md border border-[#febd17] hover:from-[#febd17]/30 hover:to-yellow-500/30 transition-all shadow-lg hover:scale-105">
+                            <svg class="w-3.5 h-3.5 text-green-600 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span class="text-xs font-bold text-gray-800 dark:text-white uppercase tracking-wider">
+                                R.B.Q.
+                            </span>
+                            <span class="text-xs font-black font-mono text-[#febd17] tracking-wider">5823-7736-01</span>
+                        </a>
                     </div>
 
                     <!-- Pre-headline tag — focus keyword "Mini Excavation" -->
