@@ -142,7 +142,16 @@
                             📋 {currentLang === 'fr' ? 'Demander Inspection' : currentLang === 'es' ? 'Pedir Inspección' : 'Request Inspection'}
                         </a>
                     </div>
-                    
+
+                    <!-- RBQ License Badge -->
+                    <a href="https://www.rbq.gouv.qc.ca/recherche-licence-titulaire?numLicence=5823-7736-01" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#febd17]/15 border border-[#febd17]/40 hover:border-[#febd17] hover:bg-[#febd17]/25 transition-colors mt-6 w-fit shadow-lg" style="animation: fadeInUp 0.8s ease-out 0.9s both;">
+                        <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        <span class="text-sm font-bold text-white">
+                            {currentLang === 'fr' ? 'Licence R.B.Q.' : currentLang === 'es' ? 'Licencia R.B.Q.' : 'R.B.Q. License'}
+                        </span>
+                        <span class="text-sm font-black font-mono text-[#febd17] tracking-wider">5823-7736-01</span>
+                    </a>
+
                     <div class="flex flex-wrap gap-6 mt-6" style="animation: fadeInUp 0.8s ease-out 1s both;">
                         <a href="#garantie" class="text-sm font-bold text-gray-400 hover:text-[#febd17] transition-colors flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#febd17]"></span> Garantie 15 Ans

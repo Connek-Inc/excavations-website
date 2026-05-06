@@ -223,6 +223,16 @@
                         </a>
                     </div>
 
+                    <!-- RBQ License badge — prominente y verificable -->
+                    <a href="https://www.rbq.gouv.qc.ca/recherche-licence-titulaire?numLicence=5823-7736-01" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[#febd17]/10 dark:bg-[#febd17]/15 border border-[#febd17]/40 hover:border-[#febd17] hover:bg-[#febd17]/20 transition-colors mb-4 w-fit" style="animation: heroFadeIn 0.7s ease-out 0.55s both;">
+                        <svg class="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        <span class="text-xs font-bold text-gray-700 dark:text-gray-200">
+                            {currentLang === 'fr' ? 'Licence R.B.Q.' : currentLang === 'es' ? 'Licencia R.B.Q.' : 'R.B.Q. License'}
+                        </span>
+                        <span class="text-xs font-black font-mono text-[#febd17] tracking-wider">5823-7736-01</span>
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+
                     <!-- Microproof bar -->
                     <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-gray-600 dark:text-zinc-400" style="animation: heroFadeIn 0.7s ease-out 0.6s both;">
                         <div class="flex items-center gap-1.5">
@@ -343,16 +353,16 @@
                             </div>
                         </div>
 
-                        <!-- Floating cert badge top-left (smaller on mobile) -->
-                        <div class="absolute -top-3 -left-2 md:-top-4 md:-left-4 lg:-left-6 bg-white dark:bg-zinc-900 rounded-xl md:rounded-2xl px-2.5 py-2 md:px-4 md:py-3 shadow-xl md:shadow-2xl border border-gray-200 dark:border-zinc-700 flex items-center gap-1.5 md:gap-2 animate-float-slow">
+                        <!-- Floating RBQ badge top-left (with license number) -->
+                        <a href="https://www.rbq.gouv.qc.ca/recherche-licence-titulaire?numLicence=5823-7736-01" target="_blank" rel="noopener" class="absolute -top-3 -left-2 md:-top-4 md:-left-4 lg:-left-6 bg-white dark:bg-zinc-900 rounded-xl md:rounded-2xl px-2.5 py-2 md:px-4 md:py-3 shadow-xl md:shadow-2xl border border-gray-200 dark:border-zinc-700 flex items-center gap-1.5 md:gap-2 animate-float-slow hover:scale-105 transition-transform">
                             <div class="w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white">
                                 <svg class="w-3.5 h-3.5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                             </div>
                             <div>
-                                <p class="text-[8px] md:text-[10px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-bold leading-tight">Certifié</p>
-                                <p class="text-[11px] md:text-sm font-black leading-tight">RBQ · APCHQ</p>
+                                <p class="text-[8px] md:text-[10px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-bold leading-tight">Licence R.B.Q.</p>
+                                <p class="text-[11px] md:text-sm font-black leading-tight font-mono">5823-7736-01</p>
                             </div>
-                        </div>
+                        </a>
 
                         <!-- Floating "24h" badge top-right (smaller on mobile) -->
                         <div class="absolute -top-3 -right-2 md:-top-4 md:-right-4 lg:-right-6 bg-gradient-to-br from-[#febd17] to-yellow-600 rounded-xl md:rounded-2xl px-2.5 py-2 md:px-4 md:py-3 shadow-xl md:shadow-2xl shadow-yellow-500/40 flex items-center gap-1.5 md:gap-2 animate-float-slow" style="animation-delay: 1.5s;">

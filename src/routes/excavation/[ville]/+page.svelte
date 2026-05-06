@@ -199,7 +199,7 @@
 			</p>
 
 			<!-- Trust badges -->
-			<div class="flex flex-wrap gap-2 mb-8">
+			<div class="flex flex-wrap gap-2 mb-4">
 				<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/30 text-yellow-700 dark:text-yellow-400 text-xs font-semibold">
 					<Star class="w-3 h-3 fill-current" /> {c.ratingLabel}
 				</span>
@@ -210,6 +210,15 @@
 					⚡ {lang === 'fr' ? '24h' : '24h'}
 				</span>
 			</div>
+
+			<!-- RBQ License Badge — verifiable -->
+			<a href="https://www.rbq.gouv.qc.ca/recherche-licence-titulaire?numLicence=5823-7736-01" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#febd17]/10 dark:bg-[#febd17]/15 border border-[#febd17]/40 hover:border-[#febd17] hover:bg-[#febd17]/20 transition-colors mb-8 w-fit shadow-sm">
+				<CheckCircle2 class="w-4 h-4 text-green-600 dark:text-green-400" />
+				<span class="text-sm font-bold text-gray-700 dark:text-gray-200">
+					{lang === 'fr' ? 'Licence R.B.Q.' : lang === 'es' ? 'Licencia R.B.Q.' : 'R.B.Q. License'}
+				</span>
+				<span class="text-sm font-black font-mono text-[#febd17] tracking-wider">5823-7736-01</span>
+			</a>
 
 			<div class="flex flex-col sm:flex-row gap-3">
 				<a
