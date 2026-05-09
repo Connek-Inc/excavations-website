@@ -1,9 +1,14 @@
 declare global {
 	namespace App {
-		// interface Locals {}
-		// interface PageData {}
-		// interface Error {}
-		// interface Platform {}
+		interface Locals {
+			admin: {
+				id: number;
+				email: string;
+				name: string;
+				role: string;
+				sessionId: string;
+			} | null;
+		}
 	}
 }
 

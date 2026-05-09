@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -7,19 +7,16 @@ const config = {
 	preprocess: [vitePreprocess()],
 
 	kit: {
-		// adapter-static: generates pure HTML/CSS/JS into `build/`
-		// Compatible with Hostinger, Netlify, GitHub Pages, any static host.
+		// adapter-node: builds a Node.js server (works on Hostinger Node.js Hosting)
+		// Public pages still prerender for max speed
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: '404.html',
-			precompress: false,
-			strict: false
+			out: 'build',
+			precompress: true,
+			envPrefix: ''
 		}),
 		prerender: {
 			handleMissingId: 'warn',
-			handleHttpError: 'warn',
-			entries: ['*']
+			handleHttpError: 'warn'
 		}
 	}
 };

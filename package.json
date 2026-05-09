@@ -6,6 +6,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
+    "start": "node build/index.js",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "db:generate": "drizzle-kit generate",
@@ -45,8 +46,9 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.36.4",
-    "jose": "^5.9.6",
+    "jose": "^5.10.0",
     "lucide-svelte": "^0.563.0",
+    "mysql2": "^3.22.3",
     "resend": "^3.2.0",
     "tailwind-merge": "^3.4.0",
     "yup": "^1.4.0"
