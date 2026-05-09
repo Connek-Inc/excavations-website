@@ -1,7 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 
-export const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+// Supabase anon keys are public by design — they are sent to every browser
+// that loads the page. Hardcoding them here means the build doesn't depend on
+// build-time env vars (Hostinger Git Deployments doesn't inject them).
+// Replace these with your actual project values from supabase.com → Settings → API
+const SUPABASE_URL = 'https://placeholder.supabase.co';
+const SUPABASE_ANON_KEY = 'placeholder-anon-key';
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 	auth: {
 		persistSession: true,
 		autoRefreshToken: true,
