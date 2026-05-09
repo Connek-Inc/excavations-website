@@ -1,6 +1,6 @@
 <script lang="ts">
     import { contactUsSchema } from "$lib/yup/contactUsSchema";
-    import { translate } from "$lib/lib-utils"
+    import { translate, formatBookedTimes } from "$lib/lib-utils"
     import { language } from "./store/store";
     import { trackContactFormSubmit } from "$lib/analytics/gtag";
 
@@ -97,27 +97,28 @@
         success = false;
 
         try {
-            // Send to our server endpoint that saves in DB AND emails
-            const response = await fetch('/send-contact-form', {
+            const formattedTimes = formatBookedTimes(formData.bookedTimes, $language);
+            const subject = `Nouveau contact — ${formData.name}`;
+            const message = `Nom: ${formData.name}\nEmail: ${formData.email}\nTéléphone: ${formData.phone}\nLangue: ${$language}\n\nMessage:\n${formData.messageText}\n\nHoraires:\n${formattedTimes}`;
+
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                 body: JSON.stringify({
-                    formData: {
-                        name: formData.name,
-                        email: formData.email,
-                        phone: formData.phone,
-                        messageText: formData.messageText,
-                        bookedTimes: formData.bookedTimes,
-                        language: $language,
-                        source: 'website'
-                    }
+                    access_key: '0a8cc60e-d18a-4a90-95f5-ed29eccf6651',
+                    subject,
+                    from_name: 'Mini Excavations Érable - Site Web',
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    message
                 })
             });
 
             const result = await response.json();
 
             if (!response.ok || !result.success) {
-                throw new Error(result.error || 'Submission failed');
+                throw new Error(result.message || 'Submission failed');
             }
 
             success = true;

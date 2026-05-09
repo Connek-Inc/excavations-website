@@ -57,28 +57,24 @@
         try {
             const combinedMessage = `PROBLÈME: ${formData.problemType}\nURGENCE: ${formData.urgencyLevel}\nDÉTAILS: ${formData.messageText || 'Aucun détail'}`;
 
-            const response = await fetch('/send-contact-form', {
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                 body: JSON.stringify({
-                    formData: {
-                        name: formData.name,
-                        email: formData.email,
-                        phone: formData.phone,
-                        messageText: combinedMessage,
-                        subject: `🚨 URGENCE — ${formData.name}`,
-                        serviceType: formData.problemType,
-                        bookedTimes: ['Urgence Web'],
-                        language: $language,
-                        source: 'urgences_step_form'
-                    }
+                    access_key: '0a8cc60e-d18a-4a90-95f5-ed29eccf6651',
+                    subject: `🚨 URGENCE — ${formData.name}`,
+                    from_name: 'Mini Excavations Érable - URGENCE',
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    message: combinedMessage
                 })
             });
 
             const payload = await response.json();
 
             if (!response.ok || !payload.success) {
-                throw new Error(payload.error || 'Server error');
+                throw new Error(payload.message || 'Server error');
             }
             
             success = true;
