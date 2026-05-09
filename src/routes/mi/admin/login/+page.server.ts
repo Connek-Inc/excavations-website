@@ -28,9 +28,19 @@ export const actions: Actions = {
 		// Soft brute-force protection
 		await new Promise((r) => setTimeout(r, 200));
 
-		const admin = await db.query.admins.findFirst({
-			where: eq(admins.email, email)
-		});
+		let admin;
+		try {
+			admin = await db.query.admins.findFirst({
+				where: eq(admins.email, email)
+			});
+		} catch (err) {
+			console.error('[login] DB error:', err);
+			const msg = err instanceof Error ? err.message : 'Database connection failed';
+			return fail(500, {
+				error: `Erreur DB: ${msg}. Vérifiez les variables DB_* et que la DB existe.`,
+				email
+			});
+		}
 
 		if (!admin || !admin.active) {
 			return fail(401, { error: 'Identifiants invalides', email });
@@ -53,11 +63,14 @@ export const actions: Actions = {
 		});
 		setSessionCookie(cookies, token, expiresAt);
 
-		// Update lastLoginAt
-		await db
-			.update(admins)
-			.set({ lastLoginAt: new Date() })
-			.where(eq(admins.id, admin.id));
+		try {
+			await db
+				.update(admins)
+				.set({ lastLoginAt: new Date() })
+				.where(eq(admins.id, admin.id));
+		} catch (err) {
+			console.error('[login] lastLoginAt update failed (non-fatal):', err);
+		}
 
 		throw redirect(303, '/mi/admin');
 	}

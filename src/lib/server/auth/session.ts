@@ -66,28 +66,33 @@ export async function getAdminFromCookies(cookies: Cookies) {
 	const payload = await verifySessionToken(token);
 	if (!payload) return null;
 
-	const session = await db.query.sessions.findFirst({
-		where: eq(sessions.id, payload.sessionId)
-	});
+	try {
+		const session = await db.query.sessions.findFirst({
+			where: eq(sessions.id, payload.sessionId)
+		});
 
-	if (!session || session.expiresAt < new Date()) {
-		if (session) await deleteSession(session.id);
+		if (!session || session.expiresAt < new Date()) {
+			if (session) await deleteSession(session.id);
+			return null;
+		}
+
+		const admin = await db.query.admins.findFirst({
+			where: eq(admins.id, payload.adminId)
+		});
+
+		if (!admin || !admin.active) return null;
+
+		return {
+			id: admin.id,
+			email: admin.email,
+			name: admin.name,
+			role: admin.role,
+			sessionId: session.id
+		};
+	} catch (err) {
+		console.error('[auth] getAdminFromCookies DB error:', err);
 		return null;
 	}
-
-	const admin = await db.query.admins.findFirst({
-		where: eq(admins.id, payload.adminId)
-	});
-
-	if (!admin || !admin.active) return null;
-
-	return {
-		id: admin.id,
-		email: admin.email,
-		name: admin.name,
-		role: admin.role,
-		sessionId: session.id
-	};
 }
 
 export function setSessionCookie(cookies: Cookies, token: string, expiresAt: Date) {
