@@ -3,6 +3,7 @@
 		LayoutDashboard,
 		Users,
 		FileText,
+		FileSignature,
 		Wrench,
 		Star,
 		Settings,
@@ -24,6 +25,7 @@
 	const nav = [
 		{ icon: LayoutDashboard, label: 'Tableau de bord', href: '/mi/admin' },
 		{ icon: Users, label: 'Leads / Contacts', href: '/mi/admin/contacts' },
+		{ icon: FileSignature, label: 'Soumissions', href: '/mi/admin/soumissions' },
 		{ icon: FileText, label: 'Articles Blog', href: '/mi/admin/blogs' },
 		{ icon: Wrench, label: 'Services', href: '/mi/admin/services' },
 		{ icon: Star, label: 'Avis Clients', href: '/mi/admin/reviews' },

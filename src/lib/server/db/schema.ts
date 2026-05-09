@@ -7,9 +7,17 @@ import {
 	boolean,
 	json,
 	mysqlEnum,
+	decimal,
+	date,
 	uniqueIndex,
 	index
 } from 'drizzle-orm/mysql-core';
+
+import type {
+	Modalite,
+	Article,
+	SectionsMap
+} from '../../soumission/types';
 
 // ─────────────────────────────────────────────
 // admins — usuarios del panel /mi/admin
@@ -204,6 +212,68 @@ export const analytics = mysqlTable(
 	})
 );
 
+// ─────────────────────────────────────────────
+// soumissions — devis/contrats créés par l'admin et signés par le client
+// ─────────────────────────────────────────────
+export const soumissions = mysqlTable(
+	'soumissions',
+	{
+		id: int('id').autoincrement().primaryKey(),
+		token: varchar('token', { length: 64 }).notNull(),
+		numero: varchar('numero', { length: 50 }),
+		statut: mysqlEnum('statut', ['Brouillon', 'Envoyée', 'Acceptée', 'Signée'])
+			.notNull()
+			.default('Brouillon'),
+		clientNom: varchar('client_nom', { length: 200 }),
+		clientAdresse: text('client_adresse'),
+		projetAdresse: text('projet_adresse'),
+		clientEmail: varchar('client_email', { length: 255 }),
+		clientPhone: varchar('client_phone', { length: 50 }),
+		dateSoumission: date('date_soumission', { mode: 'string' }),
+		notes: text('notes'),
+		description: text('description'),
+		sousTotal: decimal('sous_total', { precision: 12, scale: 2 }).notNull().default('0'),
+		modalites: json('modalites').$type<Modalite[]>().notNull().default([]),
+		articles: json('articles').$type<Article[]>().notNull().default([]),
+		sections: json('sections').$type<SectionsMap>().notNull().default({}),
+		entrepreneurNom: varchar('entrepreneur_nom', { length: 200 }),
+		entrepreneurSignature: text('entrepreneur_signature'),
+		entrepreneurSignedAt: timestamp('entrepreneur_signed_at'),
+		clientSignataireNom: varchar('client_signataire_nom', { length: 200 }),
+		clientSignature: text('client_signature'),
+		clientSignedAt: timestamp('client_signed_at'),
+		sentAt: timestamp('sent_at'),
+		createdBy: int('created_by'),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow()
+	},
+	(t) => ({
+		tokenIdx: uniqueIndex('soumissions_token_idx').on(t.token),
+		statutIdx: index('soumissions_statut_idx').on(t.statut),
+		createdIdx: index('soumissions_created_idx').on(t.createdAt)
+	})
+);
+
+// ─────────────────────────────────────────────
+// soumission_signatures — log d'audit des signatures
+// ─────────────────────────────────────────────
+export const soumissionSignatures = mysqlTable(
+	'soumission_signatures',
+	{
+		id: int('id').autoincrement().primaryKey(),
+		soumissionId: int('soumission_id').notNull(),
+		role: mysqlEnum('role', ['entrepreneur', 'client']).notNull(),
+		nomSignataire: varchar('nom_signataire', { length: 200 }).notNull(),
+		signatureData: text('signature_data').notNull(),
+		userAgent: varchar('user_agent', { length: 500 }),
+		ipAddress: varchar('ip_address', { length: 45 }),
+		createdAt: timestamp('created_at').notNull().defaultNow()
+	},
+	(t) => ({
+		soumissionIdx: index('soumission_signatures_soumission_idx').on(t.soumissionId)
+	})
+);
+
 // Type exports for use in routes
 export type Admin = typeof admins.$inferSelect;
 export type NewAdmin = typeof admins.$inferInsert;
@@ -216,3 +286,7 @@ export type Service = typeof services.$inferSelect;
 export type NewService = typeof services.$inferInsert;
 export type Review = typeof reviews.$inferSelect;
 export type Setting = typeof settings.$inferSelect;
+export type Soumission = typeof soumissions.$inferSelect;
+export type NewSoumission = typeof soumissions.$inferInsert;
+export type SoumissionSignature = typeof soumissionSignatures.$inferSelect;
+export type NewSoumissionSignature = typeof soumissionSignatures.$inferInsert;
