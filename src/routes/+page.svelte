@@ -22,7 +22,7 @@
 	import certif4 from "$lib/images/CCQ.png";
     
     // Components
-	import ContactUs from '$lib/ContactUs.svelte';
+	import SoumissionForm from '$lib/SoumissionForm.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import Map from '$lib/map.svelte';
     import Blogs from './blog/blogs.svelte';
@@ -510,10 +510,22 @@
         </div>
     </div>
 
-    <!-- Contact Form Section -->
-    <section class="py-16 bg-muted/30 dark:bg-black transition-colors duration-300">
-        <div class="container max-w-5xl">
-            <ContactUs nDays={9}/>
+    <!-- Soumission Form Section -->
+    <section class="py-16 bg-zinc-950 transition-colors duration-300">
+        <div class="container max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10 lg:mb-14 max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-4">
+                    📋 {currentLang === 'fr' ? 'Demande de soumission' : currentLang === 'es' ? 'Solicitud de cotización' : 'Quote request'}
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
+                    {currentLang === 'fr' ? 'Obtenez votre' : currentLang === 'es' ? 'Obtenga su' : 'Get your'}
+                    <span class="text-amber-500">{currentLang === 'fr' ? 'soumission' : currentLang === 'es' ? 'cotización' : 'quote'}</span>
+                </h2>
+                <p class="mt-3 text-zinc-400">
+                    {currentLang === 'fr' ? 'Remplissez le formulaire et notre équipe vous enverra une offre détaillée par courriel rapidement.' : currentLang === 'es' ? 'Complete el formulario y nuestro equipo le enviará una oferta detallada por correo rápidamente.' : 'Fill out the form and our team will send you a detailed offer by email shortly.'}
+                </p>
+            </div>
+            <SoumissionForm showHero={false} showSidebar={true} />
         </div>
     </section>
 

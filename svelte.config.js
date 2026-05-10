@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -7,20 +7,14 @@ const config = {
 	preprocess: [vitePreprocess()],
 
 	kit: {
-		// adapter-static: generates pure HTML/CSS/JS that LiteSpeed serves directly from public_html
-		// This is what Hostinger shared hosting expects.
-		// Admin (/mi/admin/*) is excluded from prerender via the layout file.
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: '200.html',
+			out: 'build',
 			precompress: false,
-			strict: false
+			envPrefix: ''
 		}),
 		prerender: {
 			handleMissingId: 'warn',
-			handleHttpError: 'warn',
-			entries: ['*']
+			handleHttpError: 'warn'
 		}
 	}
 };

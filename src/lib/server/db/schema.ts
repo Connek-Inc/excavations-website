@@ -204,6 +204,156 @@ export const analytics = mysqlTable(
 	})
 );
 
+// ─────────────────────────────────────────────
+// clients — cuentas de clientes (auth para /compte y /soumission)
+// ─────────────────────────────────────────────
+export const clients = mysqlTable(
+	'clients',
+	{
+		id: int('id').autoincrement().primaryKey(),
+		email: varchar('email', { length: 255 }).notNull(),
+		passwordHash: varchar('password_hash', { length: 255 }).notNull(),
+		name: varchar('name', { length: 100 }).notNull(),
+		telephone: varchar('telephone', { length: 50 }),
+		adresse: varchar('adresse', { length: 255 }),
+		emailVerified: boolean('email_verified').notNull().default(false),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow()
+	},
+	(t) => ({
+		emailIdx: uniqueIndex('clients_email_idx').on(t.email)
+	})
+);
+
+// ─────────────────────────────────────────────
+// client_sessions — sesiones de clientes
+// ─────────────────────────────────────────────
+export const clientSessions = mysqlTable(
+	'client_sessions',
+	{
+		id: varchar('id', { length: 64 }).primaryKey(),
+		clientId: int('client_id').notNull(),
+		expiresAt: timestamp('expires_at').notNull(),
+		userAgent: varchar('user_agent', { length: 500 }),
+		ipAddress: varchar('ip_address', { length: 45 }),
+		createdAt: timestamp('created_at').notNull().defaultNow()
+	},
+	(t) => ({
+		clientIdx: index('client_sessions_client_idx').on(t.clientId),
+		expiresIdx: index('client_sessions_expires_idx').on(t.expiresAt)
+	})
+);
+
+// ─────────────────────────────────────────────
+// password_resets — tokens para recuperar contraseña
+// ─────────────────────────────────────────────
+export const passwordResets = mysqlTable(
+	'password_resets',
+	{
+		id: int('id').autoincrement().primaryKey(),
+		clientId: int('client_id').notNull(),
+		token: varchar('token', { length: 64 }).notNull(),
+		expiresAt: timestamp('expires_at').notNull(),
+		usedAt: timestamp('used_at'),
+		createdAt: timestamp('created_at').notNull().defaultNow()
+	},
+	(t) => ({
+		tokenIdx: uniqueIndex('password_resets_token_idx').on(t.token),
+		clientIdx: index('password_resets_client_idx').on(t.clientId)
+	})
+);
+
+// ─────────────────────────────────────────────
+// soumissions — cotizaciones con counter-offers y firma
+// ─────────────────────────────────────────────
+export const soumissions = mysqlTable(
+	'soumissions',
+	{
+		id: varchar('id', { length: 36 }).primaryKey(),
+		clientId: int('client_id'),
+		clientToken: varchar('client_token', { length: 64 }).notNull(),
+
+		clientNom: varchar('client_nom', { length: 200 }).notNull(),
+		clientEmail: varchar('client_email', { length: 255 }).notNull(),
+		clientTelephone: varchar('client_telephone', { length: 50 }),
+		clientAdresse: varchar('client_adresse', { length: 255 }),
+		projetAdresse: varchar('projet_adresse', { length: 255 }),
+		projetDescription: text('projet_description').notNull(),
+		projetType: varchar('projet_type', { length: 100 }),
+
+		statut: mysqlEnum('statut', [
+			'nouvelle',
+			'en_revision',
+			'offerte',
+			'contre_offre',
+			'acceptee',
+			'signee_par_les_deux',
+			'rejetee',
+			'expiree'
+		])
+			.notNull()
+			.default('nouvelle'),
+
+		numero: varchar('numero', { length: 50 }),
+		dateSoumission: varchar('date_soumission', { length: 10 }),
+
+		sousTotal: int('sous_total_cents').notNull().default(0),
+		tps: int('tps_cents').notNull().default(0),
+		tvq: int('tvq_cents').notNull().default(0),
+		total: int('total_cents').notNull().default(0),
+
+		articles: json('articles').$type<{ description: string; quantite: number; prix_unitaire: number }[]>(),
+		modalites: json('modalites').$type<{ label: string; pourcentage: number }[]>(),
+		sections: json('sections').$type<Record<string, string>>(),
+
+		notesAdmin: text('notes_admin'),
+		notesClient: text('notes_client'),
+
+		signatureClient: text('signature_client'),
+		signatureClientAt: timestamp('signature_client_at'),
+		signatureClientNom: varchar('signature_client_nom', { length: 200 }),
+
+		signatureAdmin: text('signature_admin'),
+		signatureAdminAt: timestamp('signature_admin_at'),
+		signatureAdminNom: varchar('signature_admin_nom', { length: 200 }),
+
+		expireLe: varchar('expire_le', { length: 10 }),
+
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow()
+	},
+	(t) => ({
+		tokenIdx: uniqueIndex('soumissions_token_idx').on(t.clientToken),
+		clientIdx: index('soumissions_client_idx').on(t.clientId),
+		statutIdx: index('soumissions_statut_idx').on(t.statut),
+		createdIdx: index('soumissions_created_idx').on(t.createdAt)
+	})
+);
+
+// ─────────────────────────────────────────────
+// soumission_versions — historial de offre/contre-offre
+// ─────────────────────────────────────────────
+export const soumissionVersions = mysqlTable(
+	'soumission_versions',
+	{
+		id: int('id').autoincrement().primaryKey(),
+		soumissionId: varchar('soumission_id', { length: 36 }).notNull(),
+		versionNum: int('version_num').notNull(),
+		type: mysqlEnum('type', ['offre_admin', 'contre_offre_client']).notNull(),
+		auteur: varchar('auteur', { length: 50 }).notNull(),
+		message: text('message'),
+		sousTotal: int('sous_total_cents'),
+		total: int('total_cents'),
+		articles: json('articles').$type<{ description: string; quantite: number; prix_unitaire: number }[]>(),
+		modalites: json('modalites').$type<{ label: string; pourcentage: number }[]>(),
+		sections: json('sections').$type<Record<string, string>>(),
+		createdAt: timestamp('created_at').notNull().defaultNow()
+	},
+	(t) => ({
+		soumissionIdx: index('soumission_versions_soumission_idx').on(t.soumissionId)
+	})
+);
+
 // Type exports for use in routes
 export type Admin = typeof admins.$inferSelect;
 export type NewAdmin = typeof admins.$inferInsert;
@@ -216,3 +366,11 @@ export type Service = typeof services.$inferSelect;
 export type NewService = typeof services.$inferInsert;
 export type Review = typeof reviews.$inferSelect;
 export type Setting = typeof settings.$inferSelect;
+export type Client = typeof clients.$inferSelect;
+export type NewClient = typeof clients.$inferInsert;
+export type ClientSession = typeof clientSessions.$inferSelect;
+export type Soumission = typeof soumissions.$inferSelect;
+export type NewSoumission = typeof soumissions.$inferInsert;
+export type SoumissionVersion = typeof soumissionVersions.$inferSelect;
+export type NewSoumissionVersion = typeof soumissionVersions.$inferInsert;
+export type PasswordReset = typeof passwordResets.$inferSelect;
