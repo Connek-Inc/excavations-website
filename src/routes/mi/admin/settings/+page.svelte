@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Settings, Save } from 'lucide-svelte';
 
-	export let data;
+	export let data: any = {};
 	export let form;
 
 	const s = data.settings;

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, ArrowRight, Lock, Mail, Loader2, User as UserIcon } from 'lucide-svelte';
-	import type { ActionData, PageData } from './$types';
+	// disabled: server types removed
 
-	export let data: PageData;
-	export let form: ActionData;
+	export let data: any = {};
+	export let form: any = null;
 
 	let loading = false;
 	let email = data.email;

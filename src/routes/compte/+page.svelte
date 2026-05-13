@@ -9,9 +9,9 @@
 		Shield
 	} from 'lucide-svelte';
 	import { fmtMoney, statutLabel, statutColor } from '$lib/soumissions/utils';
-	import type { PageData } from './$types';
+	// disabled: server types removed
 
-	export let data: PageData;
+	export let data: any = {};
 
 	function fmtDate(s: string) {
 		try {

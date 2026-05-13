@@ -2,9 +2,9 @@
 	import { fmtMoney, statutLabel, statutColor } from '$lib/soumissions/utils';
 	import type { SoumissionStatut } from '$lib/soumissions/types';
 	import { Search, Filter, FileText, ChevronRight, Eye } from 'lucide-svelte';
-	import type { PageData } from './$types';
+	// disabled: server types removed
 
-	export let data: PageData;
+	export let data: any = {};
 
 	let q = '';
 	let statut: SoumissionStatut | '' = '';

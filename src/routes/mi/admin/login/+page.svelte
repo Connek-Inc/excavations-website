@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Lock, Mail, ArrowRight, Loader2, ShieldCheck } from 'lucide-svelte';
-	import type { ActionData } from './$types';
+	// disabled: server types removed
 
-	export let form: ActionData;
+	export let form: any = null;
 
 	let loading = false;
 </script>

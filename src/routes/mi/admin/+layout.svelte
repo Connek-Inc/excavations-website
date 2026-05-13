@@ -15,7 +15,7 @@
 	} from 'lucide-svelte';
 	import { page } from '$app/stores';
 
-	export let data;
+	export let data: any = {};
 
 	$: pathname = data.pathname;
 	$: isLogin = pathname === '/mi/admin/login' || pathname === '/mi/admin/login/';

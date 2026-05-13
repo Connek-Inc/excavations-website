@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { FileText, Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-svelte';
 
-	export let data;
+	export let data: any = {};
 
 	function formatDate(d: Date | string | null) {
 		if (!d) return '—';

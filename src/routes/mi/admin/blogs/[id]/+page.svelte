@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BlogEditor from '$lib/components/BlogEditor.svelte';
-	export let data;
+	export let data: any = {};
 	export let form;
 </script>
 

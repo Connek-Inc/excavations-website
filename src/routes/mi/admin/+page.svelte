@@ -12,7 +12,7 @@
 		Star
 	} from 'lucide-svelte';
 
-	export let data;
+	export let data: any = {};
 
 	$: stats = data.stats;
 	$: recentContacts = data.recentContacts;

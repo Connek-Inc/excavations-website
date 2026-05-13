@@ -4,7 +4,7 @@
 	import { Search, Filter, Mail, Phone, Trash2, Eye, Users } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 
-	export let data;
+	export let data: any = {};
 
 	let searchValue = data.filters.search;
 	let statusValue = data.filters.status;

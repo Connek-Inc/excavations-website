@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, Mail, Phone, Calendar, Globe, Trash2, Save, MessageSquare } from 'lucide-svelte';
 
-	export let data;
+	export let data: any = {};
 	export let form;
 
 	$: contact = data.contact;

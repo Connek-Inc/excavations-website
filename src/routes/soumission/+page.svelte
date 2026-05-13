@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { ArrowLeft, Shield } from 'lucide-svelte';
 	import SoumissionForm from '$lib/SoumissionForm.svelte';
-	import type { PageData } from './$types';
+	// disabled: server types removed
 
-	export let data: PageData;
+	export let data: any = {};
 </script>
 
 <svelte:head>

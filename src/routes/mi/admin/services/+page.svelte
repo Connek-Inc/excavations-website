@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Wrench, Plus, Edit, Trash2, X } from 'lucide-svelte';
 
-	export let data;
+	export let data: any = {};
 
 	let editing: any = null;
 	let showForm = false;

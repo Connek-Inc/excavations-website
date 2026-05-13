@@ -31,9 +31,9 @@
 		MapPin,
 		PenLine
 	} from 'lucide-svelte';
-	import type { PageData } from './$types';
+	// disabled: server types removed
 
-	export let data: PageData;
+	export let data: any = {};
 
 	$: soumission = data.soumission;
 	$: versions = data.versions;
