@@ -9,31 +9,62 @@ export const SITE = {
 	email: 'miniexcavationerables@gmail.com',
 	address: {
 		streetAddress: '',
-		addressLocality: 'Montréal',
+		addressLocality: 'Saint-Hubert-de-Rivière-du-Loup',
 		addressRegion: 'QC',
-		postalCode: '',
+		postalCode: 'G0L 3L0',
 		addressCountry: 'CA'
 	},
 	geo: {
-		latitude: 45.5019,
-		longitude: -73.5674
+		latitude: 47.9444,
+		longitude: -69.1700
 	},
-	geoRadius: 200000, // 200km radius
+	geoRadius: 500000, // 500km — service area covers most of Quebec
 	areaServed: [
 		// Grandes regiones administrativas de Quebec
-		'Québec',
-		'Montréal',
-		'Laval',
-		'Laurentides',
-		'Lanaudière',
-		'Montérégie',
-		'Estrie',
-		'Outaouais',
+		'Bas-Saint-Laurent',
+		'Capitale-Nationale',
+		'Chaudière-Appalaches',
+		'Saguenay–Lac-Saint-Jean',
+		'Côte-Nord',
+		'Gaspésie–Îles-de-la-Madeleine',
 		'Mauricie',
 		'Centre-du-Québec',
-		'Rive-Nord',
-		'Rive-Sud',
-		// Ciudades clave del Grand Montréal
+		'Estrie',
+		'Montérégie',
+		'Lanaudière',
+		'Laurentides',
+		'Outaouais',
+		'Abitibi-Témiscamingue',
+		'Nord-du-Québec',
+		'Laval',
+		'Montréal',
+		'Québec',
+		// Bas-Saint-Laurent (base) — máxima prioridad
+		'Saint-Hubert-de-Rivière-du-Loup',
+		'Rivière-du-Loup',
+		'Cabano',
+		'Témiscouata-sur-le-Lac',
+		'Trois-Pistoles',
+		'Notre-Dame-du-Lac',
+		'La Pocatière',
+		'Saint-Pascal',
+		'Pohénégamook',
+		// Ciudades grandes — Capitale-Nationale + Chaudière-Appalaches
+		'Lévis',
+		'Sainte-Foy',
+		'Beauport',
+		'Charlesbourg',
+		// Mauricie + Centre-du-Québec
+		'Trois-Rivières',
+		'Drummondville',
+		'Victoriaville',
+		'Shawinigan',
+		// Saguenay
+		'Saguenay',
+		'Chicoutimi',
+		'Jonquière',
+		'Alma',
+		// Grand Montréal
 		'Longueuil',
 		'Brossard',
 		'Saint-Jérôme',
@@ -41,17 +72,12 @@ export const SITE = {
 		'Repentigny',
 		'Mascouche',
 		'Blainville',
-		'Boisbriand',
-		'Sainte-Thérèse',
-		'Saint-Eustache',
 		'Mirabel',
 		'Vaudreuil-Dorion',
 		'Châteauguay',
 		'Saint-Hyacinthe',
 		'Saint-Jean-sur-Richelieu',
 		'Granby',
-		'Drummondville',
-		'Trois-Rivières',
 		'Sherbrooke',
 		'Gatineau',
 		// Provincia + país (para SEO Canadá)
@@ -92,27 +118,27 @@ export const seoData: Record<
 	}
 > = {
 	fr: {
-		title: "Mini Excavation Québec | Drain Français & Fissure | Érable RBQ",
+		title: "Mini Excavation Érable | Drain Français, Fissure & Excavation Québec | RBQ 5823-7736-01",
 		description:
-			"⭐ Mini Excavation #1 au Québec depuis 15 ans. Drain français, excavation, réparation fissure fondation, démolition. Certifié RBQ APCHQ. Soumission gratuite 24h ☎ 514-830-9973",
+			"⭐ Mini Excavations Érable — entrepreneur excavation certifié RBQ 5823-7736-01. Drain français, fondation, fissure, démolition au Bas-Saint-Laurent, Québec, Montréal. Soumission gratuite ☎ 514-830-9973",
 		keywords:
-			"mini excavation, mini excavation Québec, mini excavation Montréal, mini excavations, mini-excavation, mini-pelle, drain français, drain français Québec, drain français Montréal, excavation Québec, excavation Montréal, fissure fondation, réparation fissure, Mini Excavations Érable, RBQ Québec",
+			"mini excavation, mini excavation Québec, mini excavation Bas-Saint-Laurent, mini excavation Rivière-du-Loup, mini excavation Saint-Hubert-de-Rivière-du-Loup, mini excavation Montréal, mini-pelle, drain français, drain français Québec, drain français Bas-Saint-Laurent, drain français Rivière-du-Loup, excavation Québec, excavation Bas-Saint-Laurent, fissure fondation, réparation fissure, fondation Québec, démolition Québec, entrepreneur RBQ, Mini Excavations Érable, RBQ 5823-7736-01",
 		ogLocale: "fr_CA"
 	},
 	en: {
-		title: "Mini Excavation Quebec | French Drain & Crack Repair | Érable RBQ",
+		title: "Mini Excavations Érable | French Drain, Foundation Crack & Excavation Quebec | RBQ 5823-7736-01",
 		description:
-			"⭐ Mini Excavation #1 in Quebec for 15 years. French drain, excavation, foundation crack repair, demolition. RBQ APCHQ certified. Free quote 24h ☎ 514-830-9973",
+			"⭐ Mini Excavations Érable — certified RBQ 5823-7736-01 excavation contractor. French drain, foundation, crack repair, demolition across Bas-Saint-Laurent, Quebec, Montreal. Free quote ☎ 514-830-9973",
 		keywords:
-			"mini excavation, mini excavation Quebec, mini excavation Montreal, mini excavations, mini-excavation, mini-excavator, french drain, french drain Quebec, french drain Montreal, excavation Quebec, excavation Montreal, foundation crack, crack repair, Mini Excavations Erable, RBQ Quebec",
+			"mini excavation, mini excavation Quebec, mini excavation Bas-Saint-Laurent, mini excavation Riviere-du-Loup, mini excavation Saint-Hubert-de-Riviere-du-Loup, mini excavation Montreal, mini-excavator, french drain, french drain Quebec, french drain Bas-Saint-Laurent, french drain Riviere-du-Loup, excavation Quebec, excavation Bas-Saint-Laurent, foundation crack, crack repair, foundation Quebec, demolition Quebec, RBQ contractor, Mini Excavations Erable, RBQ 5823-7736-01",
 		ogLocale: "en_CA"
 	},
 	es: {
-		title: "Mini Excavación Quebec | Drenaje Francés y Grietas | Érable RBQ",
+		title: "Mini Excavations Érable | Drenaje Francés, Grietas y Excavación Quebec | RBQ 5823-7736-01",
 		description:
-			"⭐ Mini Excavación #1 en Quebec desde hace 15 años. Drenaje francés, excavación, reparación grietas cimientos, demolición. Certificado RBQ APCHQ. Cotización gratuita 24h ☎ 514-830-9973",
+			"⭐ Mini Excavations Érable — contratista de excavación certificado RBQ 5823-7736-01. Drenaje francés, cimientos, reparación de grietas, demolición en Bas-Saint-Laurent, Quebec, Montreal. Cotización gratis ☎ 514-830-9973",
 		keywords:
-			"mini excavación, mini excavación Quebec, mini excavación Montreal, mini excavaciones, mini-excavación, mini-excavadora, drenaje francés, drenaje francés Quebec, drenaje francés Montreal, excavación Quebec, excavación Montreal, grieta cimientos, reparación grieta, Mini Excavations Erable, RBQ Quebec",
+			"mini excavación, mini excavación Quebec, mini excavación Bas-Saint-Laurent, mini excavación Riviere-du-Loup, mini excavación Saint-Hubert-de-Riviere-du-Loup, mini excavación Montreal, mini-excavadora, drenaje francés, drenaje francés Quebec, drenaje francés Bas-Saint-Laurent, drenaje francés Riviere-du-Loup, excavación Quebec, excavación Bas-Saint-Laurent, grieta cimientos, reparación grieta, cimientos Quebec, demolición Quebec, contratista RBQ, Mini Excavations Erable, RBQ 5823-7736-01",
 		ogLocale: "es_ES"
 	}
 };
@@ -149,8 +175,10 @@ export function localBusinessJsonLd(lang: Lang) {
 				: 'Excellence in excavation since 2010',
 		address: {
 			'@type': 'PostalAddress',
+			...(SITE.address.streetAddress ? { streetAddress: SITE.address.streetAddress } : {}),
 			addressLocality: SITE.address.addressLocality,
 			addressRegion: SITE.address.addressRegion,
+			...(SITE.address.postalCode ? { postalCode: SITE.address.postalCode } : {}),
 			addressCountry: SITE.address.addressCountry
 		},
 		geo: {
@@ -431,8 +459,10 @@ export function organizationJsonLd() {
 		],
 		address: {
 			'@type': 'PostalAddress',
+			...(SITE.address.streetAddress ? { streetAddress: SITE.address.streetAddress } : {}),
 			addressLocality: SITE.address.addressLocality,
 			addressRegion: SITE.address.addressRegion,
+			...(SITE.address.postalCode ? { postalCode: SITE.address.postalCode } : {}),
 			addressCountry: SITE.address.addressCountry
 		},
 		contactPoint: {
@@ -472,8 +502,10 @@ export function professionalServiceJsonLd(lang: Lang) {
 		priceRange: SITE.priceRange,
 		address: {
 			'@type': 'PostalAddress',
+			...(SITE.address.streetAddress ? { streetAddress: SITE.address.streetAddress } : {}),
 			addressLocality: SITE.address.addressLocality,
 			addressRegion: SITE.address.addressRegion,
+			...(SITE.address.postalCode ? { postalCode: SITE.address.postalCode } : {}),
 			addressCountry: SITE.address.addressCountry
 		},
 		areaServed: SITE.areaServed.map((a) => ({ '@type': 'AdministrativeArea', name: a })),
