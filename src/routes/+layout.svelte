@@ -67,11 +67,6 @@
 		breadcrumbJsonLd([{ name: 'Accueil', url: SITE.url }])
 	];
 
-	$: isUrgences = $page.url.pathname.startsWith('/urgences');
-	$: isStandalone =
-		$page.url.pathname.startsWith('/mi/admin') ||
-		$page.url.pathname.startsWith('/compte') ||
-		$page.url.pathname.startsWith('/soumission');
 
 	type MenuItem = {
 		text: string;
@@ -193,43 +188,14 @@
 		]
 	};
 
-	const URGENCES_NAV: Record<'fr' | 'en' | 'es', MenuItem[]> = {
-		fr: [
-			{ text: 'Urgence', link: '#home' },
-			{ text: 'Inspection', link: '#inspection' },
-			{ text: 'Garantie', link: '#garantie' },
-			{ text: 'Avis', link: '#avis' },
-			{ text: 'Retour au site', link: '/' }
-		],
-		es: [
-			{ text: 'Urgencia', link: '#home' },
-			{ text: 'Inspección', link: '#inspection' },
-			{ text: 'Garantía', link: '#garantie' },
-			{ text: 'Reseñas', link: '#avis' },
-			{ text: 'Volver al sitio', link: '/' }
-		],
-		en: [
-			{ text: 'Emergency', link: '#home' },
-			{ text: 'Inspection', link: '#inspection' },
-			{ text: 'Warranty', link: '#garantie' },
-			{ text: 'Reviews', link: '#avis' },
-			{ text: 'Back to site', link: '/' }
-		]
-	};
-
-	$: menuOptions = isUrgences ? URGENCES_NAV[currentLang] : NAV[currentLang];
+	$: menuOptions = NAV[currentLang];
 </script>
 
 <GlobalSchemas jsonLd={jsonLdSchemas} />
 
-{#if isStandalone}
-	<slot />
-{:else}
-	<Topbar2 {menuOptions} {logo} />
-	<slot />
-	<FloatingActions />
-	<StickyCTA />
-	<ExitIntentModal />
-{/if}
-
+<Topbar2 {menuOptions} {logo} />
+<slot />
+<FloatingActions />
+<StickyCTA />
+<ExitIntentModal />
 <ConsentBanner />

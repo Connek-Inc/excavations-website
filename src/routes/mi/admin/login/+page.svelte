@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Lock, Mail, ArrowRight, ArrowLeft, Loader2, ShieldCheck, AlertCircle, Home } from 'lucide-svelte';
+	import { Lock, Mail, ArrowRight, Loader2, ShieldCheck, AlertCircle } from 'lucide-svelte';
 
 	// Static client-side gate. The real backend (DB + JWT sessions) is
 	// disabled on this deployment, so we accept a fixed pair just to
@@ -43,32 +43,13 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<div class="min-h-screen bg-zinc-950 relative overflow-hidden flex flex-col">
-	<header class="relative z-20 border-b border-zinc-900/80 bg-zinc-950/80 backdrop-blur-md">
-		<div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-			<a
-				href="/"
-				class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-[#febd17] transition-colors font-medium"
-			>
-				<ArrowLeft class="w-4 h-4" />
-				<span>Retour au site</span>
-			</a>
-			<a
-				href="/"
-				class="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-white transition-colors"
-			>
-				<Home class="w-3.5 h-3.5" />
-				<span class="hidden sm:inline">Accueil</span>
-			</a>
-		</div>
-	</header>
-
+<div class="min-h-screen bg-zinc-950 relative overflow-hidden">
 	<div
 		class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_50%,transparent_100%)] pointer-events-none"
 	></div>
 
-	<div class="relative z-10 flex-1 flex items-center justify-center px-4 py-12 w-full max-w-md mx-auto">
-		<div class="w-full">
+	<div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-24">
+		<div class="w-full max-w-md">
 			<div class="text-center mb-8">
 				<div class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-[#febd17] mb-4">
 					<ShieldCheck class="w-7 h-7 text-black" />

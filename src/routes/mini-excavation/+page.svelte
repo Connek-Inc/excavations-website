@@ -312,7 +312,7 @@
 		'Montréal', 'Laval', 'Longueuil', 'Brossard', 'Boucherville', 'Saint-Jérôme',
 		'Terrebonne', 'Repentigny', 'Mascouche', 'Blainville', 'Mont-Tremblant',
 		'Joliette', 'Vaudreuil-Dorion', 'Saint-Hyacinthe', 'Verdun', 'Westmount',
-		'Saint-Laurent', 'Anjou', 'Pointe-Claire', 'LaSalle', 'Rosemère',
+		'Saint-Laurent', 'Anjou', 'Pointe-Claire', 'LaSalle',
 		'Sainte-Thérèse', 'Mirabel', 'Saint-Eustache', 'Beloeil', 'Sainte-Julie'
 	];
 </script>
