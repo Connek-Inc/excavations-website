@@ -160,7 +160,7 @@
 	}
 
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const RESEND_ENDPOINT = '/api/send-email';
+	const RESEND_ENDPOINT = ''; // Same as SoumissionForm — paste Cloudflare Worker URL once deployed
 	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
 	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
@@ -292,18 +292,20 @@
 		};
 
 		let ok = false;
-		try {
-			const res = await fetch(RESEND_ENDPOINT, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-				body: JSON.stringify({ type: 'urgence', ...sharedPayload }),
-				signal: controller.signal
-			});
-			if (res.ok) {
-				const data = await res.json().catch(() => ({}));
-				ok = data?.ok === true;
-			}
-		} catch {}
+		if (RESEND_ENDPOINT) {
+			try {
+				const res = await fetch(RESEND_ENDPOINT, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+					body: JSON.stringify({ type: 'urgence', ...sharedPayload }),
+					signal: controller.signal
+				});
+				if (res.ok) {
+					const data = await res.json().catch(() => ({}));
+					ok = data?.ok === true;
+				}
+			} catch {}
+		}
 
 		if (!ok) {
 			try {

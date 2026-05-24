@@ -27,10 +27,11 @@
 	export let showHero: boolean = false;
 	export let showSidebar: boolean = true;
 
-	// Primary: same-origin Resend endpoint (requires Node.js runtime).
-	// Fallback: Web3Forms (works on static deploy if Node.js is off).
+	// Primary: Cloudflare Worker proxy → Resend (the real key lives only on the Worker).
+	// Once you deploy the Worker, paste its URL here. Empty = skip and use Web3Forms.
+	// Fallback: Web3Forms (works without any server side).
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const RESEND_ENDPOINT = '/api/send-email';
+	const RESEND_ENDPOINT = ''; // e.g. 'https://send-email.your-account.workers.dev'
 	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
 	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
@@ -199,21 +200,23 @@
 		};
 
 		let ok = false;
-		try {
-			const ctrl = new AbortController();
-			const timeoutId = setTimeout(() => ctrl.abort(), 6000);
-			const res = await fetch(RESEND_ENDPOINT, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-				signal: ctrl.signal,
-				body: JSON.stringify({ type: 'soumission', ...sharedPayload })
-			});
-			clearTimeout(timeoutId);
-			if (res.ok) {
-				const data = await res.json().catch(() => ({}));
-				ok = data?.ok === true;
-			}
-		} catch {}
+		if (RESEND_ENDPOINT) {
+			try {
+				const ctrl = new AbortController();
+				const timeoutId = setTimeout(() => ctrl.abort(), 6000);
+				const res = await fetch(RESEND_ENDPOINT, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+					signal: ctrl.signal,
+					body: JSON.stringify({ type: 'soumission', ...sharedPayload })
+				});
+				clearTimeout(timeoutId);
+				if (res.ok) {
+					const data = await res.json().catch(() => ({}));
+					ok = data?.ok === true;
+				}
+			} catch {}
+		}
 
 		if (!ok) {
 			// Fallback: Web3Forms
