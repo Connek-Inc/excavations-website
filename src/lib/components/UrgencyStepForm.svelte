@@ -48,38 +48,65 @@
         if (step > 1) step--;
     }
 
+    // FormSubmit.co — zero-config, no key required.
+    // Same endpoint as the main soumission form (one-time activation
+    // happens via email confirmation to the admin inbox).
+    const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
+    const FORM_ENDPOINT = `https://formsubmit.co/ajax/${ADMIN_EMAIL}`;
+
+    function buildMailtoFallback() {
+        const subject = `URGENCE — ${formData.name} (${formData.problemType})`;
+        const body = [
+            `URGENCE — ${formData.urgencyLevel}`,
+            '',
+            `Nom: ${formData.name}`,
+            `Courriel: ${formData.email}`,
+            `Téléphone: ${formData.phone}`,
+            '',
+            `Type de problème: ${formData.problemType}`,
+            `Niveau d'urgence: ${formData.urgencyLevel}`,
+            '',
+            `Détails: ${formData.messageText || '—'}`
+        ].join('\n');
+        return `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    let mailtoFallback = '';
+
     const submitForm = async () => {
         if (!isStep3Valid || sending) return;
-        
+
         sending = true;
         errorMessage = '';
-        
-        try {
-            const combinedMessage = `PROBLÈME: ${formData.problemType}\nURGENCE: ${formData.urgencyLevel}\nDÉTAILS: ${formData.messageText || 'Aucun détail'}`;
+        mailtoFallback = buildMailtoFallback();
 
-            const response = await fetch('https://api.web3forms.com/submit', {
+        try {
+            const response = await fetch(FORM_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                 body: JSON.stringify({
-                    access_key: '0a8cc60e-d18a-4a90-95f5-ed29eccf6651',
-                    subject: `🚨 URGENCE — ${formData.name}`,
-                    from_name: 'Mini Excavations Érable - URGENCE',
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    message: combinedMessage
+                    _subject: `URGENCE — ${formData.name} (${formData.problemType})`,
+                    _template: 'table',
+                    _captcha: 'false',
+                    Type_urgence: 'URGENCE',
+                    Nom: formData.name,
+                    Courriel: formData.email,
+                    Telephone: formData.phone,
+                    Type_probleme: formData.problemType,
+                    Niveau_urgence: formData.urgencyLevel,
+                    Details: formData.messageText || '—'
                 })
             });
 
-            const payload = await response.json();
+            const payload = await response.json().catch(() => ({}));
 
-            if (!response.ok || !payload.success) {
-                throw new Error(payload.message || 'Server error');
+            if (!response.ok || (payload.success !== undefined && payload.success !== true && payload.success !== 'true')) {
+                throw new Error(payload.message || "Le service a refusé l'envoi.");
             }
-            
+
             success = true;
-            
-            // 🎯 Track Google Ads conversion + GA4 lead event
+
+            // Google Ads conversion + GA4 lead event
             import('$lib/analytics/gtag').then(({ trackContactFormSubmit }) => {
                 trackContactFormSubmit({
                     value: 1.0,
@@ -89,14 +116,17 @@
                 });
             });
 
-            step = 4; // Move to success step
-            setTimeout(() => { 
-                success = false; 
+            step = 4;
+            setTimeout(() => {
+                success = false;
                 step = 1;
                 formData = { problemType: '', urgencyLevel: '', name: '', phone: '', email: '', messageText: '' };
+                mailtoFallback = '';
             }, 8000);
-        } catch (err) {
-            errorMessage = $language === 'en' ? `Error: ${err.message}` : `Erreur: ${err.message}`;
+        } catch (err: any) {
+            errorMessage =
+                ($language === 'en' ? 'Network error. ' : 'Erreur réseau. ') +
+                ($language === 'en' ? 'Use the email or phone button below.' : 'Utilisez le bouton courriel ou téléphone ci-dessous.');
         } finally {
             sending = false;
         }
@@ -208,8 +238,24 @@
             </div>
 
             {#if errorMessage}
-                <div class="p-4 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 rounded-xl text-sm font-bold mt-4">
-                    {errorMessage}
+                <div class="p-4 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 rounded-xl text-sm mt-4 space-y-3">
+                    <p class="font-bold">{errorMessage}</p>
+                    {#if mailtoFallback}
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <a
+                                href={mailtoFallback}
+                                class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
+                            >
+                                {$language === 'en' ? 'Send by email now' : ($language === 'es' ? 'Enviar por correo ahora' : 'Envoyer par courriel maintenant')}
+                            </a>
+                            <a
+                                href="tel:+15148309973"
+                                class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-colors"
+                            >
+                                {$language === 'en' ? 'Call (514) 830-9973' : ($language === 'es' ? 'Llamar (514) 830-9973' : 'Appeler (514) 830-9973')}
+                            </a>
+                        </div>
+                    {/if}
                 </div>
             {/if}
 

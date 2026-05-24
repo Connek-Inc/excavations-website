@@ -18,8 +18,8 @@
 		<link rel="dns-prefetch" href="https://wa.me" />
 		<link rel="dns-prefetch" href="https://www.google.com/maps" />
 
-		<!-- ⚡ Preload critical hero image (LCP boost) -->
-		<link rel="preload" as="image" href="/_app/immutable/assets/banner-800.webp" type="image/webp" fetchpriority="high" media="(max-width: 768px)" />
+		<!-- Critical hero image is imported by +page.svelte; Vite hashes the path, so a fixed preload here would 404. -->
+
 
 		<!-- ⚡ Resource hints -->
 		<meta http-equiv="x-dns-prefetch-control" content="on" />

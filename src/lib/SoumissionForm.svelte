@@ -128,18 +128,18 @@
 	}
 </script>
 
-<div id="contact" class="text-white">
+<div id="contact" class="text-black dark:text-white">
 	{#if showHero}
 		<div class="mb-10 lg:mb-14">
 			<div
-				class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-4"
+				class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#febd17]/10 border border-[#febd17]/30 text-[#c9920f] dark:text-[#febd17] text-xs font-semibold uppercase tracking-wider mb-4"
 			>
 				<FileText class="h-3.5 w-3.5" /> Demande de soumission
 			</div>
-			<h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">
-				Obtenez votre <span class="text-amber-500">soumission</span>
+			<h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-black dark:text-white">
+				Obtenez votre <span class="text-[#c9920f] dark:text-[#febd17]">soumission</span>
 			</h1>
-			<p class="mt-3 text-zinc-400 max-w-2xl">
+			<p class="mt-3 text-gray-600 dark:text-zinc-400 max-w-2xl">
 				Remplissez le formulaire ci-dessous et notre équipe analysera votre projet. Vous recevrez
 				une offre détaillée par courriel rapidement.
 			</p>
@@ -155,7 +155,7 @@
 					<CheckCircle2 class="h-8 w-8 text-emerald-400" />
 				</div>
 				<h2 class="text-2xl sm:text-3xl font-bold mb-3">Demande reçue avec succès!</h2>
-				<p class="text-zinc-400 mb-8 max-w-xl mx-auto">
+				<p class="text-gray-600 dark:text-zinc-400 mb-8 max-w-xl mx-auto">
 					Notre équipe analyse votre projet. Nous vous enverrons une offre détaillée par courriel
 					dans les meilleurs délais. Pour une réponse immédiate, appelez-nous au
 					<a href="tel:+15148309973" class="text-[#febd17] font-semibold hover:underline">(514) 830-9973</a>.
@@ -170,7 +170,7 @@
 					</a>
 					<a
 						href="tel:+15148309973"
-						class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-zinc-700 hover:border-zinc-500 text-zinc-200 font-semibold transition-colors"
+						class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-gray-300 dark:border-zinc-700 hover:border-black dark:hover:border-zinc-500 text-gray-800 dark:text-zinc-200 font-semibold transition-colors"
 					>
 						<Phone class="h-4 w-4" />
 						(514) 830-9973
@@ -182,94 +182,94 @@
 		<div class="grid {showSidebar ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-8">
 			<form
 				on:submit|preventDefault={submitForm}
-				class="{showSidebar ? 'lg:col-span-2' : ''} bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-6"
+				class="{showSidebar ? 'lg:col-span-2' : ''} bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-6"
 			>
 				<div>
 					<h2 class="text-xl font-bold mb-1">Vos coordonnées</h2>
-					<p class="text-sm text-zinc-500">Nous utilisons ces informations pour vous joindre.</p>
+					<p class="text-sm text-gray-500 dark:text-zinc-500">Nous utilisons ces informations pour vous joindre.</p>
 				</div>
 
 				<div class="grid sm:grid-cols-2 gap-4">
 					<div>
-						<label for="nom" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Nom complet *</label>
+						<label for="nom" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Nom complet *</label>
 						<input
 							id="nom"
 							type="text"
 							bind:value={form.client_nom}
 							placeholder="Jean Tremblay"
 							required
-							class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+							class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 						/>
 					</div>
 					<div>
-						<label for="tel" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Téléphone *</label>
+						<label for="tel" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Téléphone *</label>
 						<div class="relative">
-							<Phone class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+							<Phone class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
 							<input
 								id="tel"
 								type="tel"
 								bind:value={form.client_telephone}
 								placeholder="(418) 555-1234"
 								required
-								class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+								class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 							/>
 						</div>
 					</div>
 				</div>
 
 				<div>
-					<label for="email" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Courriel *</label>
+					<label for="email" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Courriel *</label>
 					<div class="relative">
-						<Mail class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+						<Mail class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
 						<input
 							id="email"
 							type="email"
 							bind:value={form.client_email}
 							placeholder="jean@exemple.com"
 							required
-							class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+							class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 						/>
 					</div>
 				</div>
 
 				<div>
-					<label for="adr" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Adresse personnelle (optionnel)</label>
+					<label for="adr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Adresse personnelle (optionnel)</label>
 					<input
 						id="adr"
 						type="text"
 						bind:value={form.client_adresse}
 						placeholder="123 rue Principale, Ville"
-						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 					/>
 				</div>
 
-				<div class="border-t border-zinc-800 pt-6">
+				<div class="border-t border-gray-200 dark:border-zinc-800 pt-6">
 					<h2 class="text-xl font-bold mb-1">Votre projet</h2>
-					<p class="text-sm text-zinc-500">Décrivez les travaux à effectuer.</p>
+					<p class="text-sm text-gray-500 dark:text-zinc-500">Décrivez les travaux à effectuer.</p>
 				</div>
 
 				<div>
-					<label for="padr" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Adresse du projet *</label>
+					<label for="padr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Adresse du projet *</label>
 					<div class="relative">
-						<MapPin class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+						<MapPin class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
 						<input
 							id="padr"
 							type="text"
 							bind:value={form.projet_adresse}
 							placeholder="456 chemin du Lac, Saint-Hubert-de-Rivière-du-Loup, QC"
 							required
-							class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+							class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 						/>
 					</div>
 				</div>
 
 				<div>
-					<label for="ptype" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Type de projet *</label>
+					<label for="ptype" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Type de projet *</label>
 					<select
 						id="ptype"
 						bind:value={form.projet_type}
 						required
-						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white outline-none transition-colors"
+						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white outline-none transition-colors"
 					>
 						<option value="" disabled>Sélectionnez un type…</option>
 						{#each projetTypes as t}
@@ -279,28 +279,28 @@
 				</div>
 
 				<div>
-					<label for="desc" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Description du projet *</label>
+					<label for="desc" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Description du projet *</label>
 					<textarea
 						id="desc"
 						rows="5"
 						bind:value={form.projet_description}
 						placeholder="Décrivez les travaux: nature, surface, accès, contraintes, échéancier souhaité…"
 						required
-						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors resize-none"
+						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors resize-none"
 					></textarea>
-					<div class="text-right text-xs mt-1 {descValid ? 'text-emerald-400' : 'text-zinc-500'}">
+					<div class="text-right text-xs mt-1 {descValid ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-zinc-500'}">
 						{form.projet_description.length} caractères
 					</div>
 				</div>
 
 				<div>
-					<label for="notes" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Détails additionnels (optionnel)</label>
+					<label for="notes" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Détails additionnels (optionnel)</label>
 					<textarea
 						id="notes"
 						rows="3"
 						bind:value={form.notes_client}
 						placeholder="Particularités du terrain, échéancier souhaité…"
-						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors resize-none"
+						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors resize-none"
 					></textarea>
 				</div>
 
@@ -314,8 +314,8 @@
 							>
 								<Mail class="h-4 w-4" /> Envoyer par courriel maintenant
 							</a>
-							<p class="text-zinc-400 text-xs">
-								Ou appelez-nous au <a href="tel:+15148309973" class="text-[#febd17] underline">(514) 830-9973</a>.
+							<p class="text-gray-600 dark:text-zinc-400 text-xs">
+								Ou appelez-nous au <a href="tel:+15148309973" class="text-[#c9920f] dark:text-[#febd17] underline">(514) 830-9973</a>.
 							</p>
 						{/if}
 					</div>
@@ -345,9 +345,9 @@
 
 			{#if showSidebar}
 				<aside class="lg:col-span-1 space-y-6">
-					<div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sticky top-24">
+					<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 sticky top-24">
 						<div class="flex items-center gap-2 mb-4">
-							<Clock class="h-5 w-5 text-amber-500" />
+							<Clock class="h-5 w-5 text-[#c9920f] dark:text-[#febd17]" />
 							<h3 class="font-bold">Comment ça fonctionne?</h3>
 						</div>
 						<ol class="space-y-4 text-sm">
@@ -357,7 +357,7 @@
 								>
 									1
 								</span>
-								<span class="text-zinc-300">Vous remplissez ce formulaire.</span>
+								<span class="text-gray-700 dark:text-zinc-300">Vous remplissez ce formulaire.</span>
 							</li>
 							<li class="flex gap-3">
 								<span
@@ -365,7 +365,7 @@
 								>
 									2
 								</span>
-								<span class="text-zinc-300">Notre équipe analyse votre projet.</span>
+								<span class="text-gray-700 dark:text-zinc-300">Notre équipe analyse votre projet.</span>
 							</li>
 							<li class="flex gap-3">
 								<span
@@ -373,7 +373,7 @@
 								>
 									3
 								</span>
-								<span class="text-zinc-300">Vous recevez une offre détaillée par courriel.</span>
+								<span class="text-gray-700 dark:text-zinc-300">Vous recevez une offre détaillée par courriel.</span>
 							</li>
 							<li class="flex gap-3">
 								<span
@@ -381,7 +381,7 @@
 								>
 									4
 								</span>
-								<span class="text-zinc-300"
+								<span class="text-gray-700 dark:text-zinc-300"
 									>Vous pouvez accepter, contre-offrir, ou demander des modifications.</span
 								>
 							</li>
@@ -391,14 +391,14 @@
 								>
 									5
 								</span>
-								<span class="text-zinc-300">Une fois acceptée, signez électroniquement.</span>
+								<span class="text-gray-700 dark:text-zinc-300">Une fois acceptée, signez électroniquement.</span>
 							</li>
 						</ol>
 					</div>
 
-					<div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+					<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6">
 						<div class="flex items-center gap-2 mb-3">
-							<Shield class="h-5 w-5 text-amber-500" />
+							<Shield class="h-5 w-5 text-[#c9920f] dark:text-[#febd17]" />
 							<h3 class="font-bold">Entrepreneur certifié</h3>
 						</div>
 						<p class="text-sm text-zinc-400 mb-2">

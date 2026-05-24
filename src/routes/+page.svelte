@@ -436,7 +436,7 @@
     </section>
 
     <!-- Guarantee Banner -->
-    <div class="bg-black dark:bg-black text-white py-12 relative overflow-hidden border-y border-white/10">
+    <div class="bg-gray-900 dark:bg-black text-white py-12 relative overflow-hidden border-y border-gray-800 dark:border-white/10">
         <!-- Animated decorative line -->
         <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#febd17] to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#febd17] to-transparent"></div>
@@ -450,17 +450,17 @@
     </div>
 
     <!-- Soumission Form Section -->
-    <section class="py-16 bg-zinc-950 transition-colors duration-300">
+    <section class="py-16 bg-white dark:bg-zinc-950 border-y border-gray-100 dark:border-zinc-900 transition-colors duration-300">
         <div class="container max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-10 lg:mb-14 max-w-3xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-zinc-800 text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-800 text-gray-600 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-4">
                     {currentLang === 'fr' ? 'Demande de soumission' : currentLang === 'es' ? 'Solicitud de cotización' : 'Quote request'}
                 </div>
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-black dark:text-white">
                     {currentLang === 'fr' ? 'Obtenez votre' : currentLang === 'es' ? 'Obtenga su' : 'Get your'}
-                    <span class="text-[#febd17]">{currentLang === 'fr' ? 'soumission' : currentLang === 'es' ? 'cotización' : 'quote'}</span>
+                    <span class="text-[#c9920f] dark:text-[#febd17]">{currentLang === 'fr' ? 'soumission' : currentLang === 'es' ? 'cotización' : 'quote'}</span>
                 </h2>
-                <p class="mt-3 text-zinc-400">
+                <p class="mt-3 text-gray-600 dark:text-zinc-400">
                     {currentLang === 'fr' ? 'Remplissez le formulaire et notre équipe vous enverra une offre détaillée par courriel rapidement.' : currentLang === 'es' ? 'Complete el formulario y nuestro equipo le enviará una oferta detallada por correo rápidamente.' : 'Fill out the form and our team will send you a detailed offer by email shortly.'}
                 </p>
             </div>
@@ -695,19 +695,18 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-24 bg-black text-white relative overflow-hidden" aria-labelledby="testimonials-heading">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(254,189,23,0.1),transparent_70%)]"></div>
+    <section class="py-24 bg-white dark:bg-black text-black dark:text-white relative overflow-hidden border-y border-gray-100 dark:border-zinc-900" aria-labelledby="testimonials-heading">
         <div class="container relative z-10">
             <div class="text-center mb-16 max-w-3xl mx-auto">
                 <div class="flex justify-center gap-1 mb-4">
                     {#each Array(5) as _}
-                        <span class="text-[#febd17] text-2xl">★</span>
+                        <span class="text-[#c9920f] dark:text-[#febd17] text-2xl">★</span>
                     {/each}
                 </div>
-                <p class="text-[#febd17] font-bold tracking-wider uppercase text-sm mb-2">
+                <p class="text-[#c9920f] dark:text-[#febd17] font-bold tracking-wider uppercase text-sm mb-2">
                     4.9/5 — 127 {currentLang === 'fr' ? 'avis vérifiés' : currentLang === 'es' ? 'reseñas verificadas' : 'verified reviews'}
                 </p>
-                <h2 id="testimonials-heading" class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">
+                <h2 id="testimonials-heading" class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-black dark:text-white">
                     {currentLang === 'fr' ? 'Nos clients en parlent' : currentLang === 'es' ? 'Nuestros clientes hablan' : 'What clients say'}
                 </h2>
             </div>
@@ -736,20 +735,20 @@
                         textEs: 'Excavación para piscina. Trabajo limpio, plazos respetados y precio honesto. Un equipo confiable.'
                     }
                 ] as t, i}
-                    <article class="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-3xl p-8 hover:border-[#febd17]/50 transition-all" style="animation: fadeInUp 0.6s ease-out {i * 0.15}s both;" itemscope itemtype="https://schema.org/Review">
+                    <article class="bg-gray-50 dark:bg-zinc-900/50 backdrop-blur border border-gray-200 dark:border-zinc-800 rounded-3xl p-8 hover:border-[#febd17]/50 transition-colors" style="animation: fadeInUp 0.6s ease-out {i * 0.15}s both;" itemscope itemtype="https://schema.org/Review">
                         <div class="flex gap-1 mb-4">
-                            {#each Array(5) as _}<span class="text-[#febd17]">★</span>{/each}
+                            {#each Array(5) as _}<span class="text-[#c9920f] dark:text-[#febd17]">★</span>{/each}
                         </div>
-                        <p class="text-gray-300 leading-relaxed mb-6 italic" itemprop="reviewBody">
+                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6 italic" itemprop="reviewBody">
                             "{currentLang === 'fr' ? t.textFr : currentLang === 'es' ? t.textEs : t.textEn}"
                         </p>
-                        <div class="flex items-center gap-3 pt-4 border-t border-zinc-800">
+                        <div class="flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
                             <div class="w-10 h-10 rounded-full bg-[#febd17] flex items-center justify-center text-black font-bold">
                                 {t.nameFr[0]}
                             </div>
                             <div itemprop="author" itemscope itemtype="https://schema.org/Person">
-                                <p class="font-bold text-sm" itemprop="name">{currentLang === 'fr' ? t.nameFr : currentLang === 'es' ? t.nameEs : t.nameEn}</p>
-                                <p class="text-xs text-zinc-500">{t.location}</p>
+                                <p class="font-bold text-sm text-black dark:text-white" itemprop="name">{currentLang === 'fr' ? t.nameFr : currentLang === 'es' ? t.nameEs : t.nameEn}</p>
+                                <p class="text-xs text-gray-500 dark:text-zinc-500">{t.location}</p>
                             </div>
                         </div>
                     </article>
@@ -759,34 +758,34 @@
     </section>
 
     <!-- STATS — performance + trust -->
-    <section class="py-16 md:py-20 bg-black text-white" aria-labelledby="stats-heading">
+    <section class="py-16 md:py-20 bg-gray-50 dark:bg-black text-black dark:text-white border-b border-gray-100 dark:border-zinc-900" aria-labelledby="stats-heading">
 
         <div class="container max-w-6xl px-4">
             <div class="text-center mb-10 max-w-3xl mx-auto">
-                <h2 id="stats-heading" class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3">
+                <h2 id="stats-heading" class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3 text-black dark:text-white">
                     {currentLang === 'fr' ? 'Les chiffres' : currentLang === 'es' ? 'Los números' : 'The numbers'}
-                    <span class="text-[#febd17]">
+                    <span class="text-[#c9920f] dark:text-[#febd17]">
                         {currentLang === 'fr' ? 'qui parlent.' : currentLang === 'es' ? 'que hablan.' : 'that speak.'}
                     </span>
                 </h2>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
-                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
-                    <p class="text-4xl md:text-5xl font-black text-[#febd17]">500+</p>
-                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Projets' : currentLang === 'es' ? 'Proyectos' : 'Projects'}</p>
+                <div class="text-center bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black text-[#c9920f] dark:text-[#febd17]">500+</p>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Projets' : currentLang === 'es' ? 'Proyectos' : 'Projects'}</p>
                 </div>
-                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
-                    <p class="text-4xl md:text-5xl font-black text-[#febd17]">15</p>
-                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? "Ans d'expertise" : currentLang === 'es' ? 'Años' : 'Years'}</p>
+                <div class="text-center bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black text-[#c9920f] dark:text-[#febd17]">15</p>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? "Ans d'expertise" : currentLang === 'es' ? 'Años' : 'Years'}</p>
                 </div>
-                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
-                    <p class="text-4xl md:text-5xl font-black text-[#febd17]">4.9★</p>
-                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Note Google' : currentLang === 'es' ? 'Google' : 'Google rating'}</p>
+                <div class="text-center bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black text-[#c9920f] dark:text-[#febd17]">4.9★</p>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Note Google' : currentLang === 'es' ? 'Google' : 'Google rating'}</p>
                 </div>
-                <div class="text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5">
-                    <p class="text-4xl md:text-5xl font-black text-[#febd17]">24h</p>
-                    <p class="text-xs md:text-sm text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Soumission' : currentLang === 'es' ? 'Cotización' : 'Quote'}</p>
+                <div class="text-center bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+                    <p class="text-4xl md:text-5xl font-black text-[#c9920f] dark:text-[#febd17]">24h</p>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-zinc-400 uppercase tracking-wider mt-1">{currentLang === 'fr' ? 'Soumission' : currentLang === 'es' ? 'Cotización' : 'Quote'}</p>
                 </div>
             </div>
         </div>
