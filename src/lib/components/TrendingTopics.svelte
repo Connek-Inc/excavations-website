@@ -6,7 +6,7 @@
 
 	const t = {
 		fr: {
-			tag: '🔥 Tendances 2026',
+			tag: 'Tendances 2026',
 			title: 'Ce que les Québécois recherchent',
 			subtitle: 'Les questions et services les plus demandés dans la région métropolitaine cette année.',
 			topics: [
@@ -19,7 +19,7 @@
 			]
 		},
 		en: {
-			tag: '🔥 2026 Trends',
+			tag: '2026 Trends',
 			title: 'What Quebecers are searching for',
 			subtitle: 'The most requested questions and services in the metropolitan area this year.',
 			topics: [
@@ -32,7 +32,7 @@
 			]
 		},
 		es: {
-			tag: '🔥 Tendencias 2026',
+			tag: 'Tendencias 2026',
 			title: 'Lo que buscan los quebequenses',
 			subtitle: 'Las preguntas y servicios más solicitados en el área metropolitana este año.',
 			topics: [
@@ -49,14 +49,12 @@
 	$: c = t[lang];
 </script>
 
-<section class="py-16 md:py-24 bg-gradient-to-b from-white via-yellow-50/40 to-white dark:from-black dark:via-zinc-950 dark:to-black relative overflow-hidden" aria-labelledby="trends-heading">
-	<!-- BG decoration -->
-	<div class="absolute top-0 right-0 w-96 h-96 bg-orange-500 rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
+<section class="py-16 md:py-24 bg-gray-50 dark:bg-zinc-950 border-y border-gray-100 dark:border-zinc-900" aria-labelledby="trends-heading">
 
-	<div class="container max-w-7xl px-4 md:px-6 relative z-10">
+	<div class="container max-w-7xl px-4 md:px-6">
 		<div class="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
-			<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 mb-5">
-				<span class="text-orange-600 dark:text-orange-400 font-black tracking-widest uppercase text-xs">{c.tag}</span>
+			<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 mb-5">
+				<span class="text-gray-700 dark:text-gray-300 font-semibold tracking-widest uppercase text-xs">{c.tag}</span>
 			</div>
 			<h2 id="trends-heading" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-black dark:text-white mb-4 leading-[1.05]">
 				{c.title}
@@ -70,29 +68,29 @@
 			{#each c.topics as topic, i}
 				<a
 					href={topic.link}
-					class="group relative bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 hover:border-[#febd17] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+					class="group relative bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 hover:border-gray-300 dark:hover:border-zinc-700 transition-colors"
 					style="animation: fadeInUp 0.6s ease-out {i * 0.08}s both;"
 				>
 					<!-- Trending tag -->
-					<span class="absolute top-4 right-4 inline-flex items-center px-2.5 py-1 rounded-full bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 text-[10px] font-black tracking-wider uppercase">
+					<span class="absolute top-4 right-4 inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 text-[10px] font-semibold tracking-wider uppercase">
 						{topic.tag}
 					</span>
 
 					<!-- Icon -->
-					<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#febd17] to-orange-500 flex items-center justify-center text-black mb-4 shadow-lg shadow-yellow-500/30 group-hover:scale-110 transition-transform">
-						<svelte:component this={topic.icon} class="w-6 h-6" />
+					<div class="w-11 h-11 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-[#c9920f] dark:text-[#febd17] mb-4">
+						<svelte:component this={topic.icon} class="w-5 h-5" />
 					</div>
 
-					<h3 class="text-lg md:text-xl font-black text-black dark:text-white mb-2 leading-tight pr-16">
+					<h3 class="text-lg md:text-xl font-bold text-black dark:text-white mb-2 leading-tight pr-16">
 						{topic.title}
 					</h3>
 					<p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
 						{topic.desc}
 					</p>
 
-					<span class="inline-flex items-center gap-1 text-sm font-bold text-[#febd17] group-hover:gap-2 transition-all">
+					<span class="inline-flex items-center gap-1 text-sm font-semibold text-[#c9920f] dark:text-[#febd17] group-hover:gap-2 transition-all">
 						{lang === 'fr' ? 'En savoir plus' : lang === 'es' ? 'Saber más' : 'Learn more'}
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
 					</span>
 				</a>
 			{/each}

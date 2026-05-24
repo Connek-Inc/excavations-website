@@ -123,7 +123,7 @@
 						<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> RBQ
 					</span>
 					<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300">
-						⭐ 4.9/5 (127)
+						<span class="text-[#febd17]">★</span> 4.9/5 (127)
 					</span>
 					<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300">
 						15+ ans

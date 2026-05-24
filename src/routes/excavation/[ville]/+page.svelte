@@ -207,7 +207,8 @@
 					<CheckCircle2 class="w-3 h-3" /> RBQ • APCHQ • CMTQ
 				</span>
 				<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-xs font-semibold">
-					⚡ {lang === 'fr' ? '24h' : '24h'}
+					<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+					24h
 				</span>
 			</div>
 

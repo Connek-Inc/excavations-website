@@ -138,8 +138,8 @@
                             <svg class="w-7 h-7 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                             (514) 830-9973
                         </a>
-                        <a href="#inspection" class="group flex-1 inline-flex items-center justify-center gap-3 px-8 py-6 rounded-full bg-white/5 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-black font-bold text-xl transition-all hover:scale-105 active:scale-95">
-                            📋 {currentLang === 'fr' ? 'Demander Inspection' : currentLang === 'es' ? 'Pedir Inspección' : 'Request Inspection'}
+                        <a href="#inspection" class="group flex-1 inline-flex items-center justify-center gap-3 px-8 py-6 rounded-lg bg-white/5 border border-white/20 text-white hover:bg-white hover:text-black font-semibold text-lg transition-colors">
+                            {currentLang === 'fr' ? 'Demander Inspection' : currentLang === 'es' ? 'Pedir Inspección' : 'Request Inspection'}
                         </a>
                     </div>
 
@@ -181,9 +181,8 @@
                                 <p class="text-white font-black text-lg">Disponible 24/7</p>
                                 <p class="text-gray-400 text-sm">Équipe en alerte</p>
                             </div>
-                            <div class="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center border border-red-500/50 relative">
-                                <span class="absolute w-full h-full rounded-full bg-red-500/20 animate-ping"></span>
-                                🚨
+                            <div class="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center border border-red-500/50">
+                                <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                             </div>
                         </div>
                     </div>
@@ -219,7 +218,7 @@
                     <div class="space-y-6">
                         <div class="flex gap-4">
                             <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                                <span class="text-2xl text-blue-600 dark:text-blue-400">🚗</span>
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
                             </div>
                             <div>
                                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Déplacement sans frais.</h3>
@@ -228,7 +227,7 @@
                         </div>
                         <div class="flex gap-4">
                             <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                                <span class="text-2xl text-blue-600 dark:text-blue-400">⏱️</span>
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <div>
                                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Soumission rapide en 24h-48h.</h3>
@@ -258,13 +257,17 @@
             </h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-12">
-                <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/50 dark:border-zinc-800 rounded-3xl p-10 hover:-translate-y-2 transition-transform duration-300 shadow-xl">
-                    <div class="text-6xl mb-6">🤝</div>
+                <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-10">
+                    <div class="w-12 h-12 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-[#c9920f] dark:text-[#febd17] mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Totalement transférable.</h3>
                     <p class="text-gray-600 dark:text-gray-400 text-lg">Vous prévoyez vendre? Notre garantie écrite de 15 ans sur les travaux de drain français et d'imperméabilisation est 100% transférable aux futurs acheteurs. Un argument de vente majeur pour votre propriété.</p>
                 </div>
-                <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/50 dark:border-zinc-800 rounded-3xl p-10 hover:-translate-y-2 transition-transform duration-300 shadow-xl">
-                    <div class="text-6xl mb-6">🛡️</div>
+                <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-10">
+                    <div class="w-12 h-12 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-[#c9920f] dark:text-[#febd17] mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Protégez votre investissement.</h3>
                     <p class="text-gray-600 dark:text-gray-400 text-lg">Votre maison est votre plus grand atout. Avec nos matériaux de première qualité et notre expertise certifiée, nous nous assurons que vos fondations restent solides et au sec pour des décennies.</p>
                 </div>
@@ -285,7 +288,9 @@
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left max-w-4xl mx-auto mt-12">
                     <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800">
-                        <div class="text-4xl">📜</div>
+                        <div class="w-10 h-10 rounded-lg bg-white dark:bg-zinc-800 flex items-center justify-center text-[#c9920f] dark:text-[#febd17] flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        </div>
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Licences APCHQ, RBQ et CMTQ.</h3>
                             <p class="text-gray-600 dark:text-gray-400 mb-3">Faites affaire avec un véritable professionnel. Nous détenons toutes les licences requises pour exécuter les travaux selon les normes de l'industrie du Québec.</p>
@@ -295,7 +300,9 @@
                         </div>
                     </div>
                     <div class="flex gap-4 p-6 rounded-2xl bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800">
-                        <div class="text-4xl">🚜</div>
+                        <div class="w-10 h-10 rounded-lg bg-white dark:bg-zinc-800 flex items-center justify-center text-[#c9920f] dark:text-[#febd17] flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        </div>
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Machinerie récente et sécuritaire.</h3>
                             <p class="text-gray-600 dark:text-gray-400">L'efficacité de notre travail passe par notre équipement. Nous possédons notre propre machinerie récente, adaptée à tous les types de terrains résidentiels et commerciaux.</p>
@@ -327,14 +334,16 @@
                 
                 <div class="flex flex-col md:flex-row justify-center gap-8 mb-12">
                     <div class="bg-zinc-900/50 rounded-2xl p-6 border border-zinc-800 flex items-center gap-4 text-left">
-                        <div class="text-4xl">⭐</div>
+                        <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-[#febd17] flex-shrink-0 text-xl">★</div>
                         <div>
                             <h3 class="text-xl font-bold mb-1">Plus de 20 avis positifs.</h3>
                             <p class="text-gray-400 text-sm">Nos clients nous évaluent avec 5 étoiles sur Google.</p>
                         </div>
                     </div>
                     <div class="bg-zinc-900/50 rounded-2xl p-6 border border-zinc-800 flex items-center gap-4 text-left">
-                        <div class="text-4xl">📸</div>
+                        <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-[#febd17] flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
                         <div>
                             <h3 class="text-xl font-bold mb-1">Voyez nos travaux récents.</h3>
                             <p class="text-gray-400 text-sm">Une transparence totale sur nos chantiers et réalisations.</p>

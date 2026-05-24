@@ -30,10 +30,10 @@
 		fr: {
 			title: 'Mini Excavation Québec | #1 au Québec | Mini Excavations Érable',
 			description:
-				'⭐ Mini Excavation #1 au Québec depuis 15 ans ✓ Mini-pelle, mini-excavateur pour terrains résidentiels. Drain français, fondation, démolition. Certifié RBQ. Soumission gratuite 24h.',
+				'Mini Excavation au Québec depuis 15 ans. Mini-pelle, mini-excavateur pour terrains résidentiels. Drain français, fondation, démolition. Certifié RBQ. Soumission gratuite 24h.',
 			keywords:
 				'mini excavation, mini excavation Québec, mini excavation Montréal, mini excavation Laval, mini excavations, mini-pelle, mini-excavateur, mini excavation prix, location mini excavation, entreprise mini excavation Québec',
-			heroTag: '⭐ Mini Excavation #1 au Québec',
+			heroTag: 'Mini Excavation au Québec',
 			h1: 'Mini Excavation au Québec',
 			h1sub: "Spécialiste de la mini excavation depuis 15 ans",
 			intro:
@@ -54,12 +54,12 @@
 			],
 			advantagesTitle: 'Avantages de la mini excavation',
 			advantagesList: [
-				'✅ Accès aux terrains restreints (clôtures, allées étroites)',
-				'✅ Pas de dommage à la pelouse ou au paysagement',
-				'✅ Précision millimétrique près des structures',
-				'✅ Économie : moins de remblayage et restauration',
-				'✅ Plus rapide pour petits projets (1-3 jours)',
-				'✅ Écoresponsable : moins de carburant, moins de bruit'
+				'Accès aux terrains restreints (clôtures, allées étroites)',
+				'Pas de dommage à la pelouse ou au paysagement',
+				'Précision millimétrique près des structures',
+				'Économie : moins de remblayage et restauration',
+				'Plus rapide pour petits projets (1-3 jours)',
+				'Écoresponsable : moins de carburant, moins de bruit'
 			],
 			pricesTitle: 'Prix mini excavation Québec 2026',
 			pricesIntro:
@@ -112,10 +112,10 @@
 		en: {
 			title: 'Mini Excavation Quebec | #1 in Quebec | Mini Excavations Érable',
 			description:
-				'⭐ Mini Excavation #1 in Quebec for 15 years ✓ Mini-excavator for residential terrain. French drain, foundation, demolition. RBQ certified. Free quote 24h.',
+				'Mini Excavation in Quebec for 15 years. Mini-excavator for residential terrain. French drain, foundation, demolition. RBQ certified. Free quote 24h.',
 			keywords:
 				'mini excavation, mini excavation Quebec, mini excavation Montreal, mini excavator, mini-excavator, mini excavation price, mini excavation rental, mini excavation company Quebec',
-			heroTag: '⭐ Mini Excavation #1 in Quebec',
+			heroTag: 'Mini Excavation in Quebec',
 			h1: 'Mini Excavation in Quebec',
 			h1sub: 'Mini excavation specialist for 15 years',
 			intro:
@@ -136,12 +136,12 @@
 			],
 			advantagesTitle: 'Mini excavation advantages',
 			advantagesList: [
-				'✅ Access to restricted terrains (fences, narrow paths)',
-				'✅ No damage to lawn or landscaping',
-				'✅ Millimeter precision near structures',
-				'✅ Saves money: less backfilling and restoration',
-				'✅ Faster for small projects (1-3 days)',
-				'✅ Eco-friendly: less fuel, less noise'
+				'Access to restricted terrains (fences, narrow paths)',
+				'No damage to lawn or landscaping',
+				'Millimeter precision near structures',
+				'Saves money: less backfilling and restoration',
+				'Faster for small projects (1-3 days)',
+				'Eco-friendly: less fuel, less noise'
 			],
 			pricesTitle: 'Mini excavation prices Quebec 2026',
 			pricesIntro:
@@ -194,10 +194,10 @@
 		es: {
 			title: 'Mini Excavación Quebec | #1 en Quebec | Mini Excavations Érable',
 			description:
-				'⭐ Mini Excavación #1 en Quebec desde hace 15 años ✓ Mini-excavadora para terrenos residenciales. Drenaje francés, cimientos, demolición. Certificado RBQ. Cotización gratuita 24h.',
+				'Mini Excavación en Quebec desde hace 15 años. Mini-excavadora para terrenos residenciales. Drenaje francés, cimientos, demolición. Certificado RBQ. Cotización gratuita 24h.',
 			keywords:
 				'mini excavación, mini excavación Quebec, mini excavación Montreal, mini-excavadora, mini excavación precio, alquiler mini excavación, empresa mini excavación Quebec',
-			heroTag: '⭐ Mini Excavación #1 en Quebec',
+			heroTag: 'Mini Excavación en Quebec',
 			h1: 'Mini Excavación en Quebec',
 			h1sub: 'Especialista en mini excavación desde hace 15 años',
 			intro:
@@ -218,12 +218,12 @@
 			],
 			advantagesTitle: 'Ventajas de la mini excavación',
 			advantagesList: [
-				'✅ Acceso a terrenos restringidos (cercas, pasillos estrechos)',
-				'✅ Sin daño al césped o paisajismo',
-				'✅ Precisión milimétrica cerca de estructuras',
-				'✅ Ahorro: menos relleno y restauración',
-				'✅ Más rápido para proyectos pequeños (1-3 días)',
-				'✅ Eco-responsable: menos combustible, menos ruido'
+				'Acceso a terrenos restringidos (cercas, pasillos estrechos)',
+				'Sin daño al césped o paisajismo',
+				'Precisión milimétrica cerca de estructuras',
+				'Ahorro: menos relleno y restauración',
+				'Más rápido para proyectos pequeños (1-3 días)',
+				'Eco-responsable: menos combustible, menos ruido'
 			],
 			pricesTitle: 'Precios mini excavación Quebec 2026',
 			pricesIntro:
@@ -363,7 +363,8 @@
 					<CheckCircle2 class="w-3.5 h-3.5" /> RBQ • APCHQ • CMTQ
 				</span>
 				<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
-					⚡ 24h
+					<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+					Réponse 24h
 				</span>
 			</div>
 
@@ -411,9 +412,9 @@
 			<h2 class="text-3xl md:text-5xl font-black tracking-tight mb-12 text-center">{c.whenTitle}</h2>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{#each c.whenItems as item}
-					<div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-200 dark:border-zinc-800 hover:border-[#febd17] hover:-translate-y-1 transition-all">
-						<div class="text-4xl mb-4">{item.icon}</div>
-						<h3 class="text-xl font-black mb-2">{item.title}</h3>
+					<div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 transition-colors">
+						<div class="w-1.5 h-8 bg-[#febd17] mb-4 rounded-full"></div>
+						<h3 class="text-xl font-bold mb-2">{item.title}</h3>
 						<p class="text-gray-600 dark:text-gray-400 text-sm">{item.desc}</p>
 					</div>
 				{/each}

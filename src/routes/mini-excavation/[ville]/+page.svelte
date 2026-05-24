@@ -35,7 +35,7 @@
 	$: t = {
 		fr: {
 			title: `Mini Excavation ${city.name} | #1 au Québec | Mini Excavations Érable`,
-			description: `⭐ Mini Excavation ${city.name} ✓ Drain français, fondation, fissure, démolition. Mini-pelle pour terrains restreints. Certifié RBQ. Garantie 15 ans. Soumission gratuite 24h ☎ 514-830-9973`,
+			description: `Mini Excavation ${city.name}. Drain français, fondation, fissure, démolition. Mini-pelle pour terrains restreints. Certifié RBQ. Garantie 15 ans. Soumission gratuite 24h. 514-830-9973`,
 			keywords: `mini excavation ${city.name}, mini excavations ${city.name}, mini-excavation ${city.name}, mini-pelle ${city.name}, drain français ${city.name}, excavation ${city.name}, fissure fondation ${city.name}, RBQ ${city.name}, mini excavation Québec, mini excavation Montréal`,
 			heroTag: `📍 Mini Excavation ${city.name}, ${city.region}`,
 			h1: `Mini Excavation à ${city.name}`,
@@ -92,7 +92,7 @@
 		},
 		en: {
 			title: `Mini Excavation ${city.name} | #1 in Quebec | Mini Excavations Érable`,
-			description: `⭐ Mini Excavation ${city.name} ✓ French drain, foundation, crack, demolition. Mini-excavator for tight spaces. RBQ certified. 15-year warranty. Free quote 24h ☎ 514-830-9973`,
+			description: `Mini Excavation ${city.name}. French drain, foundation, crack, demolition. Mini-excavator for tight spaces. RBQ certified. 15-year warranty. Free quote 24h. 514-830-9973`,
 			keywords: `mini excavation ${city.name}, mini excavator ${city.name}, french drain ${city.name}, excavation ${city.name}, foundation crack ${city.name}, RBQ ${city.name}`,
 			heroTag: `📍 Mini Excavation ${city.name}, ${city.region}`,
 			h1: `Mini Excavation in ${city.name}`,
@@ -149,7 +149,7 @@
 		},
 		es: {
 			title: `Mini Excavación ${city.name} | #1 Quebec | Mini Excavations Érable`,
-			description: `⭐ Mini Excavación ${city.name} ✓ Drenaje francés, cimientos, grieta, demolición. Mini-excavadora para espacios restringidos. Certificado RBQ. Garantía 15 años. Cotización gratuita 24h.`,
+			description: `Mini Excavación ${city.name}. Drenaje francés, cimientos, grieta, demolición. Mini-excavadora para espacios restringidos. Certificado RBQ. Garantía 15 años. Cotización gratuita 24h.`,
 			keywords: `mini excavación ${city.name}, mini-excavadora ${city.name}, drenaje francés ${city.name}, excavación ${city.name}, RBQ ${city.name}`,
 			heroTag: `📍 Mini Excavación ${city.name}, ${city.region}`,
 			h1: `Mini Excavación en ${city.name}`,
@@ -312,7 +312,8 @@
 					<CheckCircle2 class="w-3.5 h-3.5" /> RBQ • APCHQ • CMTQ
 				</span>
 				<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
-					⚡ 24h
+					<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+					24h
 				</span>
 			</div>
 
@@ -345,9 +346,9 @@
 			<h2 class="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-10 text-center">{c.servicesTitle}</h2>
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 				{#each c.services as svc}
-					<a href={svc.link} class="bg-gray-50 dark:bg-zinc-900 rounded-2xl p-6 border border-gray-200 dark:border-zinc-800 hover:border-[#febd17] hover:-translate-y-1 transition-all group">
-						<div class="text-4xl mb-3">{svc.icon}</div>
-						<h3 class="text-lg font-black mb-2 group-hover:text-[#febd17] transition-colors">{svc.title}</h3>
+					<a href={svc.link} class="bg-gray-50 dark:bg-zinc-900 rounded-2xl p-6 border border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 transition-colors group">
+						<div class="w-1.5 h-7 bg-[#febd17] mb-4 rounded-full"></div>
+						<h3 class="text-lg font-bold mb-2 group-hover:text-[#c9920f] dark:group-hover:text-[#febd17] transition-colors">{svc.title}</h3>
 						<p class="text-sm text-gray-600 dark:text-gray-400">{svc.desc}</p>
 					</a>
 				{/each}
