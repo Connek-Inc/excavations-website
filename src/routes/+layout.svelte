@@ -73,47 +73,154 @@
 		$page.url.pathname.startsWith('/compte') ||
 		$page.url.pathname.startsWith('/soumission');
 
-	$: menuOptions = isUrgences
-		? currentLang === 'fr'
-			? [
-					{ text: 'Urgence', link: '#home' },
-					{ text: 'Inspection', link: '#inspection' },
-					{ text: 'Garantie', link: '#garantie' },
-					{ text: 'Avis', link: '#avis' }
+	type MenuItem = {
+		text: string;
+		link?: string;
+		children?: { text: string; link: string; desc?: string }[];
+	};
+
+	const NAV: Record<'fr' | 'en' | 'es', MenuItem[]> = {
+		fr: [
+			{
+				text: 'Services',
+				children: [
+					{ text: 'Drain français', link: '/services/drain-francais', desc: 'Installation, réparation, remplacement' },
+					{ text: 'Excavation', link: '/services/excavation', desc: 'Mini-pelles pour terrains restreints' },
+					{ text: 'Réparation de fissures', link: '/services/reparation-fissures', desc: 'Injection époxy & polyuréthane' },
+					{ text: 'Imperméabilisation', link: '/services/waterproofing', desc: 'Membranes et drainage' },
+					{ text: 'Démolition', link: '/services/demolition', desc: 'Résidentiel, garage, piscine' },
+					{ text: 'Inspection caméra', link: '/services/inspection-camera', desc: 'Diagnostic HD sans excavation' },
+					{ text: 'Tous les services →', link: '/#services' }
 				]
-			: currentLang === 'es'
-				? [
-						{ text: 'Urgencia', link: '#home' },
-						{ text: 'Inspección', link: '#inspection' },
-						{ text: 'Garantía', link: '#garantie' },
-						{ text: 'Reseñas', link: '#avis' }
-					]
-				: [
-						{ text: 'Emergency', link: '#home' },
-						{ text: 'Inspection', link: '#inspection' },
-						{ text: 'Warranty', link: '#garantie' },
-						{ text: 'Reviews', link: '#avis' }
-					]
-		: currentLang === 'fr'
-			? [
-					{ text: 'Services', link: '/#services' },
-					{ text: 'À propos', link: '/a-propos' },
-					{ text: 'Blog', link: '/#blogs' },
-					{ text: 'Contact', link: '/#contact' }
+			},
+			{
+				text: 'Régions',
+				children: [
+					{ text: 'Saint-Hubert-de-Rivière-du-Loup', link: '/mini-excavation/saint-hubert-de-riviere-du-loup', desc: 'Base — service prioritaire' },
+					{ text: 'Rivière-du-Loup', link: '/mini-excavation/riviere-du-loup' },
+					{ text: 'Québec', link: '/mini-excavation/quebec' },
+					{ text: 'Montréal', link: '/mini-excavation/montreal' },
+					{ text: 'Laval', link: '/mini-excavation/laval' },
+					{ text: 'Longueuil', link: '/mini-excavation/longueuil' },
+					{ text: 'Toutes les régions →', link: '/mini-excavation' }
 				]
-			: currentLang === 'es'
-				? [
-						{ text: 'Servicios', link: '/#services' },
-						{ text: 'Quiénes somos', link: '/a-propos' },
-						{ text: 'Blog', link: '/#blogs' },
-						{ text: 'Contacto', link: '/#contact' }
-					]
-				: [
-						{ text: 'Services', link: '/#services' },
-						{ text: 'About', link: '/a-propos' },
-						{ text: 'Blog', link: '/#blogs' },
-						{ text: 'Contact', link: '/#contact' }
-					];
+			},
+			{ text: 'Urgences 24/7', link: '/urgences' },
+			{
+				text: 'Blog',
+				children: [
+					{ text: 'Avantages du drain français', link: '/blog/benefits' },
+					{ text: "Importance de l'imperméabilisation", link: '/blog/importance' },
+					{ text: 'Guide imperméabilisation', link: '/blog/waterproofing' },
+					{ text: 'Tous les articles →', link: '/#blogs' }
+				]
+			},
+			{ text: 'À propos', link: '/a-propos' },
+			{ text: 'Contact', link: '/#contact' }
+		],
+		en: [
+			{
+				text: 'Services',
+				children: [
+					{ text: 'French Drain', link: '/services/drain-francais', desc: 'Install, repair, replace' },
+					{ text: 'Excavation', link: '/services/excavation', desc: 'Mini-excavators for tight spaces' },
+					{ text: 'Crack Repair', link: '/services/reparation-fissures', desc: 'Epoxy & polyurethane injection' },
+					{ text: 'Waterproofing', link: '/services/waterproofing', desc: 'Membranes and drainage' },
+					{ text: 'Demolition', link: '/services/demolition', desc: 'Residential, garage, pool' },
+					{ text: 'Camera Inspection', link: '/services/inspection-camera', desc: 'HD diagnosis, no digging' },
+					{ text: 'All services →', link: '/#services' }
+				]
+			},
+			{
+				text: 'Regions',
+				children: [
+					{ text: 'Saint-Hubert-de-Rivière-du-Loup', link: '/mini-excavation/saint-hubert-de-riviere-du-loup', desc: 'Base — priority service' },
+					{ text: 'Rivière-du-Loup', link: '/mini-excavation/riviere-du-loup' },
+					{ text: 'Quebec City', link: '/mini-excavation/quebec' },
+					{ text: 'Montreal', link: '/mini-excavation/montreal' },
+					{ text: 'Laval', link: '/mini-excavation/laval' },
+					{ text: 'Longueuil', link: '/mini-excavation/longueuil' },
+					{ text: 'All regions →', link: '/mini-excavation' }
+				]
+			},
+			{ text: '24/7 Emergency', link: '/urgences' },
+			{
+				text: 'Blog',
+				children: [
+					{ text: 'Benefits of a French Drain', link: '/blog/benefits' },
+					{ text: 'Why Waterproofing Matters', link: '/blog/importance' },
+					{ text: 'Waterproofing Guide', link: '/blog/waterproofing' },
+					{ text: 'All articles →', link: '/#blogs' }
+				]
+			},
+			{ text: 'About', link: '/a-propos' },
+			{ text: 'Contact', link: '/#contact' }
+		],
+		es: [
+			{
+				text: 'Servicios',
+				children: [
+					{ text: 'Drenaje francés', link: '/services/drain-francais', desc: 'Instalación, reparación, reemplazo' },
+					{ text: 'Excavación', link: '/services/excavation', desc: 'Mini-excavadoras para terrenos restringidos' },
+					{ text: 'Reparación de grietas', link: '/services/reparation-fissures', desc: 'Inyección epoxi y poliuretano' },
+					{ text: 'Impermeabilización', link: '/services/waterproofing', desc: 'Membranas y drenaje' },
+					{ text: 'Demolición', link: '/services/demolition', desc: 'Residencial, garaje, piscina' },
+					{ text: 'Inspección con cámara', link: '/services/inspection-camera', desc: 'Diagnóstico HD sin excavar' },
+					{ text: 'Todos los servicios →', link: '/#services' }
+				]
+			},
+			{
+				text: 'Regiones',
+				children: [
+					{ text: 'Saint-Hubert-de-Rivière-du-Loup', link: '/mini-excavation/saint-hubert-de-riviere-du-loup', desc: 'Base — servicio prioritario' },
+					{ text: 'Rivière-du-Loup', link: '/mini-excavation/riviere-du-loup' },
+					{ text: 'Quebec', link: '/mini-excavation/quebec' },
+					{ text: 'Montreal', link: '/mini-excavation/montreal' },
+					{ text: 'Laval', link: '/mini-excavation/laval' },
+					{ text: 'Longueuil', link: '/mini-excavation/longueuil' },
+					{ text: 'Todas las regiones →', link: '/mini-excavation' }
+				]
+			},
+			{ text: 'Urgencias 24/7', link: '/urgences' },
+			{
+				text: 'Blog',
+				children: [
+					{ text: 'Ventajas del drenaje francés', link: '/blog/benefits' },
+					{ text: 'Importancia de la impermeabilización', link: '/blog/importance' },
+					{ text: 'Guía de impermeabilización', link: '/blog/waterproofing' },
+					{ text: 'Todos los artículos →', link: '/#blogs' }
+				]
+			},
+			{ text: 'Quiénes somos', link: '/a-propos' },
+			{ text: 'Contacto', link: '/#contact' }
+		]
+	};
+
+	const URGENCES_NAV: Record<'fr' | 'en' | 'es', MenuItem[]> = {
+		fr: [
+			{ text: 'Urgence', link: '#home' },
+			{ text: 'Inspection', link: '#inspection' },
+			{ text: 'Garantie', link: '#garantie' },
+			{ text: 'Avis', link: '#avis' },
+			{ text: 'Retour au site', link: '/' }
+		],
+		es: [
+			{ text: 'Urgencia', link: '#home' },
+			{ text: 'Inspección', link: '#inspection' },
+			{ text: 'Garantía', link: '#garantie' },
+			{ text: 'Reseñas', link: '#avis' },
+			{ text: 'Volver al sitio', link: '/' }
+		],
+		en: [
+			{ text: 'Emergency', link: '#home' },
+			{ text: 'Inspection', link: '#inspection' },
+			{ text: 'Warranty', link: '#garantie' },
+			{ text: 'Reviews', link: '#avis' },
+			{ text: 'Back to site', link: '/' }
+		]
+	};
+
+	$: menuOptions = isUrgences ? URGENCES_NAV[currentLang] : NAV[currentLang];
 </script>
 
 <GlobalSchemas jsonLd={jsonLdSchemas} />

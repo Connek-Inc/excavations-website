@@ -1,111 +1,271 @@
-<script>
-    import { setContext, onMount } from 'svelte';
-    import { getContext } from "svelte";
-    // Implement photos changing in the background
-    export let menuOptions;
-    export let logo;
+<script lang="ts">
+    import { onMount } from 'svelte';
     import { language, theme } from './store/store';
-    
-    let lang
-    language.subscribe(value => {
-        lang = value
-    })
-    function changeLanguage(selectedLanguage) {
-        language.update((value) => {
-            return selectedLanguage;
-        });
 
-    } 
-    
-    function toggleTheme() {
-        theme.update(current => current === 'dark' ? 'light' : 'dark');
-    } 
+    type MenuItem = {
+        text: string;
+        link?: string;
+        children?: { text: string; link: string; desc?: string }[];
+    };
+
+    export let menuOptions: MenuItem[];
+    export let logo: string;
+
+    let lang: 'fr' | 'en' | 'es' = 'fr';
+    language.subscribe((value) => {
+        lang = value as 'fr' | 'en' | 'es';
+    });
+
+    function changeLanguage(selectedLanguage: string) {
+        language.update(() => selectedLanguage as 'fr' | 'en' | 'es');
+    }
+
     let showMenu = false;
+    let openMobile: Record<string, boolean> = {};
+    let openDesktop: string | null = null;
+
     function closeMenu() {
         showMenu = false;
+        openMobile = {};
+        openDesktop = null;
+    }
+
+    function toggleMobile(key: string) {
+        openMobile = { ...openMobile, [key]: !openMobile[key] };
     }
 
     let isScrolled = false;
-
     onMount(() => {
         const handleScroll = () => {
             isScrolled = window.scrollY > 50;
         };
         window.addEventListener('scroll', handleScroll);
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     });
+
+    // close desktop dropdown on Esc
+    function handleKey(e: KeyboardEvent) {
+        if (e.key === 'Escape') openDesktop = null;
+    }
 </script>
 
+<svelte:window on:keydown={handleKey} />
 
-<nav class="py-4 px-6 sm:px-8 lg:px-12 fixed top-0 left-0 w-full z-50 transition-all duration-300 {isScrolled ? ($theme === 'dark' ? 'bg-black shadow-lg text-white border-b border-zinc-800' : 'bg-[#febd17] shadow-lg text-black') : ($theme === 'dark' ? 'bg-transparent text-white' : 'bg-transparent text-black') }">
-<div class="flex flex-wrap justify-between items-center">
-  <div class="flex items-center w-full lg:w-auto justify-between lg:justify-start">
-    <a href="/" class="flex items-center" on:click={closeMenu}>
-      <img src={logo} alt="mini excavations erable" class="h-8 sm:h-10 mr-2">
-      <span class="text-lg font-bold">Mini Excavations Erable</span>
-    </a>
-    <button on:click={() => (showMenu = !showMenu)} class="lg:hidden focus:outline-none transition-colors {isScrolled ? ($theme === 'dark' ? 'text-white' : 'text-black') : ($theme === 'dark' ? 'text-white' : 'text-black')}" aria-label="Toggle Menu">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
-  </div>
-  <div class="hidden lg:flex items-center space-x-6 font-bold">
-    {#each menuOptions as opt}
-      <a href={opt.link} class="h-full">
-        <div class="h-full flex items-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black sm:p-4 p-2 sm:px-8 rounded sm:text-lg transition-colors text-sm">{opt.text}</div>
-      </a>
-    {/each}
-    <select bind:value={$language} on:change={(event) => changeLanguage(event.target.value)} class="border-none hover:border-none rounded-md selection:border-none m-2 bg-transparent focus:ring-0">
-      <option value="en" class="text-black" selected={$language == 'en'}>En</option>
-      <option value="fr" class="text-black" selected={$language == 'fr'}>Fr</option>
-      <option value="es" class="text-black" selected={$language == 'es'}>Es</option>
-    </select>
-    
- 
-  </div>
-  <div class="hidden lg:flex items-center gap-4">
-    <a href="/soumission" class="inline-flex items-center gap-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black px-4 py-2 font-bold text-sm transition-colors shadow-md">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-      Soumission
-    </a>
-    <a href="tel:15148309973" class="flex items-center font-bold hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-      </svg>
-      +1 (514) 830-9973
-    </a>
-  </div>
-</div>
-{#if showMenu}
-  <div class="lg:hidden mt-4 font-bold bg-[#febd17] dark:bg-zinc-900 border-t border-black/10 dark:border-zinc-800 py-4 px-6 transition-colors duration-300">
-    {#each menuOptions as opt}
-      <a href={opt.link} class="block mb-2" on:click={closeMenu}>
-        <div class="flex items-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black text-black dark:text-white p-2 rounded text-sm transition-colors">{opt.text}</div>
-      </a>
-    {/each}
-    <a href="/soumission" on:click={closeMenu} class="block mb-2">
-      <div class="flex items-center gap-2 bg-[#febd17] hover:bg-[#e5aa10] text-black p-2 rounded text-sm font-bold transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-        Demander une soumission
-      </div>
-    </a>
-    <a href="tel:15148309973" on:click={closeMenu} class="block mb-2">
-      <div class="flex items-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black text-black dark:text-white p-2 rounded text-sm transition-colors">
-        +1 (514) 830-9973
-      </div>
-    </a>
-    <select bind:value={$language} on:change={(event) => changeLanguage(event.target.value)} class="border-none hover:border-none rounded-md selection:border-none text-black dark:text-white bg-transparent m-2 focus:ring-0">
-      <option value="en" class="text-black" selected={$language == 'en'}>En</option>
-      <option value="fr" class="text-black" selected={$language == 'fr'}>Fr</option>
-      <option value="es" class="text-black" selected={$language == 'es'}>Es</option>
-    </select>
-    
+<nav
+    class="py-3 px-4 sm:px-6 lg:px-10 fixed top-0 left-0 w-full z-50 transition-all duration-300 {isScrolled
+        ? $theme === 'dark'
+            ? 'bg-black/95 backdrop-blur-md shadow-lg text-white border-b border-zinc-800'
+            : 'bg-[#febd17]/95 backdrop-blur-md shadow-lg text-black'
+        : $theme === 'dark'
+            ? 'bg-transparent text-white'
+            : 'bg-transparent text-black'}"
+>
+    <div class="flex flex-wrap justify-between items-center max-w-[1500px] mx-auto">
+        <!-- Logo + mobile burger -->
+        <div class="flex items-center w-full lg:w-auto justify-between lg:justify-start">
+            <a href="/" class="flex items-center" on:click={closeMenu}>
+                <img src={logo} alt="Mini Excavations Érable" class="h-8 sm:h-10 mr-2" />
+                <span class="text-base sm:text-lg font-bold">Mini Excavations Érable</span>
+            </a>
+            <button
+                on:click={() => (showMenu = !showMenu)}
+                class="lg:hidden focus:outline-none p-2 -mr-2"
+                aria-label="Toggle menu"
+            >
+                {#if showMenu}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                {:else}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                {/if}
+            </button>
+        </div>
 
-  </div>
-{/if}
+        <!-- Desktop nav -->
+        <div class="hidden lg:flex items-center gap-1 font-semibold">
+            {#each menuOptions as opt (opt.text)}
+                {#if opt.children && opt.children.length > 0}
+                    <!-- Dropdown -->
+                    <div
+                        class="relative"
+                        on:mouseenter={() => (openDesktop = opt.text)}
+                        on:mouseleave={() => (openDesktop = null)}
+                        role="none"
+                    >
+                        <button
+                            type="button"
+                            on:click={() => (openDesktop = openDesktop === opt.text ? null : opt.text)}
+                            class="inline-flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-sm"
+                            aria-haspopup="true"
+                            aria-expanded={openDesktop === opt.text}
+                        >
+                            {opt.text}
+                            <svg
+                                class="h-3.5 w-3.5 transition-transform {openDesktop === opt.text ? 'rotate-180' : ''}"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        {#if openDesktop === opt.text}
+                            <div
+                                class="absolute left-0 top-full pt-2 min-w-[300px]"
+                                role="menu"
+                            >
+                                <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-2xl overflow-hidden">
+                                    {#each opt.children as child}
+                                        <a
+                                            href={child.link}
+                                            on:click={() => (openDesktop = null)}
+                                            class="block px-4 py-3 hover:bg-[#febd17]/10 dark:hover:bg-[#febd17]/10 transition-colors border-b border-gray-100 dark:border-zinc-800 last:border-b-0"
+                                            role="menuitem"
+                                        >
+                                            <div class="text-sm font-bold text-gray-900 dark:text-white">{child.text}</div>
+                                            {#if child.desc}
+                                                <div class="text-xs text-gray-500 dark:text-zinc-500 mt-0.5">{child.desc}</div>
+                                            {/if}
+                                        </a>
+                                    {/each}
+                                </div>
+                            </div>
+                        {/if}
+                    </div>
+                {:else if opt.link}
+                    <a
+                        href={opt.link}
+                        class="inline-flex items-center px-3 py-2 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-sm"
+                    >
+                        {opt.text}
+                    </a>
+                {/if}
+            {/each}
+
+            <select
+                bind:value={$language}
+                on:change={(event) => changeLanguage(event.currentTarget.value)}
+                class="ml-2 border-none rounded-md bg-transparent text-sm font-semibold focus:ring-0 cursor-pointer"
+            >
+                <option value="fr" class="text-black">Fr</option>
+                <option value="en" class="text-black">En</option>
+                <option value="es" class="text-black">Es</option>
+            </select>
+        </div>
+
+        <!-- Desktop CTAs -->
+        <div class="hidden lg:flex items-center gap-3">
+            <a
+                href="/soumission"
+                class="inline-flex items-center gap-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black px-4 py-2 font-bold text-sm transition-colors shadow-md"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Soumission
+            </a>
+            <a
+                href="tel:+15148309973"
+                class="inline-flex items-center font-bold hover:text-gray-700 dark:hover:text-gray-300 transition-colors text-sm"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                +1 (514) 830-9973
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    {#if showMenu}
+        <div
+            class="lg:hidden mt-3 font-bold bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 rounded-b-2xl shadow-2xl max-h-[calc(100vh-5rem)] overflow-y-auto"
+        >
+            <div class="py-3 px-4">
+                {#each menuOptions as opt (opt.text)}
+                    {#if opt.children && opt.children.length > 0}
+                        <div class="border-b border-gray-100 dark:border-zinc-800 last:border-b-0">
+                            <button
+                                type="button"
+                                on:click={() => toggleMobile(opt.text)}
+                                class="w-full flex items-center justify-between p-3 text-left text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                            >
+                                <span class="text-sm">{opt.text}</span>
+                                <svg
+                                    class="h-4 w-4 text-gray-400 transition-transform {openMobile[opt.text] ? 'rotate-180' : ''}"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            {#if openMobile[opt.text]}
+                                <div class="pl-3 pb-2">
+                                    {#each opt.children as child}
+                                        <a
+                                            href={child.link}
+                                            on:click={closeMenu}
+                                            class="block p-2.5 pl-4 text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-[#febd17]/10 rounded-lg transition-colors"
+                                        >
+                                            {child.text}
+                                            {#if child.desc}
+                                                <span class="block text-[11px] font-normal text-gray-500 dark:text-zinc-500 mt-0.5">{child.desc}</span>
+                                            {/if}
+                                        </a>
+                                    {/each}
+                                </div>
+                            {/if}
+                        </div>
+                    {:else if opt.link}
+                        <a
+                            href={opt.link}
+                            on:click={closeMenu}
+                            class="block p-3 text-sm text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-lg transition-colors border-b border-gray-100 dark:border-zinc-800 last:border-b-0"
+                        >
+                            {opt.text}
+                        </a>
+                    {/if}
+                {/each}
+
+                <!-- Mobile CTAs -->
+                <div class="mt-3 pt-3 border-t border-gray-200 dark:border-zinc-800 space-y-2">
+                    <a
+                        href="/soumission"
+                        on:click={closeMenu}
+                        class="flex items-center justify-center gap-2 bg-[#febd17] hover:bg-[#e5aa10] text-black p-3 rounded-lg text-sm font-bold transition-colors"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Demander une soumission
+                    </a>
+                    <a
+                        href="tel:+15148309973"
+                        on:click={closeMenu}
+                        class="flex items-center justify-center gap-2 border border-gray-300 dark:border-zinc-700 text-gray-900 dark:text-white p-3 rounded-lg text-sm font-bold transition-colors hover:bg-gray-50 dark:hover:bg-zinc-800"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        +1 (514) 830-9973
+                    </a>
+                    <select
+                        bind:value={$language}
+                        on:change={(event) => changeLanguage(event.currentTarget.value)}
+                        class="w-full p-3 border border-gray-200 dark:border-zinc-800 rounded-lg bg-transparent text-gray-900 dark:text-white text-sm font-bold focus:ring-0"
+                    >
+                        <option value="fr" class="text-black">Français</option>
+                        <option value="en" class="text-black">English</option>
+                        <option value="es" class="text-black">Español</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    {/if}
 </nav>
