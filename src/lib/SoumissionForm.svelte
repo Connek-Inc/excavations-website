@@ -27,12 +27,12 @@
 	export let showHero: boolean = false;
 	export let showSidebar: boolean = true;
 
-	// Web3Forms — same service used by the home contact form. Free tier,
-	// no per-endpoint activation flow (unlike FormSubmit which is currently
-	// down). The access key is tied to the admin email already.
+	// Primary: same-origin Resend endpoint (requires Node.js runtime).
+	// Fallback: Web3Forms (works on static deploy if Node.js is off).
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
+	const RESEND_ENDPOINT = '/api/send-email';
 	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
-	const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 	type Step = 'data' | 'success';
 	let step: Step = 'data';
@@ -182,37 +182,65 @@
 		errorRaw = '';
 		mailtoFallback = buildMailtoFallback();
 
-		// Best-effort: try FormSubmit. If it fails (service down or rejected),
-		// automatically open the visitor's email client with everything
-		// pre-filled — guaranteed delivery path no matter what.
+		// Try the Resend endpoint first (Node.js runtime). If it's missing
+		// or fails (e.g. static deploy without API), fall back to Web3Forms
+		// so an email still goes out. Final fallback is the user's mail client.
+		const sharedPayload = {
+			name: form.client_nom,
+			email: form.client_email,
+			phone: form.client_telephone,
+			adresse_personnelle: form.client_adresse || '—',
+			adresse_projet: form.projet_adresse || '—',
+			type_projet: form.projet_type || '—',
+			description: form.projet_description,
+			notes: form.notes_client || '—',
+			langue: lang,
+			confirmation_au_client: clientCopyMessage()
+		};
+
+		let ok = false;
 		try {
 			const ctrl = new AbortController();
 			const timeoutId = setTimeout(() => ctrl.abort(), 6000);
-			const res = await fetch(FORM_ENDPOINT, {
+			const res = await fetch(RESEND_ENDPOINT, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 				signal: ctrl.signal,
-				body: JSON.stringify({
-					access_key: WEB3FORMS_KEY,
-					subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type || 'Soumission'}`,
-					from_name: `${form.client_nom} via excavationserable.com`,
-					replyto: form.client_email,
-					cc: form.client_email, // send a copy to the client
-					name: form.client_nom,
-					email: form.client_email,
-					phone: form.client_telephone,
-					adresse_personnelle: form.client_adresse || '—',
-					adresse_projet: form.projet_adresse || '—',
-					type_projet: form.projet_type || '—',
-					description: form.projet_description,
-					notes: form.notes_client || '—',
-					langue: lang,
-					confirmation_au_client: clientCopyMessage()
-				})
+				body: JSON.stringify({ type: 'soumission', ...sharedPayload })
 			});
 			clearTimeout(timeoutId);
-			const data = await res.json().catch(() => ({}));
-			if (res.ok && (data.success === 'true' || data.success === true || data.success === undefined)) {
+			if (res.ok) {
+				const data = await res.json().catch(() => ({}));
+				ok = data?.ok === true;
+			}
+		} catch {}
+
+		if (!ok) {
+			// Fallback: Web3Forms
+			try {
+				const ctrl = new AbortController();
+				const timeoutId = setTimeout(() => ctrl.abort(), 6000);
+				const res = await fetch(WEB3FORMS_ENDPOINT, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+					signal: ctrl.signal,
+					body: JSON.stringify({
+						access_key: WEB3FORMS_KEY,
+						subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type || 'Soumission'}`,
+						from_name: `${form.client_nom} via excavationserable.com`,
+						replyto: form.client_email,
+						cc: form.client_email,
+						...sharedPayload
+					})
+				});
+				clearTimeout(timeoutId);
+				const data = await res.json().catch(() => ({}));
+				ok = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
+			} catch {}
+		}
+
+		try {
+			if (ok) {
 				captureLocally();
 				clearDraft();
 				checkExistingAccount();

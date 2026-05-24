@@ -160,8 +160,9 @@
 	}
 
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
+	const RESEND_ENDPOINT = '/api/send-email';
 	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
-	const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 	function buildMailtoFallback() {
 		const probLabel = problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
@@ -279,35 +280,53 @@
 		const controller = new AbortController();
 		const timeoutId = setTimeout(() => controller.abort(), 12000);
 
+		const sharedPayload = {
+			name: formData.name,
+			email: formData.email,
+			phone: formData.phone,
+			type_probleme: probLabel,
+			niveau_urgence: urgLabel,
+			description: formData.messageText || '—',
+			langue: ($language as 'fr' | 'en' | 'es') || 'fr',
+			confirmation_au_client: buildClientAutoResponse(probLabel, urgLabel)
+		};
+
+		let ok = false;
 		try {
-			const response = await fetch(FORM_ENDPOINT, {
+			const res = await fetch(RESEND_ENDPOINT, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-				body: JSON.stringify({
-					access_key: WEB3FORMS_KEY,
-					subject: `URGENCE — ${formData.name} (${probLabel})`,
-					from_name: `${formData.name} via excavationserable.com`,
-					replyto: formData.email,
-					cc: formData.email, // send a copy to the client
-					type: 'URGENCE',
-					name: formData.name,
-					email: formData.email,
-					phone: formData.phone,
-					type_probleme: probLabel,
-					niveau_urgence: urgLabel,
-					details: formData.messageText || '—',
-					confirmation_au_client: buildClientAutoResponse(probLabel, urgLabel)
-				}),
+				body: JSON.stringify({ type: 'urgence', ...sharedPayload }),
 				signal: controller.signal
 			});
-			clearTimeout(timeoutId);
+			if (res.ok) {
+				const data = await res.json().catch(() => ({}));
+				ok = data?.ok === true;
+			}
+		} catch {}
 
-			const payload = await response.json().catch(() => ({}));
+		if (!ok) {
+			try {
+				const res = await fetch(WEB3FORMS_ENDPOINT, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+					body: JSON.stringify({
+						access_key: WEB3FORMS_KEY,
+						subject: `URGENCE — ${formData.name} (${probLabel})`,
+						from_name: `${formData.name} via excavationserable.com`,
+						replyto: formData.email,
+						cc: formData.email,
+						...sharedPayload
+					})
+				});
+				const data = await res.json().catch(() => ({}));
+				ok = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
+			} catch {}
+		}
+		clearTimeout(timeoutId);
 
-			if (
-				response.ok &&
-				(payload.success === true || payload.success === 'true' || payload.success === undefined)
-			) {
+		try {
+			if (ok) {
 				finishSuccess();
 			} else {
 				window.location.href = mailtoFallback;
