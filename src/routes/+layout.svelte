@@ -87,7 +87,6 @@
 					{ text: 'Drain français', link: '/services/drain-francais', desc: 'Installation, réparation, remplacement' },
 					{ text: 'Excavation', link: '/services/excavation', desc: 'Mini-pelles pour terrains restreints' },
 					{ text: 'Réparation de fissures', link: '/services/reparation-fissures', desc: 'Injection époxy & polyuréthane' },
-					{ text: 'Imperméabilisation', link: '/services/waterproofing', desc: 'Membranes et drainage' },
 					{ text: 'Démolition', link: '/services/demolition', desc: 'Résidentiel, garage, piscine' },
 					{ text: 'Inspection caméra', link: '/services/inspection-camera', desc: 'Diagnostic HD sans excavation' },
 					{ text: 'Tous les services →', link: '/#services' }
@@ -96,12 +95,12 @@
 			{
 				text: 'Régions',
 				children: [
-					{ text: 'Saint-Hubert-de-Rivière-du-Loup', link: '/mini-excavation/saint-hubert-de-riviere-du-loup', desc: 'Base — service prioritaire' },
-					{ text: 'Rivière-du-Loup', link: '/mini-excavation/riviere-du-loup' },
-					{ text: 'Québec', link: '/mini-excavation/quebec' },
+					{ text: 'Québec', link: '/mini-excavation/quebec-city', desc: 'Capitale-Nationale' },
 					{ text: 'Montréal', link: '/mini-excavation/montreal' },
 					{ text: 'Laval', link: '/mini-excavation/laval' },
 					{ text: 'Longueuil', link: '/mini-excavation/longueuil' },
+					{ text: 'Brossard', link: '/mini-excavation/brossard' },
+					{ text: 'Saint-Jérôme', link: '/mini-excavation/saint-jerome' },
 					{ text: 'Toutes les régions →', link: '/mini-excavation' }
 				]
 			},
@@ -125,7 +124,6 @@
 					{ text: 'French Drain', link: '/services/drain-francais', desc: 'Install, repair, replace' },
 					{ text: 'Excavation', link: '/services/excavation', desc: 'Mini-excavators for tight spaces' },
 					{ text: 'Crack Repair', link: '/services/reparation-fissures', desc: 'Epoxy & polyurethane injection' },
-					{ text: 'Waterproofing', link: '/services/waterproofing', desc: 'Membranes and drainage' },
 					{ text: 'Demolition', link: '/services/demolition', desc: 'Residential, garage, pool' },
 					{ text: 'Camera Inspection', link: '/services/inspection-camera', desc: 'HD diagnosis, no digging' },
 					{ text: 'All services →', link: '/#services' }
@@ -134,12 +132,12 @@
 			{
 				text: 'Regions',
 				children: [
-					{ text: 'Saint-Hubert-de-Rivière-du-Loup', link: '/mini-excavation/saint-hubert-de-riviere-du-loup', desc: 'Base — priority service' },
-					{ text: 'Rivière-du-Loup', link: '/mini-excavation/riviere-du-loup' },
-					{ text: 'Quebec City', link: '/mini-excavation/quebec' },
+					{ text: 'Quebec City', link: '/mini-excavation/quebec-city', desc: 'Capitale-Nationale' },
 					{ text: 'Montreal', link: '/mini-excavation/montreal' },
 					{ text: 'Laval', link: '/mini-excavation/laval' },
 					{ text: 'Longueuil', link: '/mini-excavation/longueuil' },
+					{ text: 'Brossard', link: '/mini-excavation/brossard' },
+					{ text: 'Saint-Jérôme', link: '/mini-excavation/saint-jerome' },
 					{ text: 'All regions →', link: '/mini-excavation' }
 				]
 			},
@@ -163,7 +161,6 @@
 					{ text: 'Drenaje francés', link: '/services/drain-francais', desc: 'Instalación, reparación, reemplazo' },
 					{ text: 'Excavación', link: '/services/excavation', desc: 'Mini-excavadoras para terrenos restringidos' },
 					{ text: 'Reparación de grietas', link: '/services/reparation-fissures', desc: 'Inyección epoxi y poliuretano' },
-					{ text: 'Impermeabilización', link: '/services/waterproofing', desc: 'Membranas y drenaje' },
 					{ text: 'Demolición', link: '/services/demolition', desc: 'Residencial, garaje, piscina' },
 					{ text: 'Inspección con cámara', link: '/services/inspection-camera', desc: 'Diagnóstico HD sin excavar' },
 					{ text: 'Todos los servicios →', link: '/#services' }
@@ -172,12 +169,12 @@
 			{
 				text: 'Regiones',
 				children: [
-					{ text: 'Saint-Hubert-de-Rivière-du-Loup', link: '/mini-excavation/saint-hubert-de-riviere-du-loup', desc: 'Base — servicio prioritario' },
-					{ text: 'Rivière-du-Loup', link: '/mini-excavation/riviere-du-loup' },
-					{ text: 'Quebec', link: '/mini-excavation/quebec' },
+					{ text: 'Quebec', link: '/mini-excavation/quebec-city', desc: 'Capitale-Nationale' },
 					{ text: 'Montreal', link: '/mini-excavation/montreal' },
 					{ text: 'Laval', link: '/mini-excavation/laval' },
 					{ text: 'Longueuil', link: '/mini-excavation/longueuil' },
+					{ text: 'Brossard', link: '/mini-excavation/brossard' },
+					{ text: 'Saint-Jérôme', link: '/mini-excavation/saint-jerome' },
 					{ text: 'Todas las regiones →', link: '/mini-excavation' }
 				]
 			},
