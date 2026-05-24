@@ -183,6 +183,26 @@
 
 	function finishSuccess() {
 		step = 4;
+		// Capture locally for the admin dashboard.
+		try {
+			const probLabel =
+				problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
+			const urgLabel =
+				urgencies.find((u) => u.id === formData.urgencyLevel)?.labelFr || formData.urgencyLevel;
+			import('$lib/admin/storage').then(({ appendSoumission }) => {
+				appendSoumission({
+					client_nom: formData.name,
+					client_email: formData.email,
+					client_telephone: formData.phone,
+					projet_adresse: '—',
+					projet_type: `Urgence: ${probLabel}`,
+					projet_description: `Niveau d'urgence: ${urgLabel}\n\n${formData.messageText || '—'}`,
+					notes_client: formData.messageText || undefined,
+					source: 'urgences-form',
+					lang: ($language as 'fr' | 'en' | 'es') || 'fr'
+				});
+			});
+		} catch {}
 		import('$lib/analytics/gtag').then(({ trackContactFormSubmit }) => {
 			trackContactFormSubmit({
 				value: 1.0,

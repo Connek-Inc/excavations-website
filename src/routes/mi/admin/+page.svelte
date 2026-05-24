@@ -41,8 +41,8 @@
 			statRBQ: 'RBQ',
 			statRBQHint: 'Licence active',
 			sections: [
-				{ title: 'Soumissions', desc: 'Reçues par courriel — ouvrir la boîte de réception.' },
-				{ title: 'Leads / Contacts', desc: 'Tous les leads arrivent au courriel admin.' },
+				{ title: 'Soumissions', desc: 'Voir et gérer toutes les demandes reçues.' },
+				{ title: 'Leads / Contacts', desc: 'Clients ayant accepté une soumission.' },
 				{ title: 'Articles Blog', desc: 'Voir les articles publiés sur le site.' },
 				{ title: 'Services', desc: 'Liste des services affichés au public.' },
 				{ title: 'Avis Clients', desc: 'Lire les témoignages clients publiés.' },
@@ -71,8 +71,8 @@
 			statRBQ: 'RBQ',
 			statRBQHint: 'Active license',
 			sections: [
-				{ title: 'Quotes', desc: 'Received by email — open the inbox.' },
-				{ title: 'Leads / Contacts', desc: 'All leads arrive at the admin inbox.' },
+				{ title: 'Quotes', desc: 'View and manage all submitted quotes.' },
+				{ title: 'Leads / Contacts', desc: 'Clients who accepted a quote.' },
 				{ title: 'Blog Articles', desc: 'View posts published on the site.' },
 				{ title: 'Services', desc: 'Services displayed publicly.' },
 				{ title: 'Client Reviews', desc: 'Read published testimonials.' },
@@ -101,8 +101,8 @@
 			statRBQ: 'RBQ',
 			statRBQHint: 'Licencia activa',
 			sections: [
-				{ title: 'Cotizaciones', desc: 'Recibidas por correo — abrir la bandeja.' },
-				{ title: 'Leads / Contactos', desc: 'Todos los leads llegan al correo admin.' },
+				{ title: 'Cotizaciones', desc: 'Ver y gestionar todas las solicitudes recibidas.' },
+				{ title: 'Leads / Contactos', desc: 'Clientes que aceptaron una cotización.' },
 				{ title: 'Artículos Blog', desc: 'Ver los artículos publicados en el sitio.' },
 				{ title: 'Servicios', desc: 'Lista de servicios mostrados al público.' },
 				{ title: 'Reseñas de clientes', desc: 'Leer los testimonios publicados.' },
@@ -141,8 +141,8 @@
 	}
 
 	const sectionMeta = [
-		{ icon: FileSignature, href: 'mailto:miniexcavationerable@gmail.com', external: true, accent: 'amber' },
-		{ icon: Users, href: 'mailto:miniexcavationerable@gmail.com', external: true, accent: 'blue' },
+		{ icon: FileSignature, href: '/mi/admin/soumissions', external: false, accent: 'amber' },
+		{ icon: Users, href: '/mi/admin/contacts', external: false, accent: 'blue' },
 		{ icon: FileText, href: '/#blogs', external: false, accent: 'emerald' },
 		{ icon: Wrench, href: '/#services', external: false, accent: 'orange' },
 		{ icon: Star, href: '/urgences#avis', external: false, accent: 'purple' },
