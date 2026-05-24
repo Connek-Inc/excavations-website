@@ -6,6 +6,21 @@
 		<meta name="theme-color" content="#febd17" />
 		<meta name="format-detection" content="telephone=yes" />
 
+		<!-- Theme bootstrap: applies dark class before first paint to avoid FOUC -->
+		<script>
+			(function () {
+				try {
+					var t = localStorage.getItem('theme');
+					if (!t) {
+						t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+							? 'dark'
+							: 'light';
+					}
+					if (t === 'dark') document.documentElement.classList.add('dark');
+				} catch (e) {}
+			})();
+		</script>
+
 		<!-- Favicons & Icons -->
 		<link rel="icon" type="image/png" href="%sveltekit.assets%/logo.png" />
 		<link rel="apple-touch-icon" href="%sveltekit.assets%/logo.png" />
