@@ -110,12 +110,13 @@
 		'archivee'
 	];
 
-	onMount(() => {
-		if (!checkAdminSession()) {
+	onMount(async () => {
+		const admin = await checkAdminSession();
+		if (!admin) {
 			goto('/mi/admin/login', { replaceState: true });
 			return;
 		}
-		all = readSoumissions();
+		all = await readSoumissions();
 		checked = true;
 	});
 
@@ -140,10 +141,10 @@
 		}
 	}
 
-	function handleDelete(id: string) {
+	async function handleDelete(id: string) {
 		if (!confirm(t.confirmDelete)) return;
-		removeSoumission(id);
-		all = readSoumissions();
+		await removeSoumission(id);
+		all = await readSoumissions();
 	}
 </script>
 
@@ -225,7 +226,7 @@
 												<span class="inline-flex items-center gap-1"><Phone class="w-3 h-3" /> {s.client_telephone}</span>
 											{/if}
 											<span>·</span>
-											<span>{fmtDate(s.createdAt)}</span>
+											<span>{fmtDate(s.created_at)}</span>
 										</div>
 										<div class="text-sm text-gray-700 dark:text-zinc-300 truncate">
 											<span class="font-semibold">{s.projet_type}</span>

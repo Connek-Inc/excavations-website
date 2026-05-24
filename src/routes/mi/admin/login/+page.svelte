@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { language } from '$lib/store/store';
+	import { login } from '$lib/admin/clients';
 	import { Lock, Mail, ArrowRight, Loader2, ShieldCheck, AlertCircle } from 'lucide-svelte';
-
-	const VALID_EMAIL = 'miniexcavationerable@gmail.com';
-	const VALID_PASSWORD = 'escavar2026';
 
 	let email = '';
 	let password = '';
@@ -24,6 +22,7 @@
 			submit: 'Se connecter',
 			submitting: 'Connexion…',
 			err: 'Adresse courriel ou mot de passe incorrect.',
+			errNetwork: 'Impossible de joindre le serveur. Réessayez dans un instant.',
 			footer: 'Accès restreint • Toutes les tentatives sont enregistrées'
 		},
 		en: {
@@ -35,6 +34,7 @@
 			submit: 'Sign in',
 			submitting: 'Signing in…',
 			err: 'Incorrect email or password.',
+			errNetwork: 'Unable to reach the server. Try again in a moment.',
 			footer: 'Restricted access • All attempts are logged'
 		},
 		es: {
@@ -46,30 +46,22 @@
 			submit: 'Iniciar sesión',
 			submitting: 'Iniciando…',
 			err: 'Correo o contraseña incorrectos.',
+			errNetwork: 'No fue posible contactar al servidor. Intente de nuevo en un momento.',
 			footer: 'Acceso restringido • Todos los intentos son registrados'
 		}
 	};
 
-	function handleSubmit(e: Event) {
+	async function handleSubmit(e: Event) {
 		e.preventDefault();
 		loading = true;
 		errorMsg = '';
-		setTimeout(() => {
-			const ok =
-				email.trim().toLowerCase() === VALID_EMAIL.toLowerCase() && password === VALID_PASSWORD;
-			if (ok) {
-				try {
-					localStorage.setItem(
-						'mi_admin_session',
-						JSON.stringify({ email: VALID_EMAIL, at: Date.now() })
-					);
-				} catch {}
-				goto('/mi/admin');
-			} else {
-				loading = false;
-				errorMsg = t.err;
-			}
-		}, 400);
+		const result = await login(email.trim().toLowerCase(), password);
+		if (result.ok) {
+			goto('/mi/admin');
+		} else {
+			loading = false;
+			errorMsg = result.reason === 'network' ? t.errNetwork : t.err;
+		}
 	}
 </script>
 

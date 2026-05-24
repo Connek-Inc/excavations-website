@@ -44,12 +44,14 @@
 		}
 	};
 
-	onMount(() => {
-		if (!checkAdminSession()) {
+	onMount(async () => {
+		const admin = await checkAdminSession();
+		if (!admin) {
 			goto('/mi/admin/login', { replaceState: true });
 			return;
 		}
-		all = readSoumissions().filter((s) => s.status === 'acceptee');
+		const list = await readSoumissions();
+		all = list.filter((s) => s.status === 'acceptee' || s.status === 'signee_par_les_deux');
 		checked = true;
 	});
 
@@ -136,7 +138,7 @@
 											{/if}
 										</div>
 										<div class="text-xs text-gray-500 dark:text-zinc-500">
-											{t.from} {fmtDate(s.createdAt)} · {s.projet_type}
+											{t.from} {fmtDate(s.created_at)} · {s.projet_type ?? ''}
 										</div>
 									</div>
 									<ChevronRight class="w-4 h-4 text-gray-400 dark:text-zinc-600 flex-shrink-0 mt-1" />

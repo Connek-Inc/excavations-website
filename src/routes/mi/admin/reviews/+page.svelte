@@ -1,153 +1,163 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { language } from '$lib/store/store';
 	import { Star, Plus, Edit, Trash2, X, BadgeCheck } from 'lucide-svelte';
+	import { listReviews, createReview, updateReview, deleteReview, type Review } from '$lib/admin/reviews';
+	import { getCurrent } from '$lib/admin/clients';
 
-	export let data: any = {};
-	let editing: any = null;
+	let items: Review[] = [];
+	let loading = true;
+	let editing: Partial<Review> | null = null;
 	let showForm = false;
+	let saving = false;
 
-	function newReview() {
-		editing = {
-			id: 0, authorName: '', authorCity: '', rating: 5,
-			textFr: '', textEn: '', textEs: '', serviceType: '',
-			verified: true, featured: false
-		};
+	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
+	$: t = T[lang] || T.fr;
+
+	const T = {
+		fr: { title: 'Avis Clients', count: 'avis', newCta: 'Nouveau', edit: 'Modifier', del: 'Supprimer', confirmDel: 'Supprimer cet avis ?', empty: 'Aucun avis.', save: 'Enregistrer', saving: 'Enregistrement…', cancel: 'Annuler', fName: 'Auteur *', fCity: 'Ville', fRating: 'Note (1–5)', fService: 'Service', fTextFr: 'Témoignage FR *', fTextEn: 'Témoignage EN', fTextEs: 'Témoignage ES', fVerified: 'Vérifié', fFeatured: 'Mis en avant' },
+		en: { title: 'Client reviews', count: 'reviews', newCta: 'New', edit: 'Edit', del: 'Delete', confirmDel: 'Delete this review?', empty: 'No reviews.', save: 'Save', saving: 'Saving…', cancel: 'Cancel', fName: 'Author *', fCity: 'City', fRating: 'Rating (1–5)', fService: 'Service', fTextFr: 'Testimonial FR *', fTextEn: 'Testimonial EN', fTextEs: 'Testimonial ES', fVerified: 'Verified', fFeatured: 'Featured' },
+		es: { title: 'Reseñas de clientes', count: 'reseñas', newCta: 'Nuevo', edit: 'Editar', del: 'Eliminar', confirmDel: '¿Eliminar esta reseña?', empty: 'Sin reseñas.', save: 'Guardar', saving: 'Guardando…', cancel: 'Cancelar', fName: 'Autor *', fCity: 'Ciudad', fRating: 'Nota (1–5)', fService: 'Servicio', fTextFr: 'Testimonio FR *', fTextEn: 'Testimonio EN', fTextEs: 'Testimonio ES', fVerified: 'Verificado', fFeatured: 'Destacado' }
+	};
+
+	onMount(async () => {
+		const admin = await getCurrent();
+		if (!admin) {
+			goto('/mi/admin/login', { replaceState: true });
+			return;
+		}
+		await refresh();
+	});
+
+	async function refresh() {
+		loading = true;
+		items = await listReviews();
+		loading = false;
+	}
+
+	function newOne() {
+		editing = { author_name: '', author_city: '', rating: 5, text_fr: '', text_en: '', text_es: '', service_type: '', verified: 1, featured: 0 };
 		showForm = true;
 	}
 
-	function edit(r: any) {
+	function edit(r: Review) {
 		editing = { ...r };
 		showForm = true;
 	}
+
+	async function save() {
+		if (!editing || !editing.author_name || !editing.text_fr) return;
+		saving = true;
+		const payload = {
+			...editing,
+			verified: editing.verified ? 1 : 0,
+			featured: editing.featured ? 1 : 0,
+			rating: Number(editing.rating) || 5
+		} as Partial<Review>;
+		const result = editing.id ? await updateReview(editing.id, payload) : await createReview(payload);
+		saving = false;
+		if (result) {
+			showForm = false;
+			editing = null;
+			await refresh();
+		}
+	}
+
+	async function handleDelete(r: Review) {
+		if (!confirm(t.confirmDel)) return;
+		await deleteReview(r.id);
+		await refresh();
+	}
+
+	function textFor(r: Review): string {
+		return (lang === 'en' ? r.text_en : lang === 'es' ? r.text_es : null) || r.text_fr;
+	}
 </script>
 
-<svelte:head><title>Avis Clients — Admin</title></svelte:head>
+<svelte:head><title>{t.title} — Admin</title><meta name="robots" content="noindex, nofollow" /></svelte:head>
 
 <div class="space-y-6">
 	<div class="flex items-center justify-between flex-wrap gap-4">
 		<div>
-			<h1 class="text-3xl font-black flex items-center gap-3">
-				<Star class="w-7 h-7 text-[#febd17]" />
-				Avis Clients
-			</h1>
-			<p class="text-gray-500 dark:text-zinc-400 mt-1">{data.items.length} avis</p>
+			<h1 class="text-3xl font-black flex items-center gap-3"><Star class="w-7 h-7 text-[#febd17]" /> {t.title}</h1>
+			<p class="text-gray-500 dark:text-zinc-400 mt-1">{items.length} {t.count}</p>
 		</div>
-		<button on:click={newReview} class="px-5 py-2.5 rounded-xl bg-[#febd17] text-black font-bold text-sm hover:bg-yellow-400 flex items-center gap-2">
-			<Plus class="w-4 h-4" /> Nouveau
+		<button type="button" on:click={newOne} class="px-5 py-2.5 rounded-xl bg-[#febd17] text-black font-bold text-sm hover:bg-yellow-400 flex items-center gap-2">
+			<Plus class="w-4 h-4" /> {t.newCta}
 		</button>
 	</div>
 
-	<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-		{#each data.items as r (r.id)}
-			<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
-				<div class="flex items-start justify-between mb-3">
-					<div class="flex items-center gap-3">
-						<div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#febd17] to-yellow-600 flex items-center justify-center text-black font-black text-sm">
-							{r.authorName[0]?.toUpperCase()}
+	{#if loading}
+		<p class="text-sm text-gray-400 dark:text-zinc-600">…</p>
+	{:else if items.length === 0}
+		<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-10 text-center text-gray-500 dark:text-zinc-500">{t.empty}</div>
+	{:else}
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+			{#each items as r (r.id)}
+				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+					<div class="flex items-start justify-between mb-3">
+						<div class="flex items-center gap-3">
+							<div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#febd17] to-yellow-600 flex items-center justify-center text-black font-black text-sm">
+								{r.author_name[0]?.toUpperCase()}
+							</div>
+							<div>
+								<p class="font-bold text-sm flex items-center gap-1">{r.author_name} {#if r.verified}<BadgeCheck class="w-3.5 h-3.5 text-emerald-500" />{/if}</p>
+								<p class="text-xs text-gray-400 dark:text-zinc-600">{r.author_city ?? ''}{r.service_type ? ` · ${r.service_type}` : ''}</p>
+							</div>
 						</div>
-						<div>
-							<p class="font-bold text-sm flex items-center gap-1">
-								{r.authorName}
-								{#if r.verified}<BadgeCheck class="w-4 h-4 text-blue-500" />{/if}
-							</p>
-							{#if r.authorCity}<p class="text-xs text-gray-500">{r.authorCity}</p>{/if}
+						<div class="flex items-center gap-0.5 text-[#febd17]">
+							{#each Array.from({ length: r.rating }) as _, i (i)}<Star class="w-3.5 h-3.5 fill-current" />{/each}
 						</div>
 					</div>
-					<div class="flex">
-						{#each Array(r.rating) as _}<Star class="w-4 h-4 fill-[#febd17] text-[#febd17]" />{/each}
+					<p class="text-sm text-gray-700 dark:text-zinc-300 line-clamp-4">{textFor(r)}</p>
+					<div class="flex items-center justify-end gap-1 mt-3">
+						{#if r.featured}<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-yellow-100 dark:bg-yellow-500/15 text-yellow-700 dark:text-yellow-300 mr-auto">★</span>{/if}
+						<button type="button" on:click={() => edit(r)} title={t.edit} class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:text-[#febd17]"><Edit class="w-4 h-4" /></button>
+						<button type="button" on:click={() => handleDelete(r)} title={t.del} class="p-2 rounded-lg hover:bg-red-500/10 text-gray-700 dark:text-zinc-300 hover:text-red-500"><Trash2 class="w-4 h-4" /></button>
 					</div>
 				</div>
-				<p class="text-sm text-gray-700 dark:text-zinc-300 italic mb-3 line-clamp-3">"{r.textFr}"</p>
-				{#if r.featured}<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-700 mb-3">⭐ Mis en avant</span>{/if}
-				<div class="flex gap-2">
-					<button on:click={() => edit(r)} class="flex-1 px-3 py-2 rounded-lg bg-gray-100 dark:bg-zinc-800 text-sm font-medium hover:bg-[#febd17] hover:text-black flex items-center justify-center gap-1.5">
-						<Edit class="w-3.5 h-3.5" /> Éditer
-					</button>
-					<form method="POST" action="?/delete" use:enhance>
-						<input type="hidden" name="id" value={r.id} />
-						<button type="submit" on:click={(e) => !confirm('Supprimer ?') && e.preventDefault()} class="px-3 py-2 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20">
-							<Trash2 class="w-3.5 h-3.5" />
-						</button>
-					</form>
-				</div>
-			</div>
-		{/each}
-		{#if data.items.length === 0}
-			<div class="md:col-span-2 py-16 text-center bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl">
-				<Star class="w-12 h-12 text-gray-300 dark:text-zinc-700 mx-auto mb-3" />
-				<p class="text-gray-500 dark:text-zinc-500">Aucun avis. Cliquez sur "Nouveau" pour ajouter.</p>
-			</div>
-		{/if}
-	</div>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 {#if showForm && editing}
-	<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto p-4">
-		<div class="max-w-2xl mx-auto bg-white dark:bg-zinc-900 rounded-3xl my-8 shadow-2xl">
-			<div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-zinc-800">
-				<h2 class="font-black text-xl">{editing.id ? 'Modifier' : 'Nouvel'} avis</h2>
-				<button on:click={() => (showForm = false)} class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800">
-					<X class="w-5 h-5" />
-				</button>
+	<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60" on:click|self={() => (showForm = false)}>
+		<div class="w-full max-w-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-t-2xl sm:rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-xl font-bold">{editing.id ? t.edit : t.newCta}</h2>
+				<button type="button" on:click={() => (showForm = false)} class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800"><X class="w-4 h-4" /></button>
 			</div>
-			<form method="POST" action="?/save" use:enhance={() => async ({ update }) => { await update(); showForm = false; }} class="p-5 space-y-4">
-				<input type="hidden" name="id" value={editing.id} />
-
-				<div class="grid grid-cols-2 gap-3">
-					<div>
-						<label class="block text-sm font-medium mb-1" for="authorName">Nom du client *</label>
-						<input id="authorName" name="authorName" bind:value={editing.authorName} required class="w-full h-11 px-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm focus:ring-2 focus:ring-[#febd17] focus:outline-none" />
-					</div>
-					<div>
-						<label class="block text-sm font-medium mb-1" for="authorCity">Ville</label>
-						<input id="authorCity" name="authorCity" bind:value={editing.authorCity} placeholder="Montréal" class="w-full h-11 px-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm focus:ring-2 focus:ring-[#febd17] focus:outline-none" />
-					</div>
-				</div>
-
-				<div class="grid grid-cols-2 gap-3">
-					<div>
-						<label class="block text-sm font-medium mb-1" for="rating">Note (1-5)</label>
-						<input id="rating" type="number" name="rating" bind:value={editing.rating} min="1" max="5" class="w-full h-11 px-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm focus:ring-2 focus:ring-[#febd17] focus:outline-none" />
-					</div>
-					<div>
-						<label class="block text-sm font-medium mb-1" for="serviceType">Service concerné</label>
-						<input id="serviceType" name="serviceType" bind:value={editing.serviceType} placeholder="Drain français" class="w-full h-11 px-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm focus:ring-2 focus:ring-[#febd17] focus:outline-none" />
-					</div>
-				</div>
-
-				<div>
-					<label class="block text-sm font-medium mb-1" for="textFr">Avis FR *</label>
-					<textarea id="textFr" name="textFr" bind:value={editing.textFr} required rows="3" class="w-full p-3 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm focus:ring-2 focus:ring-[#febd17] focus:outline-none"></textarea>
-				</div>
-				<div>
-					<label class="block text-sm font-medium mb-1" for="textEn">Avis EN</label>
-					<textarea id="textEn" name="textEn" bind:value={editing.textEn} rows="2" class="w-full p-3 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm focus:ring-2 focus:ring-[#febd17] focus:outline-none"></textarea>
-				</div>
-				<div>
-					<label class="block text-sm font-medium mb-1" for="textEs">Avis ES</label>
-					<textarea id="textEs" name="textEs" bind:value={editing.textEs} rows="2" class="w-full p-3 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm focus:ring-2 focus:ring-[#febd17] focus:outline-none"></textarea>
-				</div>
-
-				<div class="flex gap-4">
-					<label class="flex items-center gap-2 cursor-pointer">
-						<input type="checkbox" name="verified" checked={editing.verified} class="w-4 h-4 accent-[#febd17]" />
-						<span class="text-sm font-medium">✓ Vérifié</span>
-					</label>
-					<label class="flex items-center gap-2 cursor-pointer">
-						<input type="checkbox" name="featured" checked={editing.featured} class="w-4 h-4 accent-[#febd17]" />
-						<span class="text-sm font-medium">⭐ Mis en avant</span>
-					</label>
-				</div>
-
-				<div class="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-zinc-800">
-					<button type="button" on:click={() => (showForm = false)} class="px-5 py-2.5 rounded-xl border border-gray-200 dark:border-zinc-800 font-medium text-sm hover:bg-gray-50 dark:hover:bg-zinc-800">
-						Annuler
-					</button>
-					<button type="submit" class="px-5 py-2.5 rounded-xl bg-[#febd17] text-black font-bold text-sm hover:bg-yellow-400">
-						Enregistrer
-					</button>
-				</div>
-			</form>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+				<label class="block sm:col-span-2"><span class="text-xs font-semibold text-gray-600 dark:text-zinc-400 mb-1 block">{t.fName}</span>
+					<input type="text" bind:value={editing.author_name} class="w-full h-10 px-3 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm" />
+				</label>
+				<label class="block"><span class="text-xs font-semibold text-gray-600 dark:text-zinc-400 mb-1 block">{t.fCity}</span>
+					<input type="text" bind:value={editing.author_city} class="w-full h-10 px-3 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm" />
+				</label>
+				<label class="block"><span class="text-xs font-semibold text-gray-600 dark:text-zinc-400 mb-1 block">{t.fRating}</span>
+					<input type="number" min="1" max="5" bind:value={editing.rating} class="w-full h-10 px-3 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm" />
+				</label>
+				<label class="block sm:col-span-2"><span class="text-xs font-semibold text-gray-600 dark:text-zinc-400 mb-1 block">{t.fService}</span>
+					<input type="text" bind:value={editing.service_type} class="w-full h-10 px-3 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm" />
+				</label>
+				<label class="block sm:col-span-2"><span class="text-xs font-semibold text-gray-600 dark:text-zinc-400 mb-1 block">{t.fTextFr}</span>
+					<textarea bind:value={editing.text_fr} rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm"></textarea>
+				</label>
+				<label class="block sm:col-span-2"><span class="text-xs font-semibold text-gray-600 dark:text-zinc-400 mb-1 block">{t.fTextEn}</span>
+					<textarea bind:value={editing.text_en} rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm"></textarea>
+				</label>
+				<label class="block sm:col-span-2"><span class="text-xs font-semibold text-gray-600 dark:text-zinc-400 mb-1 block">{t.fTextEs}</span>
+					<textarea bind:value={editing.text_es} rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-sm"></textarea>
+				</label>
+				<label class="flex items-center gap-2"><input type="checkbox" bind:checked={editing.verified} class="rounded" /> <span class="text-sm">{t.fVerified}</span></label>
+				<label class="flex items-center gap-2"><input type="checkbox" bind:checked={editing.featured} class="rounded" /> <span class="text-sm">{t.fFeatured}</span></label>
+			</div>
+			<div class="flex items-center justify-end gap-2 mt-5">
+				<button type="button" on:click={() => (showForm = false)} class="px-4 py-2 rounded-lg border border-gray-200 dark:border-zinc-800 text-sm">{t.cancel}</button>
+				<button type="button" on:click={save} disabled={saving} class="px-4 py-2 rounded-lg bg-[#febd17] hover:bg-yellow-400 text-black font-bold text-sm disabled:opacity-60">{saving ? t.saving : t.save}</button>
+			</div>
 		</div>
 	</div>
 {/if}

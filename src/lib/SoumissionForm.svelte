@@ -12,7 +12,6 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { language } from '$lib/store/store';
 	import { appendSoumission } from '$lib/admin/storage';
-	import { signup, findClient, getCurrent } from '$lib/admin/clients';
 
 	const DRAFT_KEY = 'mi_soumission_draft';
 
@@ -57,12 +56,9 @@
 	let draftSavedAt = '';
 	let saveTimeout: ReturnType<typeof setTimeout> | null = null;
 
-	// Account creation on success
-	let accountPassword = '';
-	let accountCreating = false;
-	let accountCreated = false;
-	let accountError = '';
-	let accountExisting = false;
+	// After successful submit, the API gives us a token-based URL the
+	// customer can use to view their quote / counter-offer / sign.
+	let clientUrl = '';
 
 	// Restore draft on mount
 	onMount(() => {
@@ -183,87 +179,59 @@
 		errorRaw = '';
 		mailtoFallback = buildMailtoFallback();
 
-		// Try the Resend endpoint first (Node.js runtime). If it's missing
-		// or fails (e.g. static deploy without API), fall back to Web3Forms
-		// so an email still goes out. Final fallback is the user's mail client.
-		const sharedPayload = {
-			name: form.client_nom,
-			email: form.client_email,
-			phone: form.client_telephone,
-			adresse_personnelle: form.client_adresse || '—',
-			adresse_projet: form.projet_adresse || '—',
-			type_projet: form.projet_type || '—',
-			description: form.projet_description,
-			notes: form.notes_client || '—',
-			langue: lang,
-			confirmation_au_client: clientCopyMessage()
-		};
+		// Primary path: POST to /api/soumissions. The Express server stores
+		// the row in MySQL and triggers Resend (admin + client copy) in one go.
+		const ok = await captureToServer();
 
-		let ok = false;
-		if (RESEND_ENDPOINT) {
-			try {
-				const ctrl = new AbortController();
-				const timeoutId = setTimeout(() => ctrl.abort(), 6000);
-				const res = await fetch(RESEND_ENDPOINT, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-					signal: ctrl.signal,
-					body: JSON.stringify({ type: 'soumission', ...sharedPayload })
-				});
-				clearTimeout(timeoutId);
-				if (res.ok) {
-					const data = await res.json().catch(() => ({}));
-					ok = data?.ok === true;
-				}
-			} catch {}
-		}
-
-		if (!ok) {
-			// Fallback: Web3Forms
-			try {
-				const ctrl = new AbortController();
-				const timeoutId = setTimeout(() => ctrl.abort(), 6000);
-				const res = await fetch(WEB3FORMS_ENDPOINT, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-					signal: ctrl.signal,
-					body: JSON.stringify({
-						access_key: WEB3FORMS_KEY,
-						subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type || 'Soumission'}`,
-						from_name: `${form.client_nom} via excavationserable.com`,
-						replyto: form.client_email,
-						cc: form.client_email,
-						...sharedPayload
-					})
-				});
-				clearTimeout(timeoutId);
-				const data = await res.json().catch(() => ({}));
-				ok = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
-			} catch {}
-		}
-
-		try {
-			if (ok) {
-				captureLocally();
-				clearDraft();
-				checkExistingAccount();
-				step = 'success';
-			} else {
-				// Service rejected — open the user's mail client as guaranteed delivery
-				captureLocally();
-				clearDraft();
-				window.location.href = mailtoFallback;
-				setTimeout(() => { step = 'success'; }, 400);
-			}
-		} catch (err) {
-			// Network / timeout / service down — open mail client
-			captureLocally();
+		if (ok) {
 			clearDraft();
-			window.location.href = mailtoFallback;
-			setTimeout(() => { step = 'success'; }, 400);
-		} finally {
+			step = 'success';
 			sending = false;
+			return;
 		}
+
+		// Fallback: Web3Forms (keeps email flowing if Express is sleeping/crashed)
+		try {
+			const ctrl = new AbortController();
+			const timeoutId = setTimeout(() => ctrl.abort(), 6000);
+			const res = await fetch(WEB3FORMS_ENDPOINT, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				signal: ctrl.signal,
+				body: JSON.stringify({
+					access_key: WEB3FORMS_KEY,
+					subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type || 'Soumission'}`,
+					from_name: `${form.client_nom} via excavationserable.com`,
+					replyto: form.client_email,
+					cc: form.client_email,
+					name: form.client_nom,
+					email: form.client_email,
+					phone: form.client_telephone,
+					adresse_personnelle: form.client_adresse || '—',
+					adresse_projet: form.projet_adresse || '—',
+					type_projet: form.projet_type || '—',
+					description: form.projet_description,
+					notes: form.notes_client || '—',
+					langue: lang,
+					confirmation_au_client: clientCopyMessage()
+				})
+			});
+			clearTimeout(timeoutId);
+			const data = await res.json().catch(() => ({}));
+			const fallbackOk = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
+			if (fallbackOk) {
+				clearDraft();
+				step = 'success';
+				sending = false;
+				return;
+			}
+		} catch {}
+
+		// Final fallback: mailto opens the user's mail client as guaranteed delivery
+		clearDraft();
+		window.location.href = mailtoFallback;
+		setTimeout(() => { step = 'success'; }, 400);
+		sending = false;
 	}
 
 	function clientCopyMessage(): string {
@@ -334,60 +302,28 @@
 			.join('\n');
 	}
 
-	function createAccount() {
-		if (accountCreating || accountCreated) return;
-		accountError = '';
-		if (accountPassword.length < 6) {
-			accountError = t.accountErrShort;
-			return;
-		}
-		accountCreating = true;
-		const result = signup({
-			email: form.client_email,
-			name: form.client_nom,
-			telephone: form.client_telephone,
-			password: accountPassword
-		});
-		accountCreating = false;
-		if (result.ok) {
-			accountCreated = true;
-		} else if (result.reason === 'exists') {
-			accountExisting = true;
-			accountError = t.accountErrExists;
-		} else {
-			accountError = t.accountErrInvalid;
-		}
-	}
-
-	function checkExistingAccount() {
-		if (typeof window === 'undefined') return;
-		if (!form.client_email) return;
-		const existing = findClient(form.client_email);
-		if (existing) {
-			accountExisting = true;
-			// Already signed in?
-			const cur = getCurrent();
-			if (cur && cur.email.toLowerCase() === form.client_email.toLowerCase()) {
-				accountCreated = true;
-			}
-		}
-	}
-
-	function captureLocally() {
+	async function captureToServer(): Promise<boolean> {
 		try {
-			appendSoumission({
+			const created = await appendSoumission({
 				client_nom: form.client_nom,
 				client_email: form.client_email,
 				client_telephone: form.client_telephone,
 				client_adresse: form.client_adresse || undefined,
-				projet_adresse: form.projet_adresse,
-				projet_type: form.projet_type || 'Autre',
+				projet_adresse: form.projet_adresse || undefined,
+				projet_type: form.projet_type || undefined,
 				projet_description: form.projet_description,
 				notes_client: form.notes_client || undefined,
 				source: 'public-form',
 				lang
 			});
-		} catch {}
+			if (created?.client_token) {
+				clientUrl = `/soumission/${created.client_token}`;
+				return true;
+			}
+			return false;
+		} catch {
+			return false;
+		}
 	}
 
 	const T = {
@@ -402,6 +338,9 @@
 			successDesc:
 				'Notre équipe analyse votre projet. Nous vous enverrons une offre détaillée par courriel dans les meilleurs délais. Pour une réponse immédiate, appelez-nous au',
 			successHome: "Retour à l'accueil",
+			successTrackTitle: 'Suivez votre demande',
+			successTrackDesc: 'Conservez ce lien : vous pourrez y consulter votre offre, contre-proposer et signer en ligne.',
+			successTrackCTA: 'Ouvrir mon espace',
 
 			draftTitle: 'Brouillon restauré',
 			draftDesc: 'Nous avons retrouvé votre demande non envoyée. Continuez où vous étiez ou recommencez.',
@@ -486,6 +425,9 @@
 			successDesc:
 				'Our team is reviewing your project. We will send you a detailed offer by email as soon as possible. For an immediate response, call us at',
 			successHome: 'Back to home',
+			successTrackTitle: 'Track your request',
+			successTrackDesc: 'Save this link: from there you can view your offer, counter-propose, and sign online.',
+			successTrackCTA: 'Open my space',
 
 			draftTitle: 'Draft restored',
 			draftDesc: "We found your unsent request. Pick up where you left off or start over.",
@@ -569,6 +511,9 @@
 			successDesc:
 				'Nuestro equipo está analizando su proyecto. Le enviaremos una oferta detallada por correo a la brevedad. Para respuesta inmediata, llámenos al',
 			successHome: 'Volver al inicio',
+			successTrackTitle: 'Siga su solicitud',
+			successTrackDesc: 'Guarde este enlace: desde allí podrá ver su oferta, contra-proponer y firmar en línea.',
+			successTrackCTA: 'Abrir mi espacio',
 
 			draftTitle: 'Borrador restaurado',
 			draftDesc: 'Encontramos su solicitud sin enviar. Continúe donde lo dejó o empiece de nuevo.',
@@ -676,53 +621,23 @@
 					<a href="tel:+15148309973" class="text-[#febd17] font-semibold hover:underline">(514) 830-9973</a>.
 				</p>
 
-				<!-- Account creation card -->
-				<div class="max-w-md mx-auto mb-8 p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 text-left">
-					{#if accountCreated}
+				{#if clientUrl}
+					<div class="max-w-md mx-auto mb-8 p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/30 text-left">
 						<div class="flex items-start gap-3">
 							<CheckCircle2 class="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />
-							<div>
-								<h3 class="font-bold text-gray-900 dark:text-white mb-1">{t.accountSuccess}</h3>
-								<p class="text-xs text-gray-600 dark:text-zinc-400">{t.accountSuccessDesc}</p>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-bold text-gray-900 dark:text-white mb-1">{t.successTrackTitle}</h3>
+								<p class="text-xs text-gray-600 dark:text-zinc-400 mb-3">{t.successTrackDesc}</p>
+								<a
+									href={clientUrl}
+									class="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
+								>
+									{t.successTrackCTA}
+								</a>
 							</div>
 						</div>
-					{:else if accountExisting}
-						<h3 class="font-bold text-gray-900 dark:text-white mb-1">{t.accountErrExists}</h3>
-						<p class="text-xs text-gray-600 dark:text-zinc-400 mb-3">{form.client_email}</p>
-						<a
-							href="/compte/login?email={encodeURIComponent(form.client_email)}"
-							class="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
-						>
-							{t.accountLogin}
-						</a>
-					{:else}
-						<h3 class="font-bold text-gray-900 dark:text-white mb-1">{t.accountTitle}</h3>
-						<p class="text-xs text-gray-600 dark:text-zinc-400 mb-4">{t.accountDesc}</p>
-						<div class="space-y-3">
-							<div class="text-xs text-gray-500 dark:text-zinc-500 truncate">
-								<span class="font-semibold text-gray-700 dark:text-zinc-300">{form.client_email}</span>
-							</div>
-							<input
-								type="password"
-								bind:value={accountPassword}
-								placeholder={t.accountPwd}
-								minlength="6"
-								class="w-full px-3 py-2.5 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
-							/>
-							{#if accountError}
-								<p class="text-xs text-red-500 dark:text-red-400">{accountError}</p>
-							{/if}
-							<button
-								type="button"
-								on:click={createAccount}
-								disabled={accountCreating || accountPassword.length < 6}
-								class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-							>
-								{accountCreating ? t.accountCreating : t.accountCTA}
-							</button>
-						</div>
-					{/if}
-				</div>
+					</div>
+				{/if}
 
 				<div class="flex flex-col sm:flex-row gap-3 justify-center">
 					<a

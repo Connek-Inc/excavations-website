@@ -141,43 +141,43 @@
 		}
 	};
 
-	onMount(() => {
-		if (!checkAdminSession()) {
+	onMount(async () => {
+		const admin = await checkAdminSession();
+		if (!admin) {
 			goto('/mi/admin/login', { replaceState: true });
 			return;
 		}
-		load();
+		await load();
 		checked = true;
 	});
 
-	function load() {
-		soumission = findSoumission(id);
+	async function load() {
+		const r = await findSoumission(id);
+		soumission = r?.soumission ?? null;
 		admin_notes = soumission?.admin_notes || '';
 	}
 
-	function setStatus(status: SoumissionStatus) {
-		const updated = updateSoumission(id, { status });
+	async function setStatus(status: SoumissionStatus) {
+		const updated = await updateSoumission(id, { status });
 		if (updated) {
 			soumission = updated;
 			showToast(t.statusUpdated);
 		}
 	}
 
-	function saveNotes() {
+	async function saveNotes() {
 		saving = true;
-		const updated = updateSoumission(id, { admin_notes });
-		setTimeout(() => {
-			saving = false;
-			if (updated) {
-				soumission = updated;
-				showToast(t.savedNotes);
-			}
-		}, 300);
+		const updated = await updateSoumission(id, { admin_notes });
+		saving = false;
+		if (updated) {
+			soumission = updated;
+			showToast(t.savedNotes);
+		}
 	}
 
-	function handleDelete() {
+	async function handleDelete() {
 		if (!confirm(t.confirmDelete)) return;
-		removeSoumission(id);
+		await removeSoumission(id);
 		goto('/mi/admin/soumissions', { replaceState: true });
 	}
 
@@ -235,7 +235,7 @@
 					<div>
 						<h1 class="text-2xl sm:text-3xl font-black tracking-tight">{soumission.client_nom}</h1>
 						<p class="text-xs text-gray-500 dark:text-zinc-500 mt-1">
-							{t.received} {fmtDateTime(soumission.createdAt)} · {t.source}: {t.sourceLabels[soumission.source]}
+							{t.received} {fmtDateTime(soumission.created_at)} · {t.source}: {t.sourceLabels[soumission.source]}
 						</p>
 					</div>
 					<span

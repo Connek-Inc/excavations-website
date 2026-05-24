@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { language } from '$lib/store/store';
+	import { appendSoumission } from '$lib/admin/storage';
 	import {
 		Droplets,
 		AlertOctagon,
@@ -238,26 +239,6 @@
 
 	function finishSuccess() {
 		step = 4;
-		// Capture locally for the admin dashboard.
-		try {
-			const probLabel =
-				problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
-			const urgLabel =
-				urgencies.find((u) => u.id === formData.urgencyLevel)?.labelFr || formData.urgencyLevel;
-			import('$lib/admin/storage').then(({ appendSoumission }) => {
-				appendSoumission({
-					client_nom: formData.name,
-					client_email: formData.email,
-					client_telephone: formData.phone,
-					projet_adresse: '—',
-					projet_type: `Urgence: ${probLabel}`,
-					projet_description: `Niveau d'urgence: ${urgLabel}\n\n${formData.messageText || '—'}`,
-					notes_client: formData.messageText || undefined,
-					source: 'urgences-form',
-					lang: ($language as 'fr' | 'en' | 'es') || 'fr'
-				});
-			});
-		} catch {}
 		import('$lib/analytics/gtag').then(({ trackContactFormSubmit }) => {
 			trackContactFormSubmit({
 				value: 1.0,
@@ -268,78 +249,84 @@
 		});
 	}
 
+	async function captureUrgenceToServer(): Promise<boolean> {
+		try {
+			const probLabel =
+				problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
+			const urgLabel =
+				urgencies.find((u) => u.id === formData.urgencyLevel)?.labelFr || formData.urgencyLevel;
+			const created = await appendSoumission({
+				client_nom: formData.name,
+				client_email: formData.email,
+				client_telephone: formData.phone,
+				projet_type: `Urgence: ${probLabel}`,
+				projet_description: `Niveau d'urgence: ${urgLabel}\n\n${formData.messageText || '—'}`,
+				notes_client: formData.messageText || undefined,
+				source: 'urgences-form',
+				lang: ($language as 'fr' | 'en' | 'es') || 'fr',
+				niveau_urgence: urgLabel
+			});
+			return !!created?.id;
+		} catch {
+			return false;
+		}
+	}
+
 	async function submitForm() {
 		if (!isStep3Valid || sending) return;
 		sending = true;
 		errorMessage = '';
 		mailtoFallback = buildMailtoFallback();
 
+		// Primary: POST /api/soumissions — Express stores the row in MySQL
+		// and triggers Resend (admin + client copy) server-side.
+		const ok = await captureUrgenceToServer();
+		if (ok) {
+			finishSuccess();
+			sending = false;
+			return;
+		}
+
+		// Fallback: Web3Forms (if Express is down)
 		const probLabel = problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
 		const urgLabel = urgencies.find((u) => u.id === formData.urgencyLevel)?.labelFr || formData.urgencyLevel;
-
-		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-		const sharedPayload = {
-			name: formData.name,
-			email: formData.email,
-			phone: formData.phone,
-			type_probleme: probLabel,
-			niveau_urgence: urgLabel,
-			description: formData.messageText || '—',
-			langue: ($language as 'fr' | 'en' | 'es') || 'fr',
-			confirmation_au_client: buildClientAutoResponse(probLabel, urgLabel)
-		};
-
-		let ok = false;
-		if (RESEND_ENDPOINT) {
-			try {
-				const res = await fetch(RESEND_ENDPOINT, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-					body: JSON.stringify({ type: 'urgence', ...sharedPayload }),
-					signal: controller.signal
-				});
-				if (res.ok) {
-					const data = await res.json().catch(() => ({}));
-					ok = data?.ok === true;
-				}
-			} catch {}
-		}
-
-		if (!ok) {
-			try {
-				const res = await fetch(WEB3FORMS_ENDPOINT, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-					body: JSON.stringify({
-						access_key: WEB3FORMS_KEY,
-						subject: `URGENCE — ${formData.name} (${probLabel})`,
-						from_name: `${formData.name} via excavationserable.com`,
-						replyto: formData.email,
-						cc: formData.email,
-						...sharedPayload
-					})
-				});
-				const data = await res.json().catch(() => ({}));
-				ok = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
-			} catch {}
-		}
-		clearTimeout(timeoutId);
-
 		try {
-			if (ok) {
+			const ctrl = new AbortController();
+			const timeoutId = setTimeout(() => ctrl.abort(), 8000);
+			const res = await fetch(WEB3FORMS_ENDPOINT, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				signal: ctrl.signal,
+				body: JSON.stringify({
+					access_key: WEB3FORMS_KEY,
+					subject: `URGENCE — ${formData.name} (${probLabel})`,
+					from_name: `${formData.name} via excavationserable.com`,
+					replyto: formData.email,
+					cc: formData.email,
+					name: formData.name,
+					email: formData.email,
+					phone: formData.phone,
+					type_probleme: probLabel,
+					niveau_urgence: urgLabel,
+					description: formData.messageText || '—',
+					langue: ($language as 'fr' | 'en' | 'es') || 'fr',
+					confirmation_au_client: buildClientAutoResponse(probLabel, urgLabel)
+				})
+			});
+			clearTimeout(timeoutId);
+			const data = await res.json().catch(() => ({}));
+			const fallbackOk = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
+			if (fallbackOk) {
 				finishSuccess();
-			} else {
-				window.location.href = mailtoFallback;
-				setTimeout(() => finishSuccess(), 400);
+				sending = false;
+				return;
 			}
-		} catch {
-			window.location.href = mailtoFallback;
-			setTimeout(() => finishSuccess(), 400);
-		} finally {
-			sending = false;
-		}
+		} catch {}
+
+		// Final fallback: mailto
+		window.location.href = mailtoFallback;
+		setTimeout(() => finishSuccess(), 400);
+		sending = false;
 	}
 
 	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';

@@ -16,11 +16,19 @@
 		Phone,
 		Globe,
 		BarChart3,
-		Inbox
+		Inbox,
+		TrendingUp,
+		Eye
 	} from 'lucide-svelte';
+	import { getCurrent, logout as apiLogout } from '$lib/admin/clients';
+	import { getSummary, getTopPages, getTopReferrers, type SummaryStats, type TopPage, type TopReferrer } from '$lib/api/analytics';
 
 	let adminEmail = '';
 	let checked = false;
+	let stats: SummaryStats | null = null;
+	let topPages: TopPage[] = [];
+	let topReferrers: TopReferrer[] = [];
+	let statsLoading = true;
 
 	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
 	$: t = T[lang] || T.fr;
@@ -40,6 +48,14 @@
 			statSiteValue: 'En ligne',
 			statRBQ: 'RBQ',
 			statRBQHint: 'Licence active',
+			statVisitorsToday: 'Visiteurs aujourd’hui',
+			statVisitors30: 'Visiteurs 30 jours',
+			statPageviews: 'pages vues',
+			statSoumissionsToday: 'Soumissions du jour',
+			last30: 'sur 30 jours',
+			topPages: 'Pages les plus consultées',
+			topReferrers: 'Sources de trafic',
+			noData: 'Aucune donnée encore — revenez après quelques visites.',
 			sections: [
 				{ title: 'Soumissions', desc: 'Voir et gérer toutes les demandes reçues.' },
 				{ title: 'Leads / Contacts', desc: 'Clients ayant accepté une soumission.' },
@@ -70,6 +86,14 @@
 			statSiteValue: 'Online',
 			statRBQ: 'RBQ',
 			statRBQHint: 'Active license',
+			statVisitorsToday: 'Visitors today',
+			statVisitors30: 'Visitors (30 days)',
+			statPageviews: 'pageviews',
+			statSoumissionsToday: 'Quotes today',
+			last30: 'in last 30 days',
+			topPages: 'Top pages',
+			topReferrers: 'Traffic sources',
+			noData: 'No data yet — check back after a few visits.',
 			sections: [
 				{ title: 'Quotes', desc: 'View and manage all submitted quotes.' },
 				{ title: 'Leads / Contacts', desc: 'Clients who accepted a quote.' },
@@ -100,6 +124,14 @@
 			statSiteValue: 'En línea',
 			statRBQ: 'RBQ',
 			statRBQHint: 'Licencia activa',
+			statVisitorsToday: 'Visitantes hoy',
+			statVisitors30: 'Visitantes (30 días)',
+			statPageviews: 'vistas',
+			statSoumissionsToday: 'Cotizaciones hoy',
+			last30: 'en 30 días',
+			topPages: 'Páginas más vistas',
+			topReferrers: 'Fuentes de tráfico',
+			noData: 'Aún sin datos — vuelva tras algunas visitas.',
 			sections: [
 				{ title: 'Cotizaciones', desc: 'Ver y gestionar todas las solicitudes recibidas.' },
 				{ title: 'Leads / Contactos', desc: 'Clientes que aceptaron una cotización.' },
@@ -118,25 +150,25 @@
 		}
 	};
 
-	onMount(() => {
-		try {
-			const raw = localStorage.getItem('mi_admin_session');
-			if (!raw) {
-				goto('/mi/admin/login', { replaceState: true });
-				return;
-			}
-			const sess = JSON.parse(raw);
-			adminEmail = sess?.email ?? '';
-			checked = true;
-		} catch {
+	onMount(async () => {
+		const admin = await getCurrent();
+		if (!admin) {
 			goto('/mi/admin/login', { replaceState: true });
+			return;
 		}
+		adminEmail = admin.email;
+		checked = true;
+		// load analytics in parallel; don't block page paint
+		Promise.all([getSummary(), getTopPages(), getTopReferrers()]).then(([s, p, r]) => {
+			stats = s;
+			topPages = p;
+			topReferrers = r;
+			statsLoading = false;
+		});
 	});
 
-	function logout() {
-		try {
-			localStorage.removeItem('mi_admin_session');
-		} catch {}
+	async function logout() {
+		await apiLogout();
 		goto('/mi/admin/login', { replaceState: true });
 	}
 
@@ -211,15 +243,39 @@
 				<p class="text-gray-600 dark:text-zinc-400 text-sm mt-1.5">{t.subtitle}</p>
 			</div>
 
-			<!-- Stats strip -->
-			<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+			<!-- Live stats strip (from /api/analytics/summary) -->
+			<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4">
+					<div class="flex items-center gap-2 text-gray-500 dark:text-zinc-500 text-xs mb-1">
+						<Eye class="w-3.5 h-3.5" />
+						{t.statVisitorsToday}
+					</div>
+					<div class="text-2xl font-black text-gray-900 dark:text-white">
+						{statsLoading ? '…' : (stats?.today.visitors ?? 0)}
+					</div>
+					<div class="text-[10px] text-gray-400 dark:text-zinc-600 mt-0.5">
+						{stats?.today.pageviews ?? 0} {t.statPageviews}
+					</div>
+				</div>
 				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4">
 					<div class="flex items-center gap-2 text-gray-500 dark:text-zinc-500 text-xs mb-1">
 						<Inbox class="w-3.5 h-3.5" />
-						{t.statSoumissions}
+						{t.statSoumissionsToday}
 					</div>
-					<div class="text-xl font-black text-gray-900 dark:text-white">{t.statSoumissionsValue}</div>
-					<div class="text-[10px] text-gray-400 dark:text-zinc-600 mt-0.5">{t.statSoumissionsHint}</div>
+					<div class="text-2xl font-black text-[#febd17]">{statsLoading ? '…' : (stats?.today.soumissions ?? 0)}</div>
+					<div class="text-[10px] text-gray-400 dark:text-zinc-600 mt-0.5">
+						{stats?.last30.soumissions ?? 0} {t.last30}
+					</div>
+				</div>
+				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4">
+					<div class="flex items-center gap-2 text-gray-500 dark:text-zinc-500 text-xs mb-1">
+						<TrendingUp class="w-3.5 h-3.5" />
+						{t.statVisitors30}
+					</div>
+					<div class="text-2xl font-black text-emerald-500">{statsLoading ? '…' : (stats?.last30.visitors ?? 0)}</div>
+					<div class="text-[10px] text-gray-400 dark:text-zinc-600 mt-0.5">
+						{stats?.last30.pageviews ?? 0} {t.statPageviews}
+					</div>
 				</div>
 				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4">
 					<div class="flex items-center gap-2 text-gray-500 dark:text-zinc-500 text-xs mb-1">
@@ -229,21 +285,43 @@
 					<div class="text-xl font-black text-emerald-400">{t.statUrgenceValue}</div>
 					<div class="text-[10px] text-gray-400 dark:text-zinc-600 mt-0.5">(514) 830-9973</div>
 				</div>
+			</div>
+
+			<!-- Top pages + referrers (last 30d) -->
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-8">
 				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4">
-					<div class="flex items-center gap-2 text-gray-500 dark:text-zinc-500 text-xs mb-1">
-						<Globe class="w-3.5 h-3.5" />
-						{t.statSite}
-					</div>
-					<div class="text-xl font-black text-gray-900 dark:text-white">{t.statSiteValue}</div>
-					<div class="text-[10px] text-gray-400 dark:text-zinc-600 mt-0.5">excavationserable.com</div>
+					<h3 class="text-sm font-bold mb-3 flex items-center gap-2"><BarChart3 class="w-4 h-4 text-[#febd17]" /> {t.topPages}</h3>
+					{#if statsLoading}
+						<p class="text-xs text-gray-400 dark:text-zinc-600">…</p>
+					{:else if topPages.length === 0}
+						<p class="text-xs text-gray-400 dark:text-zinc-600">{t.noData}</p>
+					{:else}
+						<ul class="space-y-1.5">
+							{#each topPages.slice(0, 8) as p}
+								<li class="flex items-center justify-between gap-3 text-xs">
+									<span class="truncate text-gray-700 dark:text-zinc-300 font-mono">{p.path}</span>
+									<span class="text-gray-500 dark:text-zinc-500 font-bold flex-shrink-0">{p.hits}</span>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</div>
 				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4">
-					<div class="flex items-center gap-2 text-gray-500 dark:text-zinc-500 text-xs mb-1">
-						<BarChart3 class="w-3.5 h-3.5" />
-						{t.statRBQ}
-					</div>
-					<div class="text-xl font-black text-gray-900 dark:text-white font-mono">5823-7736-01</div>
-					<div class="text-[10px] text-gray-400 dark:text-zinc-600 mt-0.5">{t.statRBQHint}</div>
+					<h3 class="text-sm font-bold mb-3 flex items-center gap-2"><Globe class="w-4 h-4 text-[#febd17]" /> {t.topReferrers}</h3>
+					{#if statsLoading}
+						<p class="text-xs text-gray-400 dark:text-zinc-600">…</p>
+					{:else if topReferrers.length === 0}
+						<p class="text-xs text-gray-400 dark:text-zinc-600">{t.noData}</p>
+					{:else}
+						<ul class="space-y-1.5">
+							{#each topReferrers.slice(0, 8) as r}
+								<li class="flex items-center justify-between gap-3 text-xs">
+									<span class="truncate text-gray-700 dark:text-zinc-300">{r.referrer}</span>
+									<span class="text-gray-500 dark:text-zinc-500 font-bold flex-shrink-0">{r.hits}</span>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</div>
 			</div>
 

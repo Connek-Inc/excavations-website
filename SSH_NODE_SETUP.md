@@ -1,123 +1,167 @@
-# Setup Hostinger Node.js App via SSH
+# Hostinger Node.js — setup & deploy
 
-El **auto-deploy de Deployments** (que vimos en pantalla) NO ejecuta
-Node.js — solo sirve estático. La app Node.js que tenés bajo
-**Advanced → Node.js** SÍ corre un proceso, pero requiere setup manual
-por SSH la primera vez.
+The site runs as an **Express** server (no SvelteKit adapter-node). Express
+serves the static SvelteKit build (`/build/*`) AND exposes the admin API at
+`/api/*`. This matches the working pattern of `~/app/server.js` used by
+elcarajoese on the same Hostinger plan (plain ESM, no top-level `await`,
+LSAPI-compatible).
 
-## Paso 0 — preparar el entorno
+## Architecture
 
-### a) Desactivar el auto-deploy estático (importante)
-
-Sino, cada push tuyo va a triggerear un build que va a fallar con
-`ERROR: No output directory found after build` (porque adapter-node
-produce JS, no HTML, y ese sistema solo entiende HTML).
-
-- hPanel → tu sitio → **Deployments** → **Settings and redeploy**
-- Buscá la opción **"Disable auto-deployment"** o el toggle de
-  "Auto-deployment" y apagalo. Si no podés desactivar, está OK que
-  falle — los fallos no van a romper la app Node.js.
-
-### b) Activar SSH (si no está)
-
-- hPanel → tu sitio → **Advanced** → **SSH Access**
-- Anota: **host**, **port** (suele ser 65002), **user** (`u274996454`),
-  **password**
-
-### c) Ver dónde está el app root de Node.js
-
-- hPanel → tu sitio → **Advanced** → **Node.js** → tu app **"Started"**
-- En la pantalla anotá el valor de **Application root** (algo tipo
-  `domains/excavationserable.com/public_html` o similar)
-
-## Paso 1 — conectar por SSH
-
-Desde tu máquina local (Linux/Mac):
-
-```bash
-ssh -p 65002 u274996454@<HOST_QUE_HOSTINGER_TE_DIO>
-# pegá la password cuando pida
+```
+HTTPS request
+     │
+     ▼
+[Hostinger LSAPI → lsnode.js]
+     │   ⇣ require()s server.js (Express ESM, no TLA)
+     ▼
+[Express on PORT]
+     ├── /api/auth/*        → JWT cookie session (bcrypt + jose)
+     ├── /api/blogs         → CRUD (admin) + public reads
+     ├── /api/services      → CRUD
+     ├── /api/reviews       → CRUD
+     ├── /api/settings      → KV store
+     ├── /api/contacts      → leads from contact form
+     ├── /api/soumissions   → quotes + offers + signatures + Resend email
+     ├── /api/analytics     → page_views + dashboard summary
+     ├── /api/ping          → health/diagnostics
+     └── static fallback   → serves /build (SvelteKit static SPA)
+                              MySQL ◀── Hostinger DB (u274996454_excerable)
+                              Resend ◀── transactional emails
 ```
 
-## Paso 2 — clonar el repo en el app root
+## One-time DB setup (5 min)
+
+1. hPanel → **Databases** → **phpMyAdmin** → select `u274996454_excerable`.
+2. Tab **SQL**, paste the contents of [`db/schema.sql`](db/schema.sql) → **Go**.
+   Creates 11 tables. Idempotent — safe to re-run.
+3. Paste [`db/seed.sql`](db/seed.sql) → **Go**.
+   Inserts the initial admin user (`miniexcavationerable@gmail.com` /
+   bcrypt hash of `escavar2026`), default services, blogs, reviews, and settings.
+
+## One-time Node.js app setup
+
+### 1. SSH into Hostinger
 
 ```bash
-# REEMPLAZÁ con el path real que viste en "Application root"
+ssh -p 65002 u274996454@<HOST_FROM_HPANEL>
+```
+
+### 2. Clone the repo into the app root
+
+The app root is the path shown in hPanel → **Advanced → Node.js → Application
+root** (typically `~/domains/excavationserable.com/public_html`).
+
+```bash
 cd ~/domains/excavationserable.com/public_html
 
-# si la carpeta tiene archivos viejos del auto-deploy, podemos
-# borrarlos sin miedo (vamos a regenerar todo):
+# If the directory has leftover files from earlier deploys, clear them:
 rm -rf ./* ./.[!.]* 2>/dev/null || true
 
-# clonar el repo
 git clone https://github.com/Connek-Inc/excavations-website.git .
-
-# instalar dependencias y buildear
-npm install
-npm run build
-
-# verificá que se haya creado build/index.js
-ls -la build/index.js
+npm install --omit=dev
+npm run build      # produces /build (static SvelteKit)
+ls -la server.js build/200.html   # both should exist
 ```
 
-## Paso 3 — configurar la app Node.js
+### 3. Configure the Node.js app in hPanel
 
-- hPanel → **Advanced** → **Node.js** → editar la app:
+hPanel → **Advanced → Node.js → Edit**:
 
-| Campo | Valor |
+| Field | Value |
 |---|---|
-| Node version | **22.x** |
+| Node version | **20.x** or **22.x** |
 | Application mode | **Production** |
-| Application root | `domains/excavationserable.com/public_html` (o el que ya tenías) |
-| Application URL | `excavationserable.com` (sin barra final, sin path) |
-| Application startup file | `build/index.js` |
+| Application root | `domains/excavationserable.com/public_html` |
+| Application URL | `excavationserable.com` |
+| Application startup file | **`server.js`** |
 
-- Guardar.
+### 4. Environment variables
 
-## Paso 4 — environment variables
-
-En la misma pantalla, agregar/confirmar:
+In the same screen → **Environment variables** → add (paste each row):
 
 ```
-RESEND       = re_G6rZbpRM_8hLbWCLk4C8LS8kfRgUfQ7ZM
-EMAIL_FROM   = Mini Excavations Érable <onboarding@resend.dev>
-NODE_ENV     = production
-ORIGIN       = https://excavationserable.com
-PORT         = 3000     # o lo que Hostinger te asigne
-HOST         = 0.0.0.0
+NODE_ENV                = production
+HOST                    = 0.0.0.0
+PORT                    = (leave to Hostinger default, usually 3000)
+
+DB_HOST                 = localhost
+DB_PORT                 = 3306
+DB_NAME                 = u274996454_excerable
+DB_USER                 = u274996454_excerable
+DB_PASSWORD             = <strong-password-from-hPanel>
+
+JWT_SECRET              = <openssl rand -base64 48>
+ADMIN_EMAIL             = miniexcavationerable@gmail.com
+
+RESEND                  = re_xxxxxxxxxxxxxxxxx
+EMAIL_FROM              = Mini Excavations Érable <onboarding@resend.dev>
+
+ALLOWED_ORIGINS         = https://excavationserable.com
+PUBLIC_API_BASE         = (empty — same origin)
+PUBLIC_GA4_MEASUREMENT_ID = G-XXXXXXXXXX   (optional — only if GA4 created)
 ```
 
-## Paso 5 — restart
+### 5. Restart
 
-- Click **Restart** en la app Node.js.
+Click **Restart** in the Node.js panel.
 
-## Paso 6 — verificar
+## Verify
 
-Abrí: <https://excavationserable.com/api/ping>
+Open in browser: **<https://excavationserable.com/api/ping>**
 
-Debería responder:
+Expected response:
 
 ```json
-{ "ok": true, "runtime": "node", "resend_configured": true, "time": "…" }
+{
+  "ok": true,
+  "runtime": "node",
+  "node_version": "v20.x.x",
+  "time": "...",
+  "resend_configured": true,
+  "jwt_configured": true,
+  "db_configured": true,
+  "db_ok": true,
+  "db_error": null
+}
 ```
 
-Si responde JSON → 🎉 Resend está activo.
+The key field is `db_ok: true` — that proves MySQL is reachable. If it's
+false, double-check `DB_USER` / `DB_PASSWORD` / `DB_NAME` in env vars.
 
-Si responde 404 / 502 / HTML → mirá los **Runtime logs** en el panel y
-pegámelos en el chat.
+Then log into **<https://excavationserable.com/mi/admin/login>** using
+the seeded credentials.
 
-## Workflow futuro (cada vez que pushees al repo)
+## Disable static auto-deploy (one-time)
 
-Como desactivamos el auto-deploy, los pushes a master ya no se aplican
-solos. Para sincronizar la app Node.js con el último commit:
+The static deploy that the repo originally used (`Deployments` panel) is
+incompatible with the Node.js app — it would clobber `server.js` on every
+push. Turn it off:
+
+- hPanel → **Deployments** → **Settings** → toggle **Auto-deployment OFF**.
+
+## Update workflow (every code change)
 
 ```bash
 ssh -p 65002 u274996454@<HOST>
 cd ~/domains/excavationserable.com/public_html
 git pull
-npm install   # solo si cambió package.json
+npm install --omit=dev    # only if package.json changed
 npm run build
 ```
 
-Luego en el panel → **Restart** (o configurar `nodemon` para auto-reload
-si querés ir más fancy).
+Then **Restart** in hPanel → Node.js panel (or alias `pm2 restart` if you
+set that up — not required).
+
+## Troubleshooting
+
+- **`/api/ping` returns 502 or HTML** → app is not running. Check
+  hPanel → Node.js → **Runtime logs**. Most common cause: missing env
+  variable (will say in the log).
+- **`db_ok: false`** with `ECONNREFUSED` → DB credentials wrong, or
+  the database needs to be created in hPanel first.
+- **`db_ok: false`** with `ER_ACCESS_DENIED` → wrong password.
+- **Resend not sending** → check `/api/ping` for `resend_configured:true`.
+  If true but no emails arrive, look at Resend dashboard → Logs.
+- **Admin login says "Invalid credentials"** → the seed user wasn't
+  inserted. Re-run `db/seed.sql` from phpMyAdmin.
