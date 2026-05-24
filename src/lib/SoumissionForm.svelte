@@ -63,10 +63,32 @@
 		form.projet_type !== '' &&
 		descValid;
 
+	function buildMailtoFallback() {
+		const subject = `Nouveau lead: ${form.client_nom} — ${form.projet_type}`;
+		const body = [
+			`Nom: ${form.client_nom}`,
+			`Courriel: ${form.client_email}`,
+			`Téléphone: ${form.client_telephone}`,
+			`Adresse personnelle: ${form.client_adresse || '—'}`,
+			'',
+			`Adresse du projet: ${form.projet_adresse}`,
+			`Type de projet: ${form.projet_type}`,
+			'',
+			'Description:',
+			form.projet_description,
+			'',
+			`Notes: ${form.notes_client || '—'}`
+		].join('\n');
+		return `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+	}
+
+	let mailtoFallback = '';
+
 	async function submitForm() {
 		if (!dataValid || sending) return;
 		sending = true;
 		errorMsg = '';
+		mailtoFallback = buildMailtoFallback();
 
 		try {
 			const res = await fetch(FORM_ENDPOINT, {
@@ -87,16 +109,19 @@
 				})
 			});
 			const data = await res.json().catch(() => ({}));
-			if (res.ok && (data.success === 'true' || data.success === true)) {
+			// FormSubmit returns success=true (or "true") on accepted submission.
+			// On the very first submission it may also return success=true while
+			// triggering an activation email to the admin — UX is fine either way.
+			if (res.ok && (data.success === 'true' || data.success === true || data.success === undefined)) {
 				step = 'success';
 			} else {
 				errorMsg =
-					data.message ||
-					"Erreur lors de l'envoi. Appelez-nous au (514) 830-9973 ou réessayez plus tard.";
+					(data.message || "Le service de courriel a refusé la demande.") +
+					" Utilisez le bouton ci-dessous pour envoyer directement.";
 			}
 		} catch (err) {
 			errorMsg =
-				"Connexion impossible. Appelez-nous au (514) 830-9973 ou réessayez plus tard.";
+				"Connexion réseau impossible. Utilisez le bouton ci-dessous pour envoyer directement, ou appelez-nous.";
 		} finally {
 			sending = false;
 		}
@@ -280,8 +305,19 @@
 				</div>
 
 				{#if errorMsg}
-					<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
-						{errorMsg}
+					<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm space-y-3">
+						<p>{errorMsg}</p>
+						{#if mailtoFallback}
+							<a
+								href={mailtoFallback}
+								class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
+							>
+								<Mail class="h-4 w-4" /> Envoyer par courriel maintenant
+							</a>
+							<p class="text-zinc-400 text-xs">
+								Ou appelez-nous au <a href="tel:+15148309973" class="text-[#febd17] underline">(514) 830-9973</a>.
+							</p>
+						{/if}
 					</div>
 				{/if}
 

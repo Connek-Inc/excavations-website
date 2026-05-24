@@ -277,6 +277,8 @@
 			<div class="flex items-center gap-4">
 				<a href="/sitemap.xml" class="hover:text-[#febd17] transition-colors">Sitemap</a>
 				<span class="opacity-30">•</span>
+				<a href="/mi/admin/login" class="hover:text-[#febd17] transition-colors">Admin</a>
+				<span class="opacity-30">•</span>
 				<p class="flex items-center">
 					{c.designed}
 					<a
