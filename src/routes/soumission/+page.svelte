@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { ArrowLeft, Shield } from 'lucide-svelte';
 	import SoumissionForm from '$lib/SoumissionForm.svelte';
-	// disabled: server types removed
-
-	export let data: any = {};
 </script>
 
 <svelte:head>
@@ -19,26 +16,18 @@
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 			<a
 				href="/"
-				class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-400 transition"
+				class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-[#febd17] transition-colors"
 			>
 				<ArrowLeft class="h-4 w-4" /> Retour au site
 			</a>
-			<div class="hidden sm:flex items-center gap-3 text-xs text-zinc-500">
-				{#if data.client}
-					<a href="/compte" class="text-amber-400 hover:text-amber-300 transition"
-						>{data.client.name}</a
-					>
-					<span class="opacity-30">·</span>
-				{/if}
-				<div class="flex items-center gap-2">
-					<Shield class="h-3.5 w-3.5 text-amber-500" />
-					RBQ 5823-7736-01
-				</div>
+			<div class="hidden sm:flex items-center gap-2 text-xs text-zinc-500">
+				<Shield class="h-3.5 w-3.5 text-[#febd17]" />
+				RBQ 5823-7736-01
 			</div>
 		</div>
 	</header>
 
 	<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
-		<SoumissionForm showHero={true} showSidebar={true} loggedInClient={data.client} />
+		<SoumissionForm showHero={true} showSidebar={true} />
 	</main>
 </div>

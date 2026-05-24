@@ -1,20 +1,13 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import {
 		FileText,
 		Send,
 		Mail,
 		Phone,
 		MapPin,
-		Check,
-		Copy,
-		Shield,
-		Clock,
 		CheckCircle2,
-		Lock,
-		ArrowRight,
-		ArrowLeft,
-		User as UserIcon
+		Shield,
+		Clock
 	} from 'lucide-svelte';
 
 	type ProjetType =
@@ -27,53 +20,28 @@
 
 	export let showHero: boolean = false;
 	export let showSidebar: boolean = true;
-	export let loggedInClient: { id: number; email: string; name: string } | null = null;
 
-	type Step = 'data' | 'password' | 'success';
+	// FormSubmit.co — zero-config form-to-email service.
+	// First submission asks the owner to confirm via a link in the first email.
+	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
+	const FORM_ENDPOINT = `https://formsubmit.co/ajax/${ADMIN_EMAIL}`;
+
+	type Step = 'data' | 'success';
 	let step: Step = 'data';
 
 	let form = {
-		client_nom: loggedInClient?.name ?? '',
-		client_email: loggedInClient?.email ?? '',
+		client_nom: '',
+		client_email: '',
 		client_telephone: '',
 		client_adresse: '',
 		projet_adresse: '',
 		projet_type: '' as ProjetType | '',
 		projet_description: '',
-		notes_client: '',
-		password: ''
+		notes_client: ''
 	};
 
-	let mode: 'register' | 'login' | 'guest' = 'register';
 	let sending = false;
 	let errorMsg = '';
-	let createdToken = '';
-	let createdLink = '';
-	let copied = false;
-
-	function handleSubmit() {
-		sending = true;
-		errorMsg = '';
-		return async ({ result, update }: any) => {
-			sending = false;
-			if (result.type === 'success' && result.data?.success) {
-				createdToken = result.data.token;
-				createdLink = `${window.location.origin}/soumission/${createdToken}`;
-				step = 'success';
-			} else if (result.type === 'failure') {
-				const d = result.data || {};
-				errorMsg = d.error || 'Erreur';
-				if (d.needsLogin) {
-					mode = 'login';
-					if (step !== 'password') step = 'password';
-				} else if (d.needsPassword && step !== 'password') {
-					step = 'password';
-				}
-			} else {
-				await update();
-			}
-		};
-	}
 
 	const projetTypes: ProjetType[] = [
 		'Drain français',
@@ -86,7 +54,7 @@
 
 	$: emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.client_email);
 	$: phoneValid = form.client_telephone.replace(/\D/g, '').length >= 10;
-	$: descValid = form.projet_description.trim().length >= 30;
+	$: descValid = form.projet_description.trim().length >= 5;
 	$: dataValid =
 		form.client_nom.trim().length > 1 &&
 		emailValid &&
@@ -94,28 +62,44 @@
 		form.projet_adresse.trim().length > 3 &&
 		form.projet_type !== '' &&
 		descValid;
-	$: passwordValid = form.password.length >= 8;
 
-	function goToPassword() {
-		if (!dataValid) return;
+	async function submitForm() {
+		if (!dataValid || sending) return;
+		sending = true;
 		errorMsg = '';
-		if (loggedInClient) {
-			mode = 'guest';
-		}
-		step = 'password';
-	}
 
-	function backToData() {
-		errorMsg = '';
-		step = 'data';
-	}
-
-	async function copyLink() {
 		try {
-			await navigator.clipboard.writeText(createdLink);
-			copied = true;
-			setTimeout(() => (copied = false), 2500);
-		} catch {}
+			const res = await fetch(FORM_ENDPOINT, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				body: JSON.stringify({
+					_subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type}`,
+					_template: 'table',
+					_captcha: 'false',
+					Nom: form.client_nom,
+					Courriel: form.client_email,
+					Telephone: form.client_telephone,
+					Adresse_personnelle: form.client_adresse || '—',
+					Adresse_projet: form.projet_adresse,
+					Type_projet: form.projet_type,
+					Description: form.projet_description,
+					Notes: form.notes_client || '—'
+				})
+			});
+			const data = await res.json().catch(() => ({}));
+			if (res.ok && (data.success === 'true' || data.success === true)) {
+				step = 'success';
+			} else {
+				errorMsg =
+					data.message ||
+					"Erreur lors de l'envoi. Appelez-nous au (514) 830-9973 ou réessayez plus tard.";
+			}
+		} catch (err) {
+			errorMsg =
+				"Connexion impossible. Appelez-nous au (514) 830-9973 ou réessayez plus tard.";
+		} finally {
+			sending = false;
+		}
 	}
 </script>
 
@@ -148,45 +132,23 @@
 				<h2 class="text-2xl sm:text-3xl font-bold mb-3">Demande reçue avec succès!</h2>
 				<p class="text-zinc-400 mb-8 max-w-xl mx-auto">
 					Notre équipe analyse votre projet. Nous vous enverrons une offre détaillée par courriel
-					dans les meilleurs délais. Vous pouvez aussi suivre votre dossier en vous connectant à
-					votre compte.
+					dans les meilleurs délais. Pour une réponse immédiate, appelez-nous au
+					<a href="tel:+15148309973" class="text-[#febd17] font-semibold hover:underline">(514) 830-9973</a>.
 				</p>
-
-				<div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-6 text-left">
-					<div class="text-xs uppercase tracking-wider text-zinc-500 mb-2">Votre lien personnel</div>
-					<div class="flex items-center gap-2">
-						<input
-							type="text"
-							readonly
-							value={createdLink}
-							class="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-amber-300 font-mono"
-						/>
-						<button
-							type="button"
-							on:click={copyLink}
-							class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm transition"
-						>
-							{#if copied}
-								<Check class="h-4 w-4" /> Copié
-							{:else}
-								<Copy class="h-4 w-4" /> Copier
-							{/if}
-						</button>
-					</div>
-				</div>
 
 				<div class="flex flex-col sm:flex-row gap-3 justify-center">
 					<a
-						href={`/soumission/${createdToken}`}
-						class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold transition"
+						href="/"
+						class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold transition-colors"
 					>
-						Voir ma soumission
+						Retour à l'accueil
 					</a>
 					<a
-						href="/compte"
-						class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-zinc-700 hover:border-zinc-600 text-zinc-300 font-semibold transition"
+						href="tel:+15148309973"
+						class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-zinc-700 hover:border-zinc-500 text-zinc-200 font-semibold transition-colors"
 					>
-						Mon compte
+						<Phone class="h-4 w-4" />
+						(514) 830-9973
 					</a>
 				</div>
 			</div>
@@ -194,290 +156,155 @@
 	{:else}
 		<div class="grid {showSidebar ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-8">
 			<form
-				method="POST"
-				action="?/create"
-				use:enhance={handleSubmit}
+				on:submit|preventDefault={submitForm}
 				class="{showSidebar ? 'lg:col-span-2' : ''} bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-6"
 			>
-				<input type="hidden" name="mode" value={mode} />
+				<div>
+					<h2 class="text-xl font-bold mb-1">Vos coordonnées</h2>
+					<p class="text-sm text-zinc-500">Nous utilisons ces informations pour vous joindre.</p>
+				</div>
 
-				{#if step === 'data'}
+				<div class="grid sm:grid-cols-2 gap-4">
 					<div>
-						<h2 class="text-xl font-bold mb-1">Vos coordonnées</h2>
-						<p class="text-sm text-zinc-500">Nous utilisons ces informations pour vous joindre.</p>
-					</div>
-
-					<div class="grid sm:grid-cols-2 gap-4">
-						<div>
-							<label
-								for="nom"
-								class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-								>Nom complet *</label
-							>
-							<input
-								id="nom"
-								name="client_nom"
-								type="text"
-								bind:value={form.client_nom}
-								placeholder="Jean Tremblay"
-								required
-								class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition"
-							/>
-						</div>
-						<div>
-							<label
-								for="tel"
-								class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-								>Téléphone *</label
-							>
-							<div class="relative">
-								<Phone class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
-								<input
-									id="tel"
-									name="client_telephone"
-									type="tel"
-									bind:value={form.client_telephone}
-									placeholder="(418) 555-1234"
-									required
-									class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition"
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div>
-						<label
-							for="email"
-							class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-							>Courriel *</label
-						>
-						<div class="relative">
-							<Mail class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
-							<input
-								id="email"
-								name="client_email"
-								type="email"
-								bind:value={form.client_email}
-								placeholder="jean@exemple.com"
-								required
-								disabled={!!loggedInClient}
-								class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition disabled:opacity-60"
-							/>
-						</div>
-					</div>
-
-					<div>
-						<label
-							for="adr"
-							class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-							>Adresse personnelle (optionnel)</label
-						>
+						<label for="nom" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Nom complet *</label>
 						<input
-							id="adr"
-							name="client_adresse"
+							id="nom"
 							type="text"
-							bind:value={form.client_adresse}
-							placeholder="123 rue Principale, Ville"
-							class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition"
+							bind:value={form.client_nom}
+							placeholder="Jean Tremblay"
+							required
+							class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
 						/>
 					</div>
-
-					<div class="border-t border-zinc-800 pt-6">
-						<h2 class="text-xl font-bold mb-1">Votre projet</h2>
-						<p class="text-sm text-zinc-500">Décrivez les travaux à effectuer.</p>
-					</div>
-
 					<div>
-						<label
-							for="padr"
-							class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-							>Adresse du projet *</label
-						>
+						<label for="tel" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Téléphone *</label>
 						<div class="relative">
-							<MapPin class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+							<Phone class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
 							<input
-								id="padr"
-								name="projet_adresse"
-								type="text"
-								bind:value={form.projet_adresse}
-								placeholder="456 chemin du Lac, Saint-Hubert-de-Rivière-du-Loup, QC"
+								id="tel"
+								type="tel"
+								bind:value={form.client_telephone}
+								placeholder="(418) 555-1234"
 								required
-								class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition"
+								class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
 							/>
 						</div>
 					</div>
+				</div>
 
-					<div>
-						<label
-							for="ptype"
-							class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-							>Type de projet *</label
-						>
-						<select
-							id="ptype"
-							name="projet_type"
-							bind:value={form.projet_type}
+				<div>
+					<label for="email" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Courriel *</label>
+					<div class="relative">
+						<Mail class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+						<input
+							id="email"
+							type="email"
+							bind:value={form.client_email}
+							placeholder="jean@exemple.com"
 							required
-							class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white outline-none transition"
-						>
-							<option value="" disabled>Sélectionnez un type…</option>
-							{#each projetTypes as t}
-								<option value={t}>{t}</option>
-							{/each}
-						</select>
+							class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+						/>
 					</div>
+				</div>
 
-					<div>
-						<label
-							for="desc"
-							class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-							>Description du projet *</label
-						>
-						<textarea
-							id="desc"
-							name="projet_description"
-							rows="5"
-							bind:value={form.projet_description}
-							placeholder="Décrivez les travaux: nature, surface, accès, contraintes, échéancier souhaité… (min. 30 caractères)"
+				<div>
+					<label for="adr" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Adresse personnelle (optionnel)</label>
+					<input
+						id="adr"
+						type="text"
+						bind:value={form.client_adresse}
+						placeholder="123 rue Principale, Ville"
+						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+					/>
+				</div>
+
+				<div class="border-t border-zinc-800 pt-6">
+					<h2 class="text-xl font-bold mb-1">Votre projet</h2>
+					<p class="text-sm text-zinc-500">Décrivez les travaux à effectuer.</p>
+				</div>
+
+				<div>
+					<label for="padr" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Adresse du projet *</label>
+					<div class="relative">
+						<MapPin class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+						<input
+							id="padr"
+							type="text"
+							bind:value={form.projet_adresse}
+							placeholder="456 chemin du Lac, Saint-Hubert-de-Rivière-du-Loup, QC"
 							required
-							class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition resize-none"
-						></textarea>
-						<div class="text-right text-xs mt-1 {descValid ? 'text-emerald-400' : 'text-zinc-500'}">
-							{form.projet_description.length} / 30 caractères
-						</div>
+							class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors"
+						/>
 					</div>
+				</div>
 
-					<div>
-						<label
-							for="notes"
-							class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-							>Détails additionnels (optionnel)</label
-						>
-						<textarea
-							id="notes"
-							name="notes_client"
-							rows="3"
-							bind:value={form.notes_client}
-							placeholder="Photos, documents, particularités du terrain…"
-							class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition resize-none"
-						></textarea>
-					</div>
-
-					{#if errorMsg}
-						<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
-							{errorMsg}
-						</div>
-					{/if}
-
-					<button
-						type="button"
-						on:click={goToPassword}
-						disabled={!dataValid}
-						class="w-full inline-flex items-center justify-center gap-3 py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-wider transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-500/20"
+				<div>
+					<label for="ptype" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Type de projet *</label>
+					<select
+						id="ptype"
+						bind:value={form.projet_type}
+						required
+						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white outline-none transition-colors"
 					>
-						{loggedInClient ? 'Envoyer ma demande' : 'Continuer'}
-						<ArrowRight class="h-5 w-5" />
-					</button>
-				{:else}
-					<!-- Hidden replicas of step 1 fields -->
-					<input type="hidden" name="client_nom" value={form.client_nom} />
-					<input type="hidden" name="client_email" value={form.client_email} />
-					<input type="hidden" name="client_telephone" value={form.client_telephone} />
-					<input type="hidden" name="client_adresse" value={form.client_adresse} />
-					<input type="hidden" name="projet_adresse" value={form.projet_adresse} />
-					<input type="hidden" name="projet_type" value={form.projet_type} />
-					<input type="hidden" name="projet_description" value={form.projet_description} />
-					<input type="hidden" name="notes_client" value={form.notes_client} />
+						<option value="" disabled>Sélectionnez un type…</option>
+						{#each projetTypes as t}
+							<option value={t}>{t}</option>
+						{/each}
+					</select>
+				</div>
 
-					<div>
-						<button
-							type="button"
-							on:click={backToData}
-							class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-400 transition mb-4"
-						>
-							<ArrowLeft class="h-4 w-4" /> Retour
-						</button>
-						<h2 class="text-xl font-bold mb-1">
-							{mode === 'login' ? 'Connectez-vous pour finaliser' : 'Créez votre compte'}
-						</h2>
-						<p class="text-sm text-zinc-500">
-							{#if mode === 'login'}
-								Un compte existe déjà avec <span class="text-zinc-300">{form.client_email}</span>.
-								Entrez votre mot de passe pour continuer.
-							{:else}
-								Choisissez un mot de passe pour suivre votre soumission et recevoir des
-								notifications.
-							{/if}
-						</p>
+				<div>
+					<label for="desc" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Description du projet *</label>
+					<textarea
+						id="desc"
+						rows="5"
+						bind:value={form.projet_description}
+						placeholder="Décrivez les travaux: nature, surface, accès, contraintes, échéancier souhaité…"
+						required
+						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors resize-none"
+					></textarea>
+					<div class="text-right text-xs mt-1 {descValid ? 'text-emerald-400' : 'text-zinc-500'}">
+						{form.projet_description.length} caractères
 					</div>
+				</div>
 
-					<div class="bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-sm">
-						<div class="flex items-center gap-2 text-zinc-300 mb-1">
-							<UserIcon class="h-4 w-4 text-amber-500" />
-							<span class="font-semibold">{form.client_nom}</span>
-						</div>
-						<div class="flex items-center gap-2 text-xs text-zinc-500">
-							<Mail class="h-3 w-3" /> {form.client_email}
-						</div>
+				<div>
+					<label for="notes" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Détails additionnels (optionnel)</label>
+					<textarea
+						id="notes"
+						rows="3"
+						bind:value={form.notes_client}
+						placeholder="Particularités du terrain, échéancier souhaité…"
+						class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-white placeholder-zinc-600 outline-none transition-colors resize-none"
+					></textarea>
+				</div>
+
+				{#if errorMsg}
+					<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+						{errorMsg}
 					</div>
-
-					<div>
-						<label
-							for="pwd"
-							class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2"
-							>{mode === 'login' ? 'Mot de passe' : 'Choisir un mot de passe (min. 8 car.)'}</label
-						>
-						<div class="relative">
-							<Lock class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
-							<input
-								id="pwd"
-								name="password"
-								type="password"
-								bind:value={form.password}
-								required
-								minlength={8}
-								autocomplete={mode === 'login' ? 'current-password' : 'new-password'}
-								class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-lg text-white placeholder-zinc-600 outline-none transition"
-							/>
-						</div>
-					</div>
-
-					{#if mode === 'login'}
-						<a
-							href="/compte/oublie?email={encodeURIComponent(form.client_email)}"
-							class="inline-block text-sm text-amber-400 hover:text-amber-300 transition"
-						>
-							Mot de passe oublié?
-						</a>
-					{/if}
-
-					{#if errorMsg}
-						<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
-							{errorMsg}
-						</div>
-					{/if}
-
-					<button
-						type="submit"
-						disabled={!passwordValid || sending}
-						class="w-full inline-flex items-center justify-center gap-3 py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-wider transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-500/20"
-					>
-						{#if sending}
-							<svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
-								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-							</svg>
-							Envoi…
-						{:else}
-							<Send class="h-5 w-5" />
-							{mode === 'login' ? 'Se connecter et envoyer' : 'Créer mon compte et envoyer'}
-						{/if}
-					</button>
-
-					<p class="text-xs text-zinc-500 text-center">
-						En soumettant ce formulaire, vous acceptez d'être contacté concernant votre demande.
-					</p>
 				{/if}
+
+				<button
+					type="submit"
+					disabled={!dataValid || sending}
+					class="w-full inline-flex items-center justify-center gap-3 py-4 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+				>
+					{#if sending}
+						<svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+						</svg>
+						Envoi…
+					{:else}
+						<Send class="h-5 w-5" />
+						Envoyer ma demande
+					{/if}
+				</button>
+
+				<p class="text-xs text-zinc-500 text-center">
+					En soumettant ce formulaire, vous acceptez d'être contacté concernant votre demande.
+				</p>
 			</form>
 
 			{#if showSidebar}
@@ -490,7 +317,7 @@
 						<ol class="space-y-4 text-sm">
 							<li class="flex gap-3">
 								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500 text-black font-bold text-xs flex items-center justify-center"
+									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
 								>
 									1
 								</span>
@@ -498,7 +325,7 @@
 							</li>
 							<li class="flex gap-3">
 								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500 text-black font-bold text-xs flex items-center justify-center"
+									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
 								>
 									2
 								</span>
@@ -506,7 +333,7 @@
 							</li>
 							<li class="flex gap-3">
 								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500 text-black font-bold text-xs flex items-center justify-center"
+									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
 								>
 									3
 								</span>
@@ -514,7 +341,7 @@
 							</li>
 							<li class="flex gap-3">
 								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500 text-black font-bold text-xs flex items-center justify-center"
+									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
 								>
 									4
 								</span>
@@ -524,7 +351,7 @@
 							</li>
 							<li class="flex gap-3">
 								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500 text-black font-bold text-xs flex items-center justify-center"
+									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
 								>
 									5
 								</span>
