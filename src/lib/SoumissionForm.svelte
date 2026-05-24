@@ -27,11 +27,11 @@
 	export let showHero: boolean = false;
 	export let showSidebar: boolean = true;
 
-	// Primary: Cloudflare Worker proxy → Resend (the real key lives only on the Worker).
-	// Once you deploy the Worker, paste its URL here. Empty = skip and use Web3Forms.
-	// Fallback: Web3Forms (works without any server side).
+	// Primary: same-origin /api/send-email (runs on Hostinger Node.js Web App
+	// using Resend with the server-side env var). Fallback: Web3Forms in case
+	// the Node runtime is sleeping / crashed.
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const RESEND_ENDPOINT = ''; // e.g. 'https://send-email.your-account.workers.dev'
+	const RESEND_ENDPOINT = '/api/send-email';
 	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
 	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 

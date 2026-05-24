@@ -160,7 +160,7 @@
 	}
 
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const RESEND_ENDPOINT = ''; // Same as SoumissionForm — paste Cloudflare Worker URL once deployed
+	const RESEND_ENDPOINT = '/api/send-email';
 	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
 	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
