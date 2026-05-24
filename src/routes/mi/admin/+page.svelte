@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { language } from '$lib/store/store';
 	import {
 		ShieldCheck,
 		LogOut,
@@ -20,6 +21,102 @@
 
 	let adminEmail = '';
 	let checked = false;
+
+	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
+	$: t = T[lang] || T.fr;
+
+	const T = {
+		fr: {
+			title: 'Tableau de bord',
+			subtitle: "Vue d'ensemble de votre activité Mini Excavations Érable.",
+			adminSpace: 'Espace admin',
+			logout: 'Déconnexion',
+			statSoumissions: 'Soumissions',
+			statSoumissionsValue: 'Courriel',
+			statSoumissionsHint: 'Livrées par FormSubmit',
+			statUrgence: 'Urgences 24/7',
+			statUrgenceValue: 'Actif',
+			statSite: 'Site',
+			statSiteValue: 'En ligne',
+			statRBQ: 'RBQ',
+			statRBQHint: 'Licence active',
+			sections: [
+				{ title: 'Soumissions', desc: 'Reçues par courriel — ouvrir la boîte de réception.' },
+				{ title: 'Leads / Contacts', desc: 'Tous les leads arrivent au courriel admin.' },
+				{ title: 'Articles Blog', desc: 'Voir les articles publiés sur le site.' },
+				{ title: 'Services', desc: 'Liste des services affichés au public.' },
+				{ title: 'Avis Clients', desc: 'Lire les témoignages clients publiés.' },
+				{ title: 'Réglages', desc: 'Paramètres globaux (RBQ, contact, etc.).' }
+			],
+			quickActions: 'Actions rapides',
+			openInbox: 'Ouvrir la boîte courriel',
+			viewSite: 'Voir le site public',
+			configuration: 'Configuration',
+			configLabels: ['Téléphone', 'Courriel', 'Licence R.B.Q.', 'Région principale', 'Site public'],
+			regionValue: 'Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent',
+			checkingSession: 'Vérification de la session…'
+		},
+		en: {
+			title: 'Dashboard',
+			subtitle: 'Overview of your Mini Excavations Érable activity.',
+			adminSpace: 'Admin space',
+			logout: 'Sign out',
+			statSoumissions: 'Quotes',
+			statSoumissionsValue: 'Email',
+			statSoumissionsHint: 'Delivered via FormSubmit',
+			statUrgence: '24/7 Emergency',
+			statUrgenceValue: 'Active',
+			statSite: 'Site',
+			statSiteValue: 'Online',
+			statRBQ: 'RBQ',
+			statRBQHint: 'Active license',
+			sections: [
+				{ title: 'Quotes', desc: 'Received by email — open the inbox.' },
+				{ title: 'Leads / Contacts', desc: 'All leads arrive at the admin inbox.' },
+				{ title: 'Blog Articles', desc: 'View posts published on the site.' },
+				{ title: 'Services', desc: 'Services displayed publicly.' },
+				{ title: 'Client Reviews', desc: 'Read published testimonials.' },
+				{ title: 'Settings', desc: 'Global settings (RBQ, contact, etc.).' }
+			],
+			quickActions: 'Quick actions',
+			openInbox: 'Open the inbox',
+			viewSite: 'View public site',
+			configuration: 'Configuration',
+			configLabels: ['Phone', 'Email', 'R.B.Q. License', 'Main region', 'Public site'],
+			regionValue: 'Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent',
+			checkingSession: 'Verifying session…'
+		},
+		es: {
+			title: 'Panel de control',
+			subtitle: 'Visión general de su actividad en Mini Excavations Érable.',
+			adminSpace: 'Espacio admin',
+			logout: 'Cerrar sesión',
+			statSoumissions: 'Cotizaciones',
+			statSoumissionsValue: 'Correo',
+			statSoumissionsHint: 'Entregadas vía FormSubmit',
+			statUrgence: 'Urgencias 24/7',
+			statUrgenceValue: 'Activo',
+			statSite: 'Sitio',
+			statSiteValue: 'En línea',
+			statRBQ: 'RBQ',
+			statRBQHint: 'Licencia activa',
+			sections: [
+				{ title: 'Cotizaciones', desc: 'Recibidas por correo — abrir la bandeja.' },
+				{ title: 'Leads / Contactos', desc: 'Todos los leads llegan al correo admin.' },
+				{ title: 'Artículos Blog', desc: 'Ver los artículos publicados en el sitio.' },
+				{ title: 'Servicios', desc: 'Lista de servicios mostrados al público.' },
+				{ title: 'Reseñas de clientes', desc: 'Leer los testimonios publicados.' },
+				{ title: 'Ajustes', desc: 'Parámetros globales (RBQ, contacto, etc.).' }
+			],
+			quickActions: 'Acciones rápidas',
+			openInbox: 'Abrir la bandeja de correo',
+			viewSite: 'Ver el sitio público',
+			configuration: 'Configuración',
+			configLabels: ['Teléfono', 'Correo', 'Licencia R.B.Q.', 'Región principal', 'Sitio público'],
+			regionValue: 'Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent',
+			checkingSession: 'Verificando la sesión…'
+		}
+	};
 
 	onMount(() => {
 		try {
@@ -43,63 +140,21 @@
 		goto('/mi/admin/login', { replaceState: true });
 	}
 
-	const sections = [
-		{
-			icon: FileSignature,
-			title: 'Soumissions',
-			desc: 'Reçues par courriel — ouvrir la boîte de réception.',
-			href: 'mailto:miniexcavationerable@gmail.com',
-			external: true,
-			accent: 'amber'
-		},
-		{
-			icon: Users,
-			title: 'Leads / Contacts',
-			desc: 'Tous les leads arrivent au courriel admin.',
-			href: 'mailto:miniexcavationerable@gmail.com',
-			external: true,
-			accent: 'blue'
-		},
-		{
-			icon: FileText,
-			title: 'Articles Blog',
-			desc: 'Voir les articles publiés sur le site.',
-			href: '/#blogs',
-			external: false,
-			accent: 'emerald'
-		},
-		{
-			icon: Wrench,
-			title: 'Services',
-			desc: 'Liste des services affichés au public.',
-			href: '/#services',
-			external: false,
-			accent: 'orange'
-		},
-		{
-			icon: Star,
-			title: 'Avis Clients',
-			desc: 'Lire les témoignages clients publiés.',
-			href: '/urgences#avis',
-			external: false,
-			accent: 'purple'
-		},
-		{
-			icon: Settings,
-			title: 'Réglages',
-			desc: 'Paramètres globaux (RBQ, contact, etc.).',
-			href: '#config',
-			external: false,
-			accent: 'zinc'
-		}
+	const sectionMeta = [
+		{ icon: FileSignature, href: 'mailto:miniexcavationerable@gmail.com', external: true, accent: 'amber' },
+		{ icon: Users, href: 'mailto:miniexcavationerable@gmail.com', external: true, accent: 'blue' },
+		{ icon: FileText, href: '/#blogs', external: false, accent: 'emerald' },
+		{ icon: Wrench, href: '/#services', external: false, accent: 'orange' },
+		{ icon: Star, href: '/urgences#avis', external: false, accent: 'purple' },
+		{ icon: Settings, href: '#config', external: false, accent: 'zinc' }
 	];
 
-	const config = [
-		{ label: 'Téléphone', value: '+1 (514) 830-9973' },
-		{ label: 'Courriel', value: 'miniexcavationerable@gmail.com' },
-		{ label: 'Licence R.B.Q.', value: '5823-7736-01' },
-		{ label: 'Région principale', value: 'Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent' },
-		{ label: 'Site public', value: 'excavationserable.com' }
+	$: configValues = [
+		'+1 (514) 830-9973',
+		'miniexcavationerable@gmail.com',
+		'5823-7736-01',
+		t.regionValue,
+		'excavationserable.com'
 	];
 
 	function accentClass(tone: string): { icon: string } {
@@ -121,7 +176,7 @@
 </script>
 
 <svelte:head>
-	<title>Tableau de bord — Mini Excavations Érable</title>
+	<title>{t.title} — Mini Excavations Érable</title>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
@@ -135,7 +190,7 @@
 						<ShieldCheck class="w-5 h-5 text-black" />
 					</div>
 					<div>
-						<p class="font-bold text-sm sm:text-base">Espace admin</p>
+						<p class="font-bold text-sm sm:text-base">{t.adminSpace}</p>
 						{#if adminEmail}
 							<p class="text-xs text-zinc-500">{adminEmail}</p>
 						{/if}
@@ -146,16 +201,14 @@
 					class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-zinc-800 hover:border-zinc-600 text-zinc-300 hover:text-white text-xs font-semibold transition-colors"
 				>
 					<LogOut class="w-3.5 h-3.5" />
-					<span>Déconnexion</span>
+					<span>{t.logout}</span>
 				</button>
 			</div>
 
 			<!-- Heading -->
 			<div class="mb-8">
-				<h1 class="text-3xl sm:text-4xl font-black tracking-tight">Tableau de bord</h1>
-				<p class="text-zinc-400 text-sm mt-1.5">
-					Vue d'ensemble de votre activité Mini Excavations Érable.
-				</p>
+				<h1 class="text-3xl sm:text-4xl font-black tracking-tight">{t.title}</h1>
+				<p class="text-zinc-400 text-sm mt-1.5">{t.subtitle}</p>
 			</div>
 
 			<!-- Stats strip -->
@@ -163,40 +216,40 @@
 				<div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
 					<div class="flex items-center gap-2 text-zinc-500 text-xs mb-1">
 						<Inbox class="w-3.5 h-3.5" />
-						Soumissions
+						{t.statSoumissions}
 					</div>
-					<div class="text-xl font-black text-white">Courriel</div>
-					<div class="text-[10px] text-zinc-600 mt-0.5">Livrées par FormSubmit</div>
+					<div class="text-xl font-black text-white">{t.statSoumissionsValue}</div>
+					<div class="text-[10px] text-zinc-600 mt-0.5">{t.statSoumissionsHint}</div>
 				</div>
 				<div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
 					<div class="flex items-center gap-2 text-zinc-500 text-xs mb-1">
 						<Phone class="w-3.5 h-3.5" />
-						Urgences 24/7
+						{t.statUrgence}
 					</div>
-					<div class="text-xl font-black text-emerald-400">Actif</div>
+					<div class="text-xl font-black text-emerald-400">{t.statUrgenceValue}</div>
 					<div class="text-[10px] text-zinc-600 mt-0.5">(514) 830-9973</div>
 				</div>
 				<div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
 					<div class="flex items-center gap-2 text-zinc-500 text-xs mb-1">
 						<Globe class="w-3.5 h-3.5" />
-						Site
+						{t.statSite}
 					</div>
-					<div class="text-xl font-black text-white">En ligne</div>
+					<div class="text-xl font-black text-white">{t.statSiteValue}</div>
 					<div class="text-[10px] text-zinc-600 mt-0.5">excavationserable.com</div>
 				</div>
 				<div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
 					<div class="flex items-center gap-2 text-zinc-500 text-xs mb-1">
 						<BarChart3 class="w-3.5 h-3.5" />
-						RBQ
+						{t.statRBQ}
 					</div>
 					<div class="text-xl font-black text-white font-mono">5823-7736-01</div>
-					<div class="text-[10px] text-zinc-600 mt-0.5">Licence active</div>
+					<div class="text-[10px] text-zinc-600 mt-0.5">{t.statRBQHint}</div>
 				</div>
 			</div>
 
 			<!-- Sections grid -->
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-				{#each sections as section}
+				{#each sectionMeta as section, i}
 					{@const accent = accentClass(section.accent)}
 					<a
 						href={section.href}
@@ -208,12 +261,12 @@
 							<svelte:component this={section.icon} class="w-5 h-5" />
 						</div>
 						<h3 class="font-bold text-white mb-1 flex items-center gap-1.5">
-							{section.title}
+							{t.sections[i].title}
 							{#if section.external}
 								<ExternalLink class="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
 							{/if}
 						</h3>
-						<p class="text-xs text-zinc-400 leading-relaxed">{section.desc}</p>
+						<p class="text-xs text-zinc-400 leading-relaxed">{t.sections[i].desc}</p>
 					</a>
 				{/each}
 			</div>
@@ -222,7 +275,7 @@
 			<div class="mb-8 p-5 bg-zinc-900 border border-zinc-800 rounded-2xl">
 				<h2 class="font-bold mb-3 flex items-center gap-2">
 					<Mail class="w-4 h-4 text-[#febd17]" />
-					Actions rapides
+					{t.quickActions}
 				</h2>
 				<div class="flex flex-wrap gap-2">
 					<a
@@ -230,14 +283,14 @@
 						class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
 					>
 						<Mail class="w-4 h-4" />
-						Ouvrir la boîte courriel
+						{t.openInbox}
 					</a>
 					<a
 						href="/"
 						class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-800 hover:border-zinc-600 text-zinc-300 font-semibold text-sm transition-colors"
 					>
 						<Globe class="w-4 h-4" />
-						Voir le site public
+						{t.viewSite}
 					</a>
 					<a
 						href="tel:+15148309973"
@@ -253,13 +306,13 @@
 			<section id="config" class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
 				<div class="flex items-center gap-2 mb-4">
 					<Settings class="w-4 h-4 text-[#febd17]" />
-					<h2 class="font-bold">Configuration</h2>
+					<h2 class="font-bold">{t.configuration}</h2>
 				</div>
 				<dl class="divide-y divide-zinc-800">
-					{#each config as item}
+					{#each t.configLabels as label, i}
 						<div class="flex items-center justify-between py-2.5 gap-4">
-							<dt class="text-xs text-zinc-500 uppercase tracking-wider">{item.label}</dt>
-							<dd class="text-sm text-white font-mono text-right break-all">{item.value}</dd>
+							<dt class="text-xs text-zinc-500 uppercase tracking-wider">{label}</dt>
+							<dd class="text-sm text-white font-mono text-right break-all">{configValues[i]}</dd>
 						</div>
 					{/each}
 				</dl>
@@ -268,6 +321,6 @@
 	</div>
 {:else}
 	<div class="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-		<p class="text-zinc-500 text-sm">Vérification de la session…</p>
+		<p class="text-zinc-500 text-sm">{t.checkingSession}</p>
 	</div>
 {/if}
