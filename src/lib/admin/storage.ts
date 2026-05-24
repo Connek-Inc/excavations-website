@@ -10,6 +10,17 @@ export type SoumissionStatus =
 	| 'rejetee'
 	| 'archivee';
 
+export interface Offer {
+	id: string;
+	createdAt: string;
+	from: 'admin' | 'client';
+	type: 'offer' | 'counter-offer' | 'accept' | 'reject';
+	amount?: number; // CAD
+	payment_terms?: string;
+	deadline?: string; // ISO date
+	notes?: string;
+}
+
 export interface Soumission {
 	id: string;
 	createdAt: string;
@@ -25,6 +36,7 @@ export interface Soumission {
 	admin_notes?: string;
 	source: 'public-form' | 'urgences-form' | 'manual';
 	lang: 'fr' | 'en' | 'es';
+	offers?: Offer[];
 }
 
 const KEY = 'mi_admin_soumissions';
@@ -82,6 +94,46 @@ export function deleteSoumission(id: string): boolean {
 
 export function findSoumission(id: string): Soumission | null {
 	return readSoumissions().find((s) => s.id === id) || null;
+}
+
+export function addOffer(soumissionId: string, offer: Omit<Offer, 'id' | 'createdAt'>): Offer | null {
+	const list = readSoumissions();
+	const idx = list.findIndex((s) => s.id === soumissionId);
+	if (idx === -1) return null;
+	const entry: Offer = {
+		...offer,
+		id: cryptoRandomId(),
+		createdAt: new Date().toISOString()
+	};
+	const offers = [...(list[idx].offers || []), entry];
+	list[idx] = { ...list[idx], offers };
+	writeSoumissions(list);
+	return entry;
+}
+
+/** Encode an offer (or any small JSON payload) into a URL-safe base64 string. */
+export function encodeOfferToken(payload: Record<string, unknown>): string {
+	const json = JSON.stringify(payload);
+	if (typeof window !== 'undefined' && typeof btoa === 'function') {
+		return btoa(unescape(encodeURIComponent(json)))
+			.replace(/\+/g, '-')
+			.replace(/\//g, '_')
+			.replace(/=+$/, '');
+	}
+	return Buffer.from(json, 'utf-8').toString('base64url');
+}
+
+export function decodeOfferToken(token: string): Record<string, unknown> | null {
+	try {
+		const padded = token.replace(/-/g, '+').replace(/_/g, '/');
+		const json =
+			typeof window !== 'undefined' && typeof atob === 'function'
+				? decodeURIComponent(escape(atob(padded)))
+				: Buffer.from(padded, 'base64').toString('utf-8');
+		return JSON.parse(json);
+	} catch {
+		return null;
+	}
 }
 
 function cryptoRandomId(): string {
