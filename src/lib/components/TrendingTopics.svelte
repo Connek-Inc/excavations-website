@@ -7,8 +7,8 @@
 	const t = {
 		fr: {
 			tag: 'Tendances 2026',
-			title: 'Ce que les Québécois recherchent',
-			subtitle: 'Les questions et services les plus demandés dans la région métropolitaine cette année.',
+			title: 'Ce que recherchent nos clients',
+			subtitle: 'Les questions et services les plus demandés par nos clients cette année.',
 			topics: [
 				{ icon: MapPin, title: 'Drain français près de moi', desc: 'Service local rapide à Montréal, Laval, Longueuil et 40+ villes.', link: '/excavation/montreal', tag: '+340% recherches' },
 				{ icon: DollarSign, title: 'Prix drain français 2026', desc: 'Soumission transparente, sans frais cachés. À partir de 4 000$.', link: '/services/drain-francais', tag: 'Prix garantis' },
@@ -20,8 +20,8 @@
 		},
 		en: {
 			tag: '2026 Trends',
-			title: 'What Quebecers are searching for',
-			subtitle: 'The most requested questions and services in the metropolitan area this year.',
+			title: 'What our clients are searching for',
+			subtitle: 'The most requested questions and services from our clients this year.',
 			topics: [
 				{ icon: MapPin, title: 'French drain near me', desc: 'Fast local service in Montreal, Laval, Longueuil and 40+ cities.', link: '/excavation/montreal', tag: '+340% searches' },
 				{ icon: DollarSign, title: 'French drain price 2026', desc: 'Transparent quote, no hidden fees. Starting from $4,000.', link: '/services/drain-francais', tag: 'Guaranteed pricing' },
@@ -33,8 +33,8 @@
 		},
 		es: {
 			tag: 'Tendencias 2026',
-			title: 'Lo que buscan los quebequenses',
-			subtitle: 'Las preguntas y servicios más solicitados en el área metropolitana este año.',
+			title: 'Lo que buscan nuestros clientes',
+			subtitle: 'Las preguntas y servicios más solicitados por nuestros clientes este año.',
 			topics: [
 				{ icon: MapPin, title: 'Drenaje francés cerca de mí', desc: 'Servicio local rápido en Montreal, Laval, Longueuil y +40 ciudades.', link: '/excavation/montreal', tag: '+340% búsquedas' },
 				{ icon: DollarSign, title: 'Precio drenaje francés 2026', desc: 'Cotización transparente, sin costos ocultos. Desde $4,000.', link: '/services/drain-francais', tag: 'Precios garantizados' },
