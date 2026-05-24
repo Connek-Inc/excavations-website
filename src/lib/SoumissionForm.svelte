@@ -9,8 +9,11 @@
 		Shield,
 		Clock
 	} from 'lucide-svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { language } from '$lib/store/store';
 	import { appendSoumission } from '$lib/admin/storage';
+
+	const DRAFT_KEY = 'mi_soumission_draft';
 
 	type ProjetType =
 		| 'Drain français'
@@ -46,6 +49,76 @@
 	let errorKey: '' | 'network' | 'rejected' = '';
 	let errorRaw = '';
 	let mailtoFallback = '';
+	let draftRestored = false;
+	let draftSavedAt = '';
+	let saveTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	// Restore draft on mount
+	onMount(() => {
+		try {
+			const raw = localStorage.getItem(DRAFT_KEY);
+			if (!raw) return;
+			const saved = JSON.parse(raw);
+			if (saved && typeof saved === 'object' && saved.form) {
+				const filled = Object.values(saved.form).some((v) => String(v || '').trim().length > 0);
+				if (filled) {
+					form = { ...form, ...saved.form };
+					draftRestored = true;
+					draftSavedAt = saved.at || '';
+				}
+			}
+		} catch {}
+	});
+
+	function persistDraft() {
+		if (typeof window === 'undefined') return;
+		if (saveTimeout) clearTimeout(saveTimeout);
+		saveTimeout = setTimeout(() => {
+			try {
+				const empty = Object.values(form).every((v) => String(v || '').trim().length === 0);
+				if (empty) {
+					localStorage.removeItem(DRAFT_KEY);
+					return;
+				}
+				localStorage.setItem(
+					DRAFT_KEY,
+					JSON.stringify({ form, at: new Date().toISOString() })
+				);
+			} catch {}
+		}, 500);
+	}
+
+	function clearDraft() {
+		try {
+			localStorage.removeItem(DRAFT_KEY);
+		} catch {}
+	}
+
+	function dismissDraftBanner() {
+		draftRestored = false;
+	}
+
+	function discardDraft() {
+		form = {
+			client_nom: '',
+			client_email: '',
+			client_telephone: '',
+			client_adresse: '',
+			projet_adresse: '',
+			projet_type: '' as ProjetType | '',
+			projet_description: '',
+			notes_client: ''
+		};
+		clearDraft();
+		draftRestored = false;
+	}
+
+	// Persist on every field change
+	$: form, persistDraft();
+
+	onDestroy(() => {
+		if (saveTimeout) clearTimeout(saveTimeout);
+	});
 
 	const projetTypes: ProjetType[] = [
 		'Drain français',
@@ -133,16 +206,19 @@
 			const data = await res.json().catch(() => ({}));
 			if (res.ok && (data.success === 'true' || data.success === true || data.success === undefined)) {
 				captureLocally();
+				clearDraft();
 				step = 'success';
 			} else {
 				// Service rejected — open the user's mail client as guaranteed delivery
 				captureLocally();
+				clearDraft();
 				window.location.href = mailtoFallback;
 				setTimeout(() => { step = 'success'; }, 400);
 			}
 		} catch (err) {
 			// Network / timeout / service down — open mail client
 			captureLocally();
+			clearDraft();
 			window.location.href = mailtoFallback;
 			setTimeout(() => { step = 'success'; }, 400);
 		} finally {
@@ -248,6 +324,12 @@
 				'Notre équipe analyse votre projet. Nous vous enverrons une offre détaillée par courriel dans les meilleurs délais. Pour une réponse immédiate, appelez-nous au',
 			successHome: "Retour à l'accueil",
 
+			draftTitle: 'Brouillon restauré',
+			draftDesc: 'Nous avons retrouvé votre demande non envoyée. Continuez où vous étiez ou recommencez.',
+			draftKeep: 'Continuer',
+			draftDiscard: 'Recommencer',
+
+
 			sectionContact: 'Vos coordonnées',
 			sectionContactDesc: 'Nous utilisons ces informations pour vous joindre.',
 			sectionProject: 'Votre projet',
@@ -313,6 +395,12 @@
 				'Our team is reviewing your project. We will send you a detailed offer by email as soon as possible. For an immediate response, call us at',
 			successHome: 'Back to home',
 
+			draftTitle: 'Draft restored',
+			draftDesc: "We found your unsent request. Pick up where you left off or start over.",
+			draftKeep: 'Continue',
+			draftDiscard: 'Start over',
+
+
 			sectionContact: 'Your details',
 			sectionContactDesc: "We'll use this information to reach you.",
 			sectionProject: 'Your project',
@@ -376,6 +464,12 @@
 			successDesc:
 				'Nuestro equipo está analizando su proyecto. Le enviaremos una oferta detallada por correo a la brevedad. Para respuesta inmediata, llámenos al',
 			successHome: 'Volver al inicio',
+
+			draftTitle: 'Borrador restaurado',
+			draftDesc: 'Encontramos su solicitud sin enviar. Continúe donde lo dejó o empiece de nuevo.',
+			draftKeep: 'Continuar',
+			draftDiscard: 'Empezar de nuevo',
+
 
 			sectionContact: 'Sus datos',
 			sectionContactDesc: 'Usamos esta información para contactarlo.',
@@ -487,6 +581,32 @@
 				on:submit|preventDefault={submitForm}
 				class="{showSidebar ? 'lg:col-span-2' : ''} bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-6"
 			>
+				{#if draftRestored}
+					<div class="flex items-start gap-3 p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-200">
+						<Clock class="h-4 w-4 flex-shrink-0 mt-0.5 text-amber-400" />
+						<div class="flex-1 text-sm">
+							<p class="font-bold mb-0.5">{t.draftTitle}</p>
+							<p class="text-xs text-amber-200/80">{t.draftDesc}</p>
+						</div>
+						<div class="flex flex-col sm:flex-row gap-1.5">
+							<button
+								type="button"
+								on:click={dismissDraftBanner}
+								class="text-xs font-bold px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 transition-colors"
+							>
+								{t.draftKeep}
+							</button>
+							<button
+								type="button"
+								on:click={discardDraft}
+								class="text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/30 hover:bg-amber-500/10 text-amber-200 transition-colors"
+							>
+								{t.draftDiscard}
+							</button>
+						</div>
+					</div>
+				{/if}
+
 				<div>
 					<h2 class="text-xl font-bold mb-1">{t.sectionContact}</h2>
 					<p class="text-sm text-gray-500 dark:text-zinc-500">{t.sectionContactDesc}</p>
