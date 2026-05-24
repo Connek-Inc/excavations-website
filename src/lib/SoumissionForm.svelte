@@ -27,10 +27,12 @@
 	export let showHero: boolean = false;
 	export let showSidebar: boolean = true;
 
-	// FormSubmit.co — zero-config form-to-email service.
-	// First submission asks the owner to confirm via a link in the first email.
+	// Web3Forms — same service used by the home contact form. Free tier,
+	// no per-endpoint activation flow (unlike FormSubmit which is currently
+	// down). The access key is tied to the admin email already.
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const FORM_ENDPOINT = `https://formsubmit.co/ajax/${ADMIN_EMAIL}`;
+	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
+	const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
 
 	type Step = 'data' | 'success';
 	let step: Step = 'data';
@@ -191,22 +193,21 @@
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 				signal: ctrl.signal,
 				body: JSON.stringify({
-					_subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type}`,
-					_template: 'table',
-					_captcha: 'false',
-					_replyto: form.client_email,
-					_autoresponse: clientCopyMessage(),
-					email: form.client_email,
+					access_key: WEB3FORMS_KEY,
+					subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type || 'Soumission'}`,
+					from_name: `${form.client_nom} via excavationserable.com`,
+					replyto: form.client_email,
+					cc: form.client_email, // send a copy to the client
 					name: form.client_nom,
-					Nom: form.client_nom,
-					Courriel: form.client_email,
-					Telephone: form.client_telephone,
-					Adresse_personnelle: form.client_adresse || '—',
-					Adresse_projet: form.projet_adresse,
-					Type_projet: form.projet_type,
-					Description: form.projet_description,
-					Notes: form.notes_client || '—',
-					Langue: lang
+					email: form.client_email,
+					phone: form.client_telephone,
+					adresse_personnelle: form.client_adresse || '—',
+					adresse_projet: form.projet_adresse || '—',
+					type_projet: form.projet_type || '—',
+					description: form.projet_description,
+					notes: form.notes_client || '—',
+					langue: lang,
+					confirmation_au_client: clientCopyMessage()
 				})
 			});
 			clearTimeout(timeoutId);

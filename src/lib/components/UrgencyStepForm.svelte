@@ -160,7 +160,8 @@
 	}
 
 	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const FORM_ENDPOINT = `https://formsubmit.co/ajax/${ADMIN_EMAIL}`;
+	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
+	const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
 
 	function buildMailtoFallback() {
 		const probLabel = problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
@@ -283,20 +284,19 @@
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 				body: JSON.stringify({
-					_subject: `URGENCE — ${formData.name} (${probLabel})`,
-					_template: 'table',
-					_captcha: 'false',
-					_replyto: formData.email,
-					_autoresponse: buildClientAutoResponse(probLabel, urgLabel),
-					email: formData.email,
+					access_key: WEB3FORMS_KEY,
+					subject: `URGENCE — ${formData.name} (${probLabel})`,
+					from_name: `${formData.name} via excavationserable.com`,
+					replyto: formData.email,
+					cc: formData.email, // send a copy to the client
+					type: 'URGENCE',
 					name: formData.name,
-					Type: 'URGENCE',
-					Nom: formData.name,
-					Courriel: formData.email,
-					Telephone: formData.phone,
-					Type_probleme: probLabel,
-					Niveau_urgence: urgLabel,
-					Details: formData.messageText || '—'
+					email: formData.email,
+					phone: formData.phone,
+					type_probleme: probLabel,
+					niveau_urgence: urgLabel,
+					details: formData.messageText || '—',
+					confirmation_au_client: buildClientAutoResponse(probLabel, urgLabel)
 				}),
 				signal: controller.signal
 			});
