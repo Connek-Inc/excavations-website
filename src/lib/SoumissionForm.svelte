@@ -12,6 +12,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { language } from '$lib/store/store';
 	import { appendSoumission } from '$lib/admin/storage';
+	import { signup, findClient, getCurrent } from '$lib/admin/clients';
 
 	const DRAFT_KEY = 'mi_soumission_draft';
 
@@ -52,6 +53,13 @@
 	let draftRestored = false;
 	let draftSavedAt = '';
 	let saveTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	// Account creation on success
+	let accountPassword = '';
+	let accountCreating = false;
+	let accountCreated = false;
+	let accountError = '';
+	let accountExisting = false;
 
 	// Restore draft on mount
 	onMount(() => {
@@ -134,14 +142,13 @@
 
 	$: emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.client_email);
 	$: phoneValid = form.client_telephone.replace(/\D/g, '').length >= 10;
-	$: descValid = form.projet_description.trim().length >= 5;
+	// Only contact + a short description are required now. Address and project type
+	// can be discussed during the call-back to reduce form friction.
 	$: dataValid =
 		form.client_nom.trim().length > 1 &&
 		emailValid &&
 		phoneValid &&
-		form.projet_adresse.trim().length > 3 &&
-		form.projet_type !== '' &&
-		descValid;
+		form.projet_description.trim().length >= 5;
 
 	$: errorMsg = errorKey === 'network' ? t.errorNetwork : errorKey === 'rejected' ? t.errorRejected : errorRaw;
 
@@ -207,6 +214,7 @@
 			if (res.ok && (data.success === 'true' || data.success === true || data.success === undefined)) {
 				captureLocally();
 				clearDraft();
+				checkExistingAccount();
 				step = 'success';
 			} else {
 				// Service rejected — open the user's mail client as guaranteed delivery
@@ -294,6 +302,45 @@
 			.join('\n');
 	}
 
+	function createAccount() {
+		if (accountCreating || accountCreated) return;
+		accountError = '';
+		if (accountPassword.length < 6) {
+			accountError = t.accountErrShort;
+			return;
+		}
+		accountCreating = true;
+		const result = signup({
+			email: form.client_email,
+			name: form.client_nom,
+			telephone: form.client_telephone,
+			password: accountPassword
+		});
+		accountCreating = false;
+		if (result.ok) {
+			accountCreated = true;
+		} else if (result.reason === 'exists') {
+			accountExisting = true;
+			accountError = t.accountErrExists;
+		} else {
+			accountError = t.accountErrInvalid;
+		}
+	}
+
+	function checkExistingAccount() {
+		if (typeof window === 'undefined') return;
+		if (!form.client_email) return;
+		const existing = findClient(form.client_email);
+		if (existing) {
+			accountExisting = true;
+			// Already signed in?
+			const cur = getCurrent();
+			if (cur && cur.email.toLowerCase() === form.client_email.toLowerCase()) {
+				accountCreated = true;
+			}
+		}
+	}
+
 	function captureLocally() {
 		try {
 			appendSoumission({
@@ -329,6 +376,19 @@
 			draftKeep: 'Continuer',
 			draftDiscard: 'Recommencer',
 
+			accountTitle: 'Créez votre espace client',
+			accountDesc: 'Choisissez un mot de passe pour suivre votre soumission, recevoir les offres et y répondre.',
+			accountPwd: 'Mot de passe (min. 6 caractères)',
+			accountCTA: 'Créer mon compte',
+			accountCreating: 'Création…',
+			accountSuccess: 'Compte créé !',
+			accountSuccessDesc: 'Vous pouvez maintenant vous connecter avec votre courriel et ce mot de passe pour suivre vos demandes.',
+			accountSkip: 'Plus tard',
+			accountErrShort: 'Le mot de passe doit faire au moins 6 caractères.',
+			accountErrExists: 'Un compte existe déjà avec ce courriel. Connectez-vous.',
+			accountErrInvalid: 'Données invalides.',
+			accountLogin: 'Se connecter',
+
 
 			sectionContact: 'Vos coordonnées',
 			sectionContactDesc: 'Nous utilisons ces informations pour vous joindre.',
@@ -342,9 +402,9 @@
 			phEmail: 'jean@exemple.com',
 			labelClientAddr: 'Adresse personnelle (optionnel)',
 			phClientAddr: '123 rue Principale, Ville',
-			labelProjectAddr: 'Adresse du projet *',
+			labelProjectAddr: 'Adresse du projet (optionnel)',
 			phProjectAddr: '456 chemin du Lac, Saint-Hubert-de-Rivière-du-Loup, QC',
-			labelProjectType: 'Type de projet *',
+			labelProjectType: 'Type de projet (optionnel)',
 			phProjectType: 'Sélectionnez un type…',
 			labelDesc: 'Description du projet *',
 			phDesc: 'Décrivez les travaux: nature, surface, accès, contraintes, échéancier souhaité…',
@@ -400,6 +460,19 @@
 			draftKeep: 'Continue',
 			draftDiscard: 'Start over',
 
+			accountTitle: 'Create your client space',
+			accountDesc: 'Pick a password to follow your quote, receive offers and reply.',
+			accountPwd: 'Password (min. 6 chars)',
+			accountCTA: 'Create my account',
+			accountCreating: 'Creating…',
+			accountSuccess: 'Account created!',
+			accountSuccessDesc: 'You can now sign in with your email and this password to follow your requests.',
+			accountSkip: 'Later',
+			accountErrShort: 'Password must be at least 6 characters.',
+			accountErrExists: 'An account already exists with this email. Please sign in.',
+			accountErrInvalid: 'Invalid data.',
+			accountLogin: 'Sign in',
+
 
 			sectionContact: 'Your details',
 			sectionContactDesc: "We'll use this information to reach you.",
@@ -413,9 +486,9 @@
 			phEmail: 'john@example.com',
 			labelClientAddr: 'Personal address (optional)',
 			phClientAddr: '123 Main St, City',
-			labelProjectAddr: 'Project address *',
+			labelProjectAddr: 'Project address (optional)',
 			phProjectAddr: '456 Lake Rd, Saint-Hubert-de-Rivière-du-Loup, QC',
-			labelProjectType: 'Project type *',
+			labelProjectType: 'Project type (optional)',
 			phProjectType: 'Select a type…',
 			labelDesc: 'Project description *',
 			phDesc: 'Describe the work: nature, area, access, constraints, desired timeline…',
@@ -470,6 +543,19 @@
 			draftKeep: 'Continuar',
 			draftDiscard: 'Empezar de nuevo',
 
+			accountTitle: 'Cree su espacio cliente',
+			accountDesc: 'Elija una contraseña para seguir su cotización, recibir ofertas y responder.',
+			accountPwd: 'Contraseña (mín. 6 caracteres)',
+			accountCTA: 'Crear mi cuenta',
+			accountCreating: 'Creando…',
+			accountSuccess: '¡Cuenta creada!',
+			accountSuccessDesc: 'Ahora puede iniciar sesión con su correo y esta contraseña para seguir sus solicitudes.',
+			accountSkip: 'Más tarde',
+			accountErrShort: 'La contraseña debe tener al menos 6 caracteres.',
+			accountErrExists: 'Ya existe una cuenta con este correo. Inicie sesión.',
+			accountErrInvalid: 'Datos inválidos.',
+			accountLogin: 'Iniciar sesión',
+
 
 			sectionContact: 'Sus datos',
 			sectionContactDesc: 'Usamos esta información para contactarlo.',
@@ -483,9 +569,9 @@
 			phEmail: 'juan@ejemplo.com',
 			labelClientAddr: 'Dirección personal (opcional)',
 			phClientAddr: '123 calle Principal, Ciudad',
-			labelProjectAddr: 'Dirección del proyecto *',
+			labelProjectAddr: 'Dirección del proyecto (opcional)',
 			phProjectAddr: '456 camino del Lago, Saint-Hubert-de-Rivière-du-Loup, QC',
-			labelProjectType: 'Tipo de proyecto *',
+			labelProjectType: 'Tipo de proyecto (opcional)',
 			phProjectType: 'Seleccione un tipo…',
 			labelDesc: 'Descripción del proyecto *',
 			phDesc:
@@ -553,10 +639,58 @@
 					<CheckCircle2 class="h-8 w-8 text-emerald-400" />
 				</div>
 				<h2 class="text-2xl sm:text-3xl font-bold mb-3">{t.successTitle}</h2>
-				<p class="text-gray-600 dark:text-zinc-400 mb-8 max-w-xl mx-auto">
+				<p class="text-gray-600 dark:text-zinc-400 mb-6 max-w-xl mx-auto">
 					{t.successDesc}
 					<a href="tel:+15148309973" class="text-[#febd17] font-semibold hover:underline">(514) 830-9973</a>.
 				</p>
+
+				<!-- Account creation card -->
+				<div class="max-w-md mx-auto mb-8 p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 text-left">
+					{#if accountCreated}
+						<div class="flex items-start gap-3">
+							<CheckCircle2 class="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+							<div>
+								<h3 class="font-bold text-gray-900 dark:text-white mb-1">{t.accountSuccess}</h3>
+								<p class="text-xs text-gray-600 dark:text-zinc-400">{t.accountSuccessDesc}</p>
+							</div>
+						</div>
+					{:else if accountExisting}
+						<h3 class="font-bold text-gray-900 dark:text-white mb-1">{t.accountErrExists}</h3>
+						<p class="text-xs text-gray-600 dark:text-zinc-400 mb-3">{form.client_email}</p>
+						<a
+							href="/compte/login?email={encodeURIComponent(form.client_email)}"
+							class="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
+						>
+							{t.accountLogin}
+						</a>
+					{:else}
+						<h3 class="font-bold text-gray-900 dark:text-white mb-1">{t.accountTitle}</h3>
+						<p class="text-xs text-gray-600 dark:text-zinc-400 mb-4">{t.accountDesc}</p>
+						<div class="space-y-3">
+							<div class="text-xs text-gray-500 dark:text-zinc-500 truncate">
+								<span class="font-semibold text-gray-700 dark:text-zinc-300">{form.client_email}</span>
+							</div>
+							<input
+								type="password"
+								bind:value={accountPassword}
+								placeholder={t.accountPwd}
+								minlength="6"
+								class="w-full px-3 py-2.5 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
+							/>
+							{#if accountError}
+								<p class="text-xs text-red-500 dark:text-red-400">{accountError}</p>
+							{/if}
+							<button
+								type="button"
+								on:click={createAccount}
+								disabled={accountCreating || accountPassword.length < 6}
+								class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								{accountCreating ? t.accountCreating : t.accountCTA}
+							</button>
+						</div>
+					{/if}
+				</div>
 
 				<div class="flex flex-col sm:flex-row gap-3 justify-center">
 					<a
@@ -671,49 +805,46 @@
 					<p class="text-sm text-gray-500 dark:text-zinc-500">{t.sectionProjectDesc}</p>
 				</div>
 
-				<div>
-					<label for="padr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelProjectAddr}</label>
-					<div class="relative">
-						<MapPin class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
-						<input
-							id="padr"
-							type="text"
-							bind:value={form.projet_adresse}
-							placeholder={t.phProjectAddr}
-							required
-							class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
-						/>
+				<div class="grid sm:grid-cols-2 gap-4">
+					<div>
+						<label for="padr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelProjectAddr}</label>
+						<div class="relative">
+							<MapPin class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
+							<input
+								id="padr"
+								type="text"
+								bind:value={form.projet_adresse}
+								placeholder={t.phProjectAddr}
+								class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
+							/>
+						</div>
 					</div>
-				</div>
 
-				<div>
-					<label for="ptype" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelProjectType}</label>
-					<select
-						id="ptype"
-						bind:value={form.projet_type}
-						required
-						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white outline-none transition-colors"
-					>
-						<option value="" disabled>{t.phProjectType}</option>
-						{#each projetTypes as pt}
-							<option value={pt}>{t.types[pt]}</option>
-						{/each}
-					</select>
+					<div>
+						<label for="ptype" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelProjectType}</label>
+						<select
+							id="ptype"
+							bind:value={form.projet_type}
+							class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white outline-none transition-colors"
+						>
+							<option value="">{t.phProjectType}</option>
+							{#each projetTypes as pt}
+								<option value={pt}>{t.types[pt]}</option>
+							{/each}
+						</select>
+					</div>
 				</div>
 
 				<div>
 					<label for="desc" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelDesc}</label>
 					<textarea
 						id="desc"
-						rows="5"
+						rows="3"
 						bind:value={form.projet_description}
 						placeholder={t.phDesc}
 						required
 						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors resize-none"
 					></textarea>
-					<div class="text-right text-xs mt-1 {descValid ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-zinc-500'}">
-						{form.projet_description.length} {t.charsLabel}
-					</div>
 				</div>
 
 				<div>
