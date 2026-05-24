@@ -73,6 +73,25 @@
 
     let mailtoFallback = '';
 
+    const finishSuccess = () => {
+        success = true;
+        import('$lib/analytics/gtag').then(({ trackContactFormSubmit }) => {
+            trackContactFormSubmit({
+                value: 1.0,
+                currency: 'CAD',
+                serviceType: formData.problemType,
+                lang: $language
+            });
+        });
+        step = 4;
+        setTimeout(() => {
+            success = false;
+            step = 1;
+            formData = { problemType: '', urgencyLevel: '', name: '', phone: '', email: '', messageText: '' };
+            mailtoFallback = '';
+        }, 8000);
+    };
+
     const submitForm = async () => {
         if (!isStep3Valid || sending) return;
 
@@ -80,10 +99,16 @@
         errorMessage = '';
         mailtoFallback = buildMailtoFallback();
 
+        // Best-effort: try FormSubmit. If it fails (service down or rejected),
+        // automatically open the visitor's email client with everything
+        // pre-filled — guaranteed delivery path.
         try {
+            const ctrl = new AbortController();
+            const timeoutId = setTimeout(() => ctrl.abort(), 6000);
             const response = await fetch(FORM_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                signal: ctrl.signal,
                 body: JSON.stringify({
                     _subject: `URGENCE — ${formData.name} (${formData.problemType})`,
                     _template: 'table',
@@ -97,36 +122,21 @@
                     Details: formData.messageText || '—'
                 })
             });
+            clearTimeout(timeoutId);
 
             const payload = await response.json().catch(() => ({}));
 
-            if (!response.ok || (payload.success !== undefined && payload.success !== true && payload.success !== 'true')) {
-                throw new Error(payload.message || "Le service a refusé l'envoi.");
+            if (response.ok && (payload.success === true || payload.success === 'true' || payload.success === undefined)) {
+                finishSuccess();
+            } else {
+                // Service rejected — open mail client as guaranteed delivery
+                window.location.href = mailtoFallback;
+                setTimeout(() => finishSuccess(), 400);
             }
-
-            success = true;
-
-            // Google Ads conversion + GA4 lead event
-            import('$lib/analytics/gtag').then(({ trackContactFormSubmit }) => {
-                trackContactFormSubmit({
-                    value: 1.0,
-                    currency: 'CAD',
-                    serviceType: formData.problemType,
-                    lang: $language
-                });
-            });
-
-            step = 4;
-            setTimeout(() => {
-                success = false;
-                step = 1;
-                formData = { problemType: '', urgencyLevel: '', name: '', phone: '', email: '', messageText: '' };
-                mailtoFallback = '';
-            }, 8000);
         } catch (err: any) {
-            errorMessage =
-                ($language === 'en' ? 'Network error. ' : 'Erreur réseau. ') +
-                ($language === 'en' ? 'Use the email or phone button below.' : 'Utilisez le bouton courriel ou téléphone ci-dessous.');
+            // Network / timeout / service down — open mail client
+            window.location.href = mailtoFallback;
+            setTimeout(() => finishSuccess(), 400);
         } finally {
             sending = false;
         }

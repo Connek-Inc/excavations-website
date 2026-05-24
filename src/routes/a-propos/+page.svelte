@@ -21,7 +21,6 @@
 				"Aujourd'hui, notre équipe compte des techniciens certifiés, des opérateurs de machinerie expérimentés et un service à la clientèle dédié. Nous desservons toute la grande région du Québec, de Montréal jusqu'au Bas-Saint-Laurent.",
 			valuesTitle: 'Ce qui nous distingue',
 			values: [
-				{ title: 'Famille avant tout', desc: 'Une entreprise familiale qui traite chaque client comme un proche.' },
 				{ title: '15+ ans d\'expertise', desc: 'Des centaines de projets résidentiels et commerciaux livrés.' },
 				{ title: 'Travail garanti par écrit', desc: 'Garantie 15 ans transférable sur le drain français.' },
 				{ title: 'Certifications complètes', desc: 'RBQ, NEQ, CCQ, CMMTQ — toutes les licences requises.' }
@@ -59,7 +58,6 @@
 				"Today our team includes certified technicians, experienced equipment operators and dedicated customer service. We serve the greater Quebec region, from Montreal to Bas-Saint-Laurent.",
 			valuesTitle: 'What sets us apart',
 			values: [
-				{ title: 'Family first', desc: 'A family business that treats every client like a relative.' },
 				{ title: '15+ years of expertise', desc: 'Hundreds of residential and commercial projects delivered.' },
 				{ title: 'Written warranty', desc: '15-year transferable warranty on French drains.' },
 				{ title: 'Full certifications', desc: 'RBQ, NEQ, CCQ, CMMTQ — all required licenses.' }
@@ -97,7 +95,6 @@
 				'Hoy nuestro equipo cuenta con técnicos certificados, operadores de maquinaria con experiencia y un servicio al cliente dedicado. Servimos toda la gran región de Quebec, desde Montreal hasta el Bas-Saint-Laurent.',
 			valuesTitle: 'Lo que nos distingue',
 			values: [
-				{ title: 'Familia primero', desc: 'Una empresa familiar que trata a cada cliente como un familiar.' },
 				{ title: '+15 años de experiencia', desc: 'Cientos de proyectos residenciales y comerciales entregados.' },
 				{ title: 'Garantía por escrito', desc: 'Garantía de 15 años transferible en drenaje francés.' },
 				{ title: 'Certificaciones completas', desc: 'RBQ, NEQ, CCQ, CMMTQ — todas las licencias requeridas.' }

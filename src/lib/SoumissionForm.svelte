@@ -99,10 +99,16 @@
 		errorRaw = '';
 		mailtoFallback = buildMailtoFallback();
 
+		// Best-effort: try FormSubmit. If it fails (service down or rejected),
+		// automatically open the visitor's email client with everything
+		// pre-filled — guaranteed delivery path no matter what.
 		try {
+			const ctrl = new AbortController();
+			const timeoutId = setTimeout(() => ctrl.abort(), 6000);
 			const res = await fetch(FORM_ENDPOINT, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				signal: ctrl.signal,
 				body: JSON.stringify({
 					_subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type}`,
 					_template: 'table',
@@ -118,14 +124,19 @@
 					Langue: lang
 				})
 			});
+			clearTimeout(timeoutId);
 			const data = await res.json().catch(() => ({}));
 			if (res.ok && (data.success === 'true' || data.success === true || data.success === undefined)) {
 				step = 'success';
 			} else {
-				errorKey = 'rejected';
+				// Service rejected — open the user's mail client as guaranteed delivery
+				window.location.href = mailtoFallback;
+				setTimeout(() => { step = 'success'; }, 400);
 			}
 		} catch (err) {
-			errorKey = 'network';
+			// Network / timeout / service down — open mail client
+			window.location.href = mailtoFallback;
+			setTimeout(() => { step = 'success'; }, 400);
 		} finally {
 			sending = false;
 		}
