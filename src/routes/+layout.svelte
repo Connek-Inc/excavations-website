@@ -93,21 +93,21 @@
 		: currentLang === 'fr'
 			? [
 					{ text: 'Services', link: '/#services' },
-					{ text: 'Blogs', link: '/#blogs' },
-					{ text: 'À propos', link: '/#about-us' },
+					{ text: 'À propos', link: '/a-propos' },
+					{ text: 'Blog', link: '/#blogs' },
 					{ text: 'Contact', link: '/#contact' }
 				]
 			: currentLang === 'es'
 				? [
 						{ text: 'Servicios', link: '/#services' },
-						{ text: 'Blogs', link: '/#blogs' },
-						{ text: 'Sobre Nosotros', link: '/#about-us' },
+						{ text: 'Quiénes somos', link: '/a-propos' },
+						{ text: 'Blog', link: '/#blogs' },
 						{ text: 'Contacto', link: '/#contact' }
 					]
 				: [
 						{ text: 'Services', link: '/#services' },
-						{ text: 'Blogs', link: '/#blogs' },
-						{ text: 'About Us', link: '/#about-us' },
+						{ text: 'About', link: '/a-propos' },
+						{ text: 'Blog', link: '/#blogs' },
 						{ text: 'Contact', link: '/#contact' }
 					];
 </script>
