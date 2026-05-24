@@ -10,6 +10,7 @@
 		Clock
 	} from 'lucide-svelte';
 	import { language } from '$lib/store/store';
+	import { appendSoumission } from '$lib/admin/storage';
 
 	type ProjetType =
 		| 'Drain français'
@@ -127,19 +128,39 @@
 			clearTimeout(timeoutId);
 			const data = await res.json().catch(() => ({}));
 			if (res.ok && (data.success === 'true' || data.success === true || data.success === undefined)) {
+				captureLocally();
 				step = 'success';
 			} else {
 				// Service rejected — open the user's mail client as guaranteed delivery
+				captureLocally();
 				window.location.href = mailtoFallback;
 				setTimeout(() => { step = 'success'; }, 400);
 			}
 		} catch (err) {
 			// Network / timeout / service down — open mail client
+			captureLocally();
 			window.location.href = mailtoFallback;
 			setTimeout(() => { step = 'success'; }, 400);
 		} finally {
 			sending = false;
 		}
+	}
+
+	function captureLocally() {
+		try {
+			appendSoumission({
+				client_nom: form.client_nom,
+				client_email: form.client_email,
+				client_telephone: form.client_telephone,
+				client_adresse: form.client_adresse || undefined,
+				projet_adresse: form.projet_adresse,
+				projet_type: form.projet_type || 'Autre',
+				projet_description: form.projet_description,
+				notes_client: form.notes_client || undefined,
+				source: 'public-form',
+				lang
+			});
+		} catch {}
 	}
 
 	const T = {
