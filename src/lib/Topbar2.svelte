@@ -161,6 +161,16 @@
         <!-- Desktop CTAs -->
         <div class="hidden lg:flex items-center gap-3">
             <a
+                href="/mi/admin/login"
+                title="Admin"
+                aria-label="Admin"
+                class="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300/40 dark:border-zinc-700 hover:border-[#febd17] hover:bg-[#febd17]/10 transition-colors"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </a>
+            <a
                 href="/soumission"
                 class="inline-flex items-center gap-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black px-4 py-2 font-bold text-sm transition-colors shadow-md"
             >
@@ -235,6 +245,16 @@
 
                 <!-- Mobile CTAs -->
                 <div class="mt-3 pt-3 border-t border-gray-200 dark:border-zinc-800 space-y-2">
+                    <a
+                        href="/mi/admin/login"
+                        on:click={closeMenu}
+                        class="flex items-center justify-center gap-2 border border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 p-3 rounded-lg text-sm font-bold transition-colors hover:border-[#febd17] hover:bg-[#febd17]/10"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Admin
+                    </a>
                     <a
                         href="/soumission"
                         on:click={closeMenu}
