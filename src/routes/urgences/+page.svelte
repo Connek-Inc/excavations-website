@@ -204,42 +204,52 @@
     </style>
 
     <!-- Section: Inspection Gratuite (#inspection) -->
-    <section id="inspection" class="py-24 bg-muted/30 dark:bg-zinc-950 transition-colors duration-300 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl opacity-50 -z-0"></div>
-        <div class="container relative z-10 max-w-6xl">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <div class="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-500/10 px-3 py-1 text-sm font-bold text-blue-600 dark:text-blue-400">
-                        Sitelink: Inspection Gratuite
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-black tracking-tight text-black dark:text-white">
-                        Inspection Gratuite
-                    </h2>
-                    <div class="space-y-6">
-                        <div class="flex gap-4">
-                            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Déplacement sans frais.</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-lg">Notre équipe d'experts se déplace directement chez vous pour évaluer la situation, et ce, tout à fait gratuitement. Ne laissez pas l'incertitude vous coûter cher.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Soumission rapide en 24h-48h.</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-lg">En situation d'urgence, le temps compte. Vous recevrez une soumission claire, détaillée et sans surprise dans les 24 à 48 heures suivant notre visite.</p>
-                            </div>
-                        </div>
-                    </div>
+    <section id="inspection" class="py-16 lg:py-20 bg-zinc-950 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#febd17]/5 rounded-full blur-[120px] -z-0"></div>
+
+        <div class="container relative z-10 max-w-4xl px-4 sm:px-6">
+            <!-- Header compact -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center gap-2 rounded-full bg-[#febd17]/10 border border-[#febd17]/30 px-4 py-1.5 text-xs font-black text-[#febd17] uppercase tracking-widest mb-4">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#febd17]"></span>
+                    {currentLang === 'fr' ? 'Inspection 100% gratuite' : currentLang === 'es' ? 'Inspección 100% gratis' : '100% free inspection'}
                 </div>
-                <div class="rounded-3xl shadow-2xl lg:p-4">
-                    <UrgencyStepForm hideTitle={true} />
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white mb-3">
+                    {currentLang === 'fr' ? 'Décrivez votre urgence' : currentLang === 'es' ? 'Describa su urgencia' : 'Describe your emergency'}
+                </h2>
+                <p class="text-zinc-400 text-base sm:text-lg max-w-xl mx-auto">
+                    {currentLang === 'fr' ? '3 questions rapides. On vous rappelle.' : currentLang === 'es' ? '3 preguntas rápidas. Le devolvemos la llamada.' : '3 quick questions. We call you back.'}
+                </p>
+
+                <!-- Trust strip -->
+                <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 text-xs sm:text-sm text-zinc-500">
+                    <span class="inline-flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        {currentLang === 'fr' ? 'Déplacement gratuit' : currentLang === 'es' ? 'Visita gratuita' : 'Free visit'}
+                    </span>
+                    <span class="inline-flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        {currentLang === 'fr' ? 'Soumission 24-48h' : currentLang === 'es' ? 'Cotización 24-48h' : 'Quote in 24-48h'}
+                    </span>
+                    <span class="inline-flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        RBQ 5823-7736-01
+                    </span>
                 </div>
             </div>
+
+            <!-- Form card (protagonista) -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl shadow-black/50">
+                <UrgencyStepForm hideTitle={true} />
+            </div>
+
+            <!-- Fallback CTA -->
+            <p class="text-center text-sm text-zinc-500 mt-6">
+                {currentLang === 'fr' ? 'Préférez parler maintenant ?' : currentLang === 'es' ? '¿Prefiere hablar ahora?' : 'Prefer to talk now?'}
+                <a href="tel:+15148309973" class="ml-1 font-bold text-[#febd17] hover:text-[#febd17]/80 transition-colors">
+                    (514) 830-9973
+                </a>
+            </p>
         </div>
     </section>
 
