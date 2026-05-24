@@ -68,6 +68,10 @@
 	];
 
 	$: isUrgences = $page.url.pathname.startsWith('/urgences');
+	$: isStandalone =
+		$page.url.pathname.startsWith('/mi/admin') ||
+		$page.url.pathname.startsWith('/compte') ||
+		$page.url.pathname.startsWith('/soumission');
 
 	$: menuOptions = isUrgences
 		? currentLang === 'fr'
@@ -114,11 +118,14 @@
 
 <GlobalSchemas jsonLd={jsonLdSchemas} />
 
-<Topbar2 {menuOptions} {logo} />
+{#if isStandalone}
+	<slot />
+{:else}
+	<Topbar2 {menuOptions} {logo} />
+	<slot />
+	<FloatingActions />
+	<StickyCTA />
+	<ExitIntentModal />
+{/if}
 
-<slot />
-
-<FloatingActions />
-<StickyCTA />
-<ExitIntentModal />
 <ConsentBanner />
