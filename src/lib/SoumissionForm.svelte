@@ -9,6 +9,7 @@
 		Shield,
 		Clock
 	} from 'lucide-svelte';
+	import { language } from '$lib/store/store';
 
 	type ProjetType =
 		| 'Drain français'
@@ -41,7 +42,9 @@
 	};
 
 	let sending = false;
-	let errorMsg = '';
+	let errorKey: '' | 'network' | 'rejected' = '';
+	let errorRaw = '';
+	let mailtoFallback = '';
 
 	const projetTypes: ProjetType[] = [
 		'Drain français',
@@ -51,6 +54,9 @@
 		'Urgence',
 		'Autre'
 	];
+
+	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
+	$: t = T[lang] || T.fr;
 
 	$: emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.client_email);
 	$: phoneValid = form.client_telephone.replace(/\D/g, '').length >= 10;
@@ -62,6 +68,8 @@
 		form.projet_adresse.trim().length > 3 &&
 		form.projet_type !== '' &&
 		descValid;
+
+	$: errorMsg = errorKey === 'network' ? t.errorNetwork : errorKey === 'rejected' ? t.errorRejected : errorRaw;
 
 	function buildMailtoFallback() {
 		const subject = `Nouveau lead: ${form.client_nom} — ${form.projet_type}`;
@@ -77,17 +85,18 @@
 			'Description:',
 			form.projet_description,
 			'',
-			`Notes: ${form.notes_client || '—'}`
+			`Notes: ${form.notes_client || '—'}`,
+			'',
+			`Langue du visiteur: ${lang}`
 		].join('\n');
 		return `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 	}
 
-	let mailtoFallback = '';
-
 	async function submitForm() {
 		if (!dataValid || sending) return;
 		sending = true;
-		errorMsg = '';
+		errorKey = '';
+		errorRaw = '';
 		mailtoFallback = buildMailtoFallback();
 
 		try {
@@ -105,27 +114,219 @@
 					Adresse_projet: form.projet_adresse,
 					Type_projet: form.projet_type,
 					Description: form.projet_description,
-					Notes: form.notes_client || '—'
+					Notes: form.notes_client || '—',
+					Langue: lang
 				})
 			});
 			const data = await res.json().catch(() => ({}));
-			// FormSubmit returns success=true (or "true") on accepted submission.
-			// On the very first submission it may also return success=true while
-			// triggering an activation email to the admin — UX is fine either way.
 			if (res.ok && (data.success === 'true' || data.success === true || data.success === undefined)) {
 				step = 'success';
 			} else {
-				errorMsg =
-					(data.message || "Le service de courriel a refusé la demande.") +
-					" Utilisez le bouton ci-dessous pour envoyer directement.";
+				errorKey = 'rejected';
 			}
 		} catch (err) {
-			errorMsg =
-				"Connexion réseau impossible. Utilisez le bouton ci-dessous pour envoyer directement, ou appelez-nous.";
+			errorKey = 'network';
 		} finally {
 			sending = false;
 		}
 	}
+
+	const T = {
+		fr: {
+			heroBadge: 'Demande de soumission',
+			heroTitle1: 'Obtenez votre',
+			heroTitleAccent: 'soumission',
+			heroDesc:
+				"Remplissez le formulaire ci-dessous et notre équipe analysera votre projet. Vous recevrez une offre détaillée par courriel rapidement.",
+
+			successTitle: 'Demande reçue avec succès!',
+			successDesc:
+				'Notre équipe analyse votre projet. Nous vous enverrons une offre détaillée par courriel dans les meilleurs délais. Pour une réponse immédiate, appelez-nous au',
+			successHome: "Retour à l'accueil",
+
+			sectionContact: 'Vos coordonnées',
+			sectionContactDesc: 'Nous utilisons ces informations pour vous joindre.',
+			sectionProject: 'Votre projet',
+			sectionProjectDesc: 'Décrivez les travaux à effectuer.',
+
+			labelName: 'Nom complet *',
+			phName: 'Jean Tremblay',
+			labelPhone: 'Téléphone *',
+			labelEmail: 'Courriel *',
+			phEmail: 'jean@exemple.com',
+			labelClientAddr: 'Adresse personnelle (optionnel)',
+			phClientAddr: '123 rue Principale, Ville',
+			labelProjectAddr: 'Adresse du projet *',
+			phProjectAddr: '456 chemin du Lac, Saint-Hubert-de-Rivière-du-Loup, QC',
+			labelProjectType: 'Type de projet *',
+			phProjectType: 'Sélectionnez un type…',
+			labelDesc: 'Description du projet *',
+			phDesc: 'Décrivez les travaux: nature, surface, accès, contraintes, échéancier souhaité…',
+			charsLabel: 'caractères',
+			labelNotes: 'Détails additionnels (optionnel)',
+			phNotes: 'Particularités du terrain, échéancier souhaité…',
+
+			sending: 'Envoi…',
+			submit: 'Envoyer ma demande',
+			consent:
+				"En soumettant ce formulaire, vous acceptez d'être contacté concernant votre demande.",
+
+			errorSendEmail: 'Envoyer par courriel maintenant',
+			errorOrCall: 'Ou appelez-nous au',
+			errorNetwork:
+				'Connexion réseau impossible. Utilisez le bouton ci-dessous pour envoyer directement, ou appelez-nous.',
+			errorRejected:
+				"Le service de courriel a refusé la demande. Utilisez le bouton ci-dessous pour envoyer directement.",
+
+			sidebarHow: 'Comment ça fonctionne?',
+			step1: 'Vous remplissez ce formulaire.',
+			step2: 'Notre équipe analyse votre projet.',
+			step3: 'Vous recevez une offre détaillée par courriel.',
+			step4: 'Vous pouvez accepter, contre-offrir, ou demander des modifications.',
+			step5: 'Une fois acceptée, signez électroniquement.',
+			sidebarCertif: 'Entrepreneur certifié',
+			sidebarLoc:
+				'Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent. Service rapide et professionnel.',
+
+			types: {
+				'Drain français': 'Drain français',
+				'Excavation générale': 'Excavation générale',
+				Fondation: 'Fondation',
+				Imperméabilisation: 'Imperméabilisation',
+				Urgence: 'Urgence',
+				Autre: 'Autre'
+			} as Record<ProjetType, string>
+		},
+		en: {
+			heroBadge: 'Quote request',
+			heroTitle1: 'Get your',
+			heroTitleAccent: 'quote',
+			heroDesc:
+				"Fill out the form below and our team will review your project. You'll receive a detailed offer by email shortly.",
+
+			successTitle: 'Request received successfully!',
+			successDesc:
+				'Our team is reviewing your project. We will send you a detailed offer by email as soon as possible. For an immediate response, call us at',
+			successHome: 'Back to home',
+
+			sectionContact: 'Your details',
+			sectionContactDesc: "We'll use this information to reach you.",
+			sectionProject: 'Your project',
+			sectionProjectDesc: 'Describe the work to be done.',
+
+			labelName: 'Full name *',
+			phName: 'John Smith',
+			labelPhone: 'Phone *',
+			labelEmail: 'Email *',
+			phEmail: 'john@example.com',
+			labelClientAddr: 'Personal address (optional)',
+			phClientAddr: '123 Main St, City',
+			labelProjectAddr: 'Project address *',
+			phProjectAddr: '456 Lake Rd, Saint-Hubert-de-Rivière-du-Loup, QC',
+			labelProjectType: 'Project type *',
+			phProjectType: 'Select a type…',
+			labelDesc: 'Project description *',
+			phDesc: 'Describe the work: nature, area, access, constraints, desired timeline…',
+			charsLabel: 'characters',
+			labelNotes: 'Additional details (optional)',
+			phNotes: 'Site specifics, desired timeline…',
+
+			sending: 'Sending…',
+			submit: 'Send my request',
+			consent: 'By submitting this form, you agree to be contacted about your request.',
+
+			errorSendEmail: 'Send by email now',
+			errorOrCall: 'Or call us at',
+			errorNetwork:
+				'Network connection failed. Use the button below to send directly, or call us.',
+			errorRejected:
+				'The email service rejected the request. Use the button below to send directly.',
+
+			sidebarHow: 'How it works',
+			step1: 'You fill out this form.',
+			step2: 'Our team reviews your project.',
+			step3: 'You receive a detailed offer by email.',
+			step4: 'You can accept, counter-offer, or request changes.',
+			step5: 'Once accepted, sign electronically.',
+			sidebarCertif: 'Certified contractor',
+			sidebarLoc:
+				'Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent. Fast and professional service.',
+
+			types: {
+				'Drain français': 'French drain',
+				'Excavation générale': 'General excavation',
+				Fondation: 'Foundation',
+				Imperméabilisation: 'Waterproofing',
+				Urgence: 'Emergency',
+				Autre: 'Other'
+			} as Record<ProjetType, string>
+		},
+		es: {
+			heroBadge: 'Solicitud de cotización',
+			heroTitle1: 'Obtenga su',
+			heroTitleAccent: 'cotización',
+			heroDesc:
+				'Complete el formulario y nuestro equipo analizará su proyecto. Recibirá una oferta detallada por correo rápidamente.',
+
+			successTitle: '¡Solicitud recibida con éxito!',
+			successDesc:
+				'Nuestro equipo está analizando su proyecto. Le enviaremos una oferta detallada por correo a la brevedad. Para respuesta inmediata, llámenos al',
+			successHome: 'Volver al inicio',
+
+			sectionContact: 'Sus datos',
+			sectionContactDesc: 'Usamos esta información para contactarlo.',
+			sectionProject: 'Su proyecto',
+			sectionProjectDesc: 'Describa los trabajos a realizar.',
+
+			labelName: 'Nombre completo *',
+			phName: 'Juan Pérez',
+			labelPhone: 'Teléfono *',
+			labelEmail: 'Correo electrónico *',
+			phEmail: 'juan@ejemplo.com',
+			labelClientAddr: 'Dirección personal (opcional)',
+			phClientAddr: '123 calle Principal, Ciudad',
+			labelProjectAddr: 'Dirección del proyecto *',
+			phProjectAddr: '456 camino del Lago, Saint-Hubert-de-Rivière-du-Loup, QC',
+			labelProjectType: 'Tipo de proyecto *',
+			phProjectType: 'Seleccione un tipo…',
+			labelDesc: 'Descripción del proyecto *',
+			phDesc:
+				'Describa los trabajos: naturaleza, superficie, acceso, restricciones, plazo deseado…',
+			charsLabel: 'caracteres',
+			labelNotes: 'Detalles adicionales (opcional)',
+			phNotes: 'Particularidades del terreno, plazo deseado…',
+
+			sending: 'Enviando…',
+			submit: 'Enviar mi solicitud',
+			consent: 'Al enviar este formulario, acepta ser contactado respecto a su solicitud.',
+
+			errorSendEmail: 'Enviar por correo ahora',
+			errorOrCall: 'O llámenos al',
+			errorNetwork:
+				'No se pudo conectar a la red. Use el botón de abajo para enviar directamente, o llámenos.',
+			errorRejected:
+				'El servicio de correo rechazó la solicitud. Use el botón de abajo para enviar directamente.',
+
+			sidebarHow: '¿Cómo funciona?',
+			step1: 'Usted completa el formulario.',
+			step2: 'Nuestro equipo analiza su proyecto.',
+			step3: 'Recibe una oferta detallada por correo.',
+			step4: 'Puede aceptar, hacer contraoferta, o solicitar cambios.',
+			step5: 'Una vez aceptada, firma electrónicamente.',
+			sidebarCertif: 'Contratista certificado',
+			sidebarLoc:
+				'Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent. Servicio rápido y profesional.',
+
+			types: {
+				'Drain français': 'Drenaje francés',
+				'Excavation générale': 'Excavación general',
+				Fondation: 'Cimentación',
+				Imperméabilisation: 'Impermeabilización',
+				Urgence: 'Emergencia',
+				Autre: 'Otro'
+			} as Record<ProjetType, string>
+		}
+	} as const;
 </script>
 
 <div id="contact" class="text-black dark:text-white">
@@ -134,14 +335,13 @@
 			<div
 				class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#febd17]/10 border border-[#febd17]/30 text-[#c9920f] dark:text-[#febd17] text-xs font-semibold uppercase tracking-wider mb-4"
 			>
-				<FileText class="h-3.5 w-3.5" /> Demande de soumission
+				<FileText class="h-3.5 w-3.5" /> {t.heroBadge}
 			</div>
 			<h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-black dark:text-white">
-				Obtenez votre <span class="text-[#c9920f] dark:text-[#febd17]">soumission</span>
+				{t.heroTitle1} <span class="text-[#c9920f] dark:text-[#febd17]">{t.heroTitleAccent}</span>
 			</h1>
 			<p class="mt-3 text-gray-600 dark:text-zinc-400 max-w-2xl">
-				Remplissez le formulaire ci-dessous et notre équipe analysera votre projet. Vous recevrez
-				une offre détaillée par courriel rapidement.
+				{t.heroDesc}
 			</p>
 		</div>
 	{/if}
@@ -154,10 +354,9 @@
 				>
 					<CheckCircle2 class="h-8 w-8 text-emerald-400" />
 				</div>
-				<h2 class="text-2xl sm:text-3xl font-bold mb-3">Demande reçue avec succès!</h2>
+				<h2 class="text-2xl sm:text-3xl font-bold mb-3">{t.successTitle}</h2>
 				<p class="text-gray-600 dark:text-zinc-400 mb-8 max-w-xl mx-auto">
-					Notre équipe analyse votre projet. Nous vous enverrons une offre détaillée par courriel
-					dans les meilleurs délais. Pour une réponse immédiate, appelez-nous au
+					{t.successDesc}
 					<a href="tel:+15148309973" class="text-[#febd17] font-semibold hover:underline">(514) 830-9973</a>.
 				</p>
 
@@ -166,7 +365,7 @@
 						href="/"
 						class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold transition-colors"
 					>
-						Retour à l'accueil
+						{t.successHome}
 					</a>
 					<a
 						href="tel:+15148309973"
@@ -185,24 +384,24 @@
 				class="{showSidebar ? 'lg:col-span-2' : ''} bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-6"
 			>
 				<div>
-					<h2 class="text-xl font-bold mb-1">Vos coordonnées</h2>
-					<p class="text-sm text-gray-500 dark:text-zinc-500">Nous utilisons ces informations pour vous joindre.</p>
+					<h2 class="text-xl font-bold mb-1">{t.sectionContact}</h2>
+					<p class="text-sm text-gray-500 dark:text-zinc-500">{t.sectionContactDesc}</p>
 				</div>
 
 				<div class="grid sm:grid-cols-2 gap-4">
 					<div>
-						<label for="nom" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Nom complet *</label>
+						<label for="nom" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelName}</label>
 						<input
 							id="nom"
 							type="text"
 							bind:value={form.client_nom}
-							placeholder="Jean Tremblay"
+							placeholder={t.phName}
 							required
 							class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 						/>
 					</div>
 					<div>
-						<label for="tel" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Téléphone *</label>
+						<label for="tel" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelPhone}</label>
 						<div class="relative">
 							<Phone class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
 							<input
@@ -218,14 +417,14 @@
 				</div>
 
 				<div>
-					<label for="email" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Courriel *</label>
+					<label for="email" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelEmail}</label>
 					<div class="relative">
 						<Mail class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
 						<input
 							id="email"
 							type="email"
 							bind:value={form.client_email}
-							placeholder="jean@exemple.com"
+							placeholder={t.phEmail}
 							required
 							class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 						/>
@@ -233,30 +432,30 @@
 				</div>
 
 				<div>
-					<label for="adr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Adresse personnelle (optionnel)</label>
+					<label for="adr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelClientAddr}</label>
 					<input
 						id="adr"
 						type="text"
 						bind:value={form.client_adresse}
-						placeholder="123 rue Principale, Ville"
+						placeholder={t.phClientAddr}
 						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 					/>
 				</div>
 
 				<div class="border-t border-gray-200 dark:border-zinc-800 pt-6">
-					<h2 class="text-xl font-bold mb-1">Votre projet</h2>
-					<p class="text-sm text-gray-500 dark:text-zinc-500">Décrivez les travaux à effectuer.</p>
+					<h2 class="text-xl font-bold mb-1">{t.sectionProject}</h2>
+					<p class="text-sm text-gray-500 dark:text-zinc-500">{t.sectionProjectDesc}</p>
 				</div>
 
 				<div>
-					<label for="padr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Adresse du projet *</label>
+					<label for="padr" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelProjectAddr}</label>
 					<div class="relative">
 						<MapPin class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-zinc-500" />
 						<input
 							id="padr"
 							type="text"
 							bind:value={form.projet_adresse}
-							placeholder="456 chemin du Lac, Saint-Hubert-de-Rivière-du-Loup, QC"
+							placeholder={t.phProjectAddr}
 							required
 							class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors"
 						/>
@@ -264,58 +463,58 @@
 				</div>
 
 				<div>
-					<label for="ptype" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Type de projet *</label>
+					<label for="ptype" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelProjectType}</label>
 					<select
 						id="ptype"
 						bind:value={form.projet_type}
 						required
 						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white outline-none transition-colors"
 					>
-						<option value="" disabled>Sélectionnez un type…</option>
-						{#each projetTypes as t}
-							<option value={t}>{t}</option>
+						<option value="" disabled>{t.phProjectType}</option>
+						{#each projetTypes as pt}
+							<option value={pt}>{t.types[pt]}</option>
 						{/each}
 					</select>
 				</div>
 
 				<div>
-					<label for="desc" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Description du projet *</label>
+					<label for="desc" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelDesc}</label>
 					<textarea
 						id="desc"
 						rows="5"
 						bind:value={form.projet_description}
-						placeholder="Décrivez les travaux: nature, surface, accès, contraintes, échéancier souhaité…"
+						placeholder={t.phDesc}
 						required
 						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors resize-none"
 					></textarea>
 					<div class="text-right text-xs mt-1 {descValid ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-zinc-500'}">
-						{form.projet_description.length} caractères
+						{form.projet_description.length} {t.charsLabel}
 					</div>
 				</div>
 
 				<div>
-					<label for="notes" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">Détails additionnels (optionnel)</label>
+					<label for="notes" class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400 mb-2">{t.labelNotes}</label>
 					<textarea
 						id="notes"
 						rows="3"
 						bind:value={form.notes_client}
-						placeholder="Particularités du terrain, échéancier souhaité…"
+						placeholder={t.phNotes}
 						class="w-full px-4 py-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none transition-colors resize-none"
 					></textarea>
 				</div>
 
 				{#if errorMsg}
-					<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm space-y-3">
+					<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-300 text-sm space-y-3">
 						<p>{errorMsg}</p>
 						{#if mailtoFallback}
 							<a
 								href={mailtoFallback}
 								class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
 							>
-								<Mail class="h-4 w-4" /> Envoyer par courriel maintenant
+								<Mail class="h-4 w-4" /> {t.errorSendEmail}
 							</a>
 							<p class="text-gray-600 dark:text-zinc-400 text-xs">
-								Ou appelez-nous au <a href="tel:+15148309973" class="text-[#c9920f] dark:text-[#febd17] underline">(514) 830-9973</a>.
+								{t.errorOrCall} <a href="tel:+15148309973" class="text-[#c9920f] dark:text-[#febd17] underline">(514) 830-9973</a>.
 							</p>
 						{/if}
 					</div>
@@ -331,15 +530,15 @@
 							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
 							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
 						</svg>
-						Envoi…
+						{t.sending}
 					{:else}
 						<Send class="h-5 w-5" />
-						Envoyer ma demande
+						{t.submit}
 					{/if}
 				</button>
 
-				<p class="text-xs text-zinc-500 text-center">
-					En soumettant ce formulaire, vous acceptez d'être contacté concernant votre demande.
+				<p class="text-xs text-gray-500 dark:text-zinc-500 text-center">
+					{t.consent}
 				</p>
 			</form>
 
@@ -348,65 +547,33 @@
 					<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 sticky top-24">
 						<div class="flex items-center gap-2 mb-4">
 							<Clock class="h-5 w-5 text-[#c9920f] dark:text-[#febd17]" />
-							<h3 class="font-bold">Comment ça fonctionne?</h3>
+							<h3 class="font-bold">{t.sidebarHow}</h3>
 						</div>
 						<ol class="space-y-4 text-sm">
-							<li class="flex gap-3">
-								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
-								>
-									1
-								</span>
-								<span class="text-gray-700 dark:text-zinc-300">Vous remplissez ce formulaire.</span>
-							</li>
-							<li class="flex gap-3">
-								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
-								>
-									2
-								</span>
-								<span class="text-gray-700 dark:text-zinc-300">Notre équipe analyse votre projet.</span>
-							</li>
-							<li class="flex gap-3">
-								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
-								>
-									3
-								</span>
-								<span class="text-gray-700 dark:text-zinc-300">Vous recevez une offre détaillée par courriel.</span>
-							</li>
-							<li class="flex gap-3">
-								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
-								>
-									4
-								</span>
-								<span class="text-gray-700 dark:text-zinc-300"
-									>Vous pouvez accepter, contre-offrir, ou demander des modifications.</span
-								>
-							</li>
-							<li class="flex gap-3">
-								<span
-									class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
-								>
-									5
-								</span>
-								<span class="text-gray-700 dark:text-zinc-300">Une fois acceptée, signez électroniquement.</span>
-							</li>
+							{#each [t.step1, t.step2, t.step3, t.step4, t.step5] as stepText, i}
+								<li class="flex gap-3">
+									<span
+										class="flex-shrink-0 w-7 h-7 rounded-full bg-[#febd17] text-black font-bold text-xs flex items-center justify-center"
+									>
+										{i + 1}
+									</span>
+									<span class="text-gray-700 dark:text-zinc-300">{stepText}</span>
+								</li>
+							{/each}
 						</ol>
 					</div>
 
 					<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6">
 						<div class="flex items-center gap-2 mb-3">
 							<Shield class="h-5 w-5 text-[#c9920f] dark:text-[#febd17]" />
-							<h3 class="font-bold">Entrepreneur certifié</h3>
+							<h3 class="font-bold">{t.sidebarCertif}</h3>
 						</div>
-						<p class="text-sm text-zinc-400 mb-2">
-							<span class="text-zinc-200 font-semibold">RBQ 5823-7736-01</span> — Mini Excavations
+						<p class="text-sm text-gray-600 dark:text-zinc-400 mb-2">
+							<span class="text-black dark:text-zinc-200 font-semibold">RBQ 5823-7736-01</span> — Mini Excavations
 							Érable Inc.
 						</p>
-						<p class="text-sm text-zinc-400">
-							Saint-Hubert-de-Rivière-du-Loup, Bas-Saint-Laurent. Service rapide et professionnel.
+						<p class="text-sm text-gray-600 dark:text-zinc-400">
+							{t.sidebarLoc}
 						</p>
 					</div>
 				</aside>
