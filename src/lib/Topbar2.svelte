@@ -65,7 +65,11 @@
         <!-- Logo + mobile burger -->
         <div class="flex items-center w-full lg:w-auto justify-between lg:justify-start">
             <a href="/" class="flex items-center" on:click={closeMenu}>
-                <img src={logo} alt="Mini Excavations Érable" class="h-8 sm:h-10 mr-2" />
+                <img
+                    src={logo}
+                    alt="Mini Excavations Érable"
+                    class="h-8 sm:h-10 mr-2 dark:brightness-0 dark:invert"
+                />
                 <span class="text-base sm:text-lg font-bold">Mini Excavations Érable</span>
             </a>
             <button

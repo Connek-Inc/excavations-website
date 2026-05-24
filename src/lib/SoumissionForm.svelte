@@ -114,6 +114,10 @@
 					_subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type}`,
 					_template: 'table',
 					_captcha: 'false',
+					_replyto: form.client_email,
+					_autoresponse: clientCopyMessage(),
+					email: form.client_email,
+					name: form.client_nom,
 					Nom: form.client_nom,
 					Courriel: form.client_email,
 					Telephone: form.client_telephone,
@@ -144,6 +148,74 @@
 		} finally {
 			sending = false;
 		}
+	}
+
+	function clientCopyMessage(): string {
+		const greeting =
+			lang === 'en'
+				? `Hello ${form.client_nom},`
+				: lang === 'es'
+					? `Hola ${form.client_nom},`
+					: `Bonjour ${form.client_nom},`;
+		const intro =
+			lang === 'en'
+				? "Thank you for contacting Mini Excavations Érable. We've received your quote request and our team will review it shortly. Below is a copy of the information you submitted."
+				: lang === 'es'
+					? 'Gracias por contactar a Mini Excavations Érable. Hemos recibido su solicitud de cotización y nuestro equipo la revisará pronto. A continuación encontrará una copia de los datos enviados.'
+					: "Merci d'avoir contacté Mini Excavations Érable. Nous avons bien reçu votre demande de soumission et notre équipe l'analysera sous peu. Vous trouverez ci-dessous une copie des informations envoyées.";
+		const labels =
+			lang === 'en'
+				? {
+						project: 'Project',
+						type: 'Type',
+						desc: 'Description',
+						notes: 'Notes',
+						address: 'Project address',
+						phone: 'Phone',
+						signoff: 'For an urgent matter, call us at',
+						team: 'Mini Excavations Érable — RBQ 5823-7736-01'
+					}
+				: lang === 'es'
+					? {
+							project: 'Proyecto',
+							type: 'Tipo',
+							desc: 'Descripción',
+							notes: 'Notas',
+							address: 'Dirección del proyecto',
+							phone: 'Teléfono',
+							signoff: 'Para una urgencia, llámenos al',
+							team: 'Mini Excavations Érable — RBQ 5823-7736-01'
+						}
+					: {
+							project: 'Projet',
+							type: 'Type',
+							desc: 'Description',
+							notes: 'Notes',
+							address: 'Adresse du projet',
+							phone: 'Téléphone',
+							signoff: 'Pour une urgence, appelez-nous au',
+							team: 'Mini Excavations Érable — RBQ 5823-7736-01'
+						};
+		return [
+			greeting,
+			'',
+			intro,
+			'',
+			`— ${labels.project} —`,
+			`${labels.type}: ${form.projet_type}`,
+			`${labels.address}: ${form.projet_adresse}`,
+			`${labels.phone}: ${form.client_telephone}`,
+			'',
+			`${labels.desc}:`,
+			form.projet_description,
+			form.notes_client ? `\n${labels.notes}: ${form.notes_client}` : '',
+			'',
+			`${labels.signoff} (514) 830-9973.`,
+			'',
+			labels.team
+		]
+			.filter(Boolean)
+			.join('\n');
 	}
 
 	function captureLocally() {

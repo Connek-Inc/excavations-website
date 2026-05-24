@@ -181,6 +181,59 @@
 		return `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 	}
 
+	function buildClientAutoResponse(probLabel: string, urgLabel: string): string {
+		const lang = ($language as 'fr' | 'en' | 'es') || 'fr';
+		if (lang === 'en') {
+			return [
+				`Hello ${formData.name},`,
+				'',
+				"We have received your URGENT request at Mini Excavations Érable. Our team is reviewing it right now and will contact you as fast as possible.",
+				'',
+				`Problem: ${probLabel}`,
+				`Urgency level: ${urgLabel}`,
+				formData.messageText ? `Details: ${formData.messageText}` : '',
+				'',
+				'For an absolute emergency, call us directly at (514) 830-9973.',
+				'',
+				'Mini Excavations Érable — RBQ 5823-7736-01'
+			]
+				.filter(Boolean)
+				.join('\n');
+		}
+		if (lang === 'es') {
+			return [
+				`Hola ${formData.name},`,
+				'',
+				'Hemos recibido su solicitud URGENTE en Mini Excavations Érable. Nuestro equipo la está revisando ahora y le contactará lo más rápido posible.',
+				'',
+				`Problema: ${probLabel}`,
+				`Nivel de urgencia: ${urgLabel}`,
+				formData.messageText ? `Detalles: ${formData.messageText}` : '',
+				'',
+				'Para una urgencia absoluta, llámenos directamente al (514) 830-9973.',
+				'',
+				'Mini Excavations Érable — RBQ 5823-7736-01'
+			]
+				.filter(Boolean)
+				.join('\n');
+		}
+		return [
+			`Bonjour ${formData.name},`,
+			'',
+			"Nous avons bien reçu votre demande URGENTE chez Mini Excavations Érable. Notre équipe l'analyse en ce moment et vous contactera le plus rapidement possible.",
+			'',
+			`Problème: ${probLabel}`,
+			`Niveau d'urgence: ${urgLabel}`,
+			formData.messageText ? `Détails: ${formData.messageText}` : '',
+			'',
+			"Pour une urgence absolue, appelez-nous directement au (514) 830-9973.",
+			'',
+			'Mini Excavations Érable — RBQ 5823-7736-01'
+		]
+			.filter(Boolean)
+			.join('\n');
+	}
+
 	function finishSuccess() {
 		step = 4;
 		// Capture locally for the admin dashboard.
@@ -233,6 +286,10 @@
 					_subject: `URGENCE — ${formData.name} (${probLabel})`,
 					_template: 'table',
 					_captcha: 'false',
+					_replyto: formData.email,
+					_autoresponse: buildClientAutoResponse(probLabel, urgLabel),
+					email: formData.email,
+					name: formData.name,
 					Type: 'URGENCE',
 					Nom: formData.name,
 					Courriel: formData.email,
