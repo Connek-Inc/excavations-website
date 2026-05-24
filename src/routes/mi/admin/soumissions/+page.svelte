@@ -153,11 +153,11 @@
 </svelte:head>
 
 {#if checked}
-	<div class="min-h-screen bg-zinc-950 text-white">
+	<div class="min-h-screen bg-gray-50 dark:bg-white dark:bg-zinc-950 text-gray-900 dark:text-white">
 		<main class="max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
 			<a
 				href="/mi/admin"
-				class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-[#febd17] transition-colors mb-6"
+				class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-zinc-400 hover:text-[#febd17] transition-colors mb-6"
 			>
 				<ArrowLeft class="w-4 h-4" /> {t.back}
 			</a>
@@ -165,30 +165,30 @@
 			<div class="flex items-start justify-between gap-4 flex-wrap mb-2">
 				<div>
 					<h1 class="text-3xl sm:text-4xl font-black tracking-tight">{t.title}</h1>
-					<p class="text-zinc-400 text-sm mt-1.5">{t.subtitle}</p>
+					<p class="text-gray-600 dark:text-zinc-400 text-sm mt-1.5">{t.subtitle}</p>
 				</div>
 				<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[10px] font-bold uppercase tracking-wider">
 					<Inbox class="w-3 h-3" />
 					{t.localBadge}
 				</div>
 			</div>
-			<p class="text-xs text-zinc-500 mb-6">{t.localHint}</p>
+			<p class="text-xs text-gray-500 dark:text-zinc-500 mb-6">{t.localHint}</p>
 
-			<div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 grid sm:grid-cols-3 gap-3 mb-6">
+			<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 grid sm:grid-cols-3 gap-3 mb-6">
 				<div class="sm:col-span-2 relative">
-					<Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+					<Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-zinc-500" />
 					<input
 						type="text"
 						bind:value={q}
 						placeholder={t.search}
-						class="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-white placeholder-zinc-600 outline-none"
+						class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none"
 					/>
 				</div>
 				<div class="relative">
-					<Filter class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
+					<Filter class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-zinc-500 pointer-events-none" />
 					<select
 						bind:value={statusFilter}
-						class="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-white outline-none appearance-none"
+						class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-gray-900 dark:text-white outline-none appearance-none"
 					>
 						<option value="">{t.allStatus}</option>
 						{#each statusOptions as opt}
@@ -198,28 +198,28 @@
 				</div>
 			</div>
 
-			<div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+			<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
 				{#if filtered.length === 0}
 					<div class="p-10 text-center">
-						<Inbox class="w-12 h-12 mx-auto mb-3 text-zinc-600" />
-						<p class="text-sm text-zinc-400 mb-1">{t.empty}</p>
-						<p class="text-xs text-zinc-600 max-w-md mx-auto">{t.emptyHint}</p>
+						<Inbox class="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-zinc-600" />
+						<p class="text-sm text-gray-600 dark:text-zinc-400 mb-1">{t.empty}</p>
+						<p class="text-xs text-gray-400 dark:text-zinc-600 max-w-md mx-auto">{t.emptyHint}</p>
 					</div>
 				{:else}
-					<ul class="divide-y divide-zinc-800">
+					<ul class="divide-y divide-gray-200 dark:divide-zinc-800">
 						{#each filtered as s}
-							<li class="p-4 sm:p-5 hover:bg-zinc-800/40 transition-colors">
+							<li class="p-4 sm:p-5 hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition-colors">
 								<div class="flex items-start justify-between gap-3">
 									<div class="flex-1 min-w-0">
 										<div class="flex items-center gap-2 mb-1 flex-wrap">
-											<span class="font-bold text-white truncate">{s.client_nom}</span>
+											<span class="font-bold text-gray-900 dark:text-white truncate">{s.client_nom}</span>
 											<span
 												class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border {statusColor(s.status)}"
 											>
 												{statusLabel(s.status, lang)}
 											</span>
 										</div>
-										<div class="flex items-center gap-3 text-xs text-zinc-500 mb-1 flex-wrap">
+										<div class="flex items-center gap-3 text-xs text-gray-500 dark:text-zinc-500 mb-1 flex-wrap">
 											<span class="inline-flex items-center gap-1"><Mail class="w-3 h-3" /> {s.client_email}</span>
 											{#if s.client_telephone}
 												<span class="inline-flex items-center gap-1"><Phone class="w-3 h-3" /> {s.client_telephone}</span>
@@ -227,15 +227,15 @@
 											<span>·</span>
 											<span>{fmtDate(s.createdAt)}</span>
 										</div>
-										<div class="text-sm text-zinc-300 truncate">
+										<div class="text-sm text-gray-700 dark:text-zinc-300 truncate">
 											<span class="font-semibold">{s.projet_type}</span>
-											<span class="text-zinc-500"> · {s.projet_adresse}</span>
+											<span class="text-gray-500 dark:text-zinc-500"> · {s.projet_adresse}</span>
 										</div>
 									</div>
 									<div class="flex items-center gap-1 flex-shrink-0">
 										<a
 											href={`/mi/admin/soumissions/${s.id}`}
-											class="p-2 rounded-lg hover:bg-zinc-700 text-zinc-300 hover:text-[#febd17] transition-colors"
+											class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-300 hover:text-[#febd17] transition-colors"
 											title={t.open}
 										>
 											<Eye class="w-4 h-4" />
@@ -243,7 +243,7 @@
 										<button
 											type="button"
 											on:click={() => handleDelete(s.id)}
-											class="p-2 rounded-lg hover:bg-red-500/10 text-zinc-300 hover:text-red-400 transition-colors"
+											class="p-2 rounded-lg hover:bg-red-500/10 text-gray-700 dark:text-zinc-300 hover:text-red-400 transition-colors"
 											title={t.delete}
 										>
 											<Trash2 class="w-4 h-4" />
@@ -256,13 +256,13 @@
 				{/if}
 			</div>
 
-			<div class="text-xs text-zinc-500 text-center mt-4">
+			<div class="text-xs text-gray-500 dark:text-zinc-500 text-center mt-4">
 				{filtered.length} {filtered.length === 1 ? t.count : t.countPlural} {t.of} {all.length}
 			</div>
 		</main>
 	</div>
 {:else}
-	<div class="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-		<p class="text-zinc-500 text-sm">…</p>
+	<div class="min-h-screen bg-gray-50 dark:bg-white dark:bg-zinc-950 text-gray-900 dark:text-white flex items-center justify-center">
+		<p class="text-gray-500 dark:text-zinc-500 text-sm">…</p>
 	</div>
 {/if}

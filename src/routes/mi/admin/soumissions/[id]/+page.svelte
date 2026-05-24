@@ -215,26 +215,26 @@
 {/if}
 
 {#if checked}
-	<div class="min-h-screen bg-zinc-950 text-white">
+	<div class="min-h-screen bg-gray-50 dark:bg-white dark:bg-zinc-950 text-gray-900 dark:text-white">
 		<main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-10">
 			<a
 				href="/mi/admin/soumissions"
-				class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-[#febd17] transition-colors mb-6"
+				class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-zinc-400 hover:text-[#febd17] transition-colors mb-6"
 			>
 				<ArrowLeft class="w-4 h-4" /> {t.back}
 			</a>
 
 			{#if !soumission}
-				<div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-12 text-center">
-					<XCircle class="w-12 h-12 mx-auto mb-3 text-zinc-600" />
+				<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-12 text-center">
+					<XCircle class="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-zinc-600" />
 					<h1 class="text-xl font-bold mb-2">{t.notFound}</h1>
-					<p class="text-sm text-zinc-500">{t.notFoundDesc}</p>
+					<p class="text-sm text-gray-500 dark:text-zinc-500">{t.notFoundDesc}</p>
 				</div>
 			{:else}
 				<div class="flex items-start justify-between gap-4 flex-wrap mb-6">
 					<div>
 						<h1 class="text-2xl sm:text-3xl font-black tracking-tight">{soumission.client_nom}</h1>
-						<p class="text-xs text-zinc-500 mt-1">
+						<p class="text-xs text-gray-500 dark:text-zinc-500 mt-1">
 							{t.received} {fmtDateTime(soumission.createdAt)} · {t.source}: {t.sourceLabels[soumission.source]}
 						</p>
 					</div>
@@ -248,71 +248,71 @@
 				<div class="grid lg:grid-cols-3 gap-5">
 					<!-- Left: details -->
 					<div class="lg:col-span-2 space-y-5">
-						<section class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-							<h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3">{t.contact}</h2>
+						<section class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+							<h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-500 mb-3">{t.contact}</h2>
 							<div class="grid sm:grid-cols-2 gap-3 text-sm">
 								<a
 									href="mailto:{soumission.client_email}"
-									class="flex items-center gap-2 p-3 rounded-lg bg-zinc-950 border border-zinc-800 hover:border-[#febd17] hover:bg-[#febd17]/5 transition-colors"
+									class="flex items-center gap-2 p-3 rounded-lg bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 hover:border-[#febd17] hover:bg-[#febd17]/5 transition-colors"
 								>
 									<Mail class="w-4 h-4 text-[#febd17] flex-shrink-0" />
-									<span class="text-white truncate">{soumission.client_email}</span>
+									<span class="text-gray-900 dark:text-white truncate">{soumission.client_email}</span>
 								</a>
 								{#if soumission.client_telephone}
 									<a
 										href="tel:{soumission.client_telephone}"
-										class="flex items-center gap-2 p-3 rounded-lg bg-zinc-950 border border-zinc-800 hover:border-[#febd17] hover:bg-[#febd17]/5 transition-colors"
+										class="flex items-center gap-2 p-3 rounded-lg bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 hover:border-[#febd17] hover:bg-[#febd17]/5 transition-colors"
 									>
 										<Phone class="w-4 h-4 text-[#febd17] flex-shrink-0" />
-										<span class="text-white">{soumission.client_telephone}</span>
+										<span class="text-gray-900 dark:text-white">{soumission.client_telephone}</span>
 									</a>
 								{/if}
 								{#if soumission.client_adresse}
-									<div class="flex items-center gap-2 p-3 rounded-lg bg-zinc-950 border border-zinc-800 sm:col-span-2">
-										<MapPin class="w-4 h-4 text-zinc-500 flex-shrink-0" />
-										<span class="text-zinc-300 text-sm">{soumission.client_adresse}</span>
+									<div class="flex items-center gap-2 p-3 rounded-lg bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 sm:col-span-2">
+										<MapPin class="w-4 h-4 text-gray-500 dark:text-zinc-500 flex-shrink-0" />
+										<span class="text-gray-700 dark:text-zinc-300 text-sm">{soumission.client_adresse}</span>
 									</div>
 								{/if}
 							</div>
 						</section>
 
-						<section class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-							<h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3">{t.project}</h2>
+						<section class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+							<h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-500 mb-3">{t.project}</h2>
 							<div class="space-y-3 text-sm">
 								<div class="flex items-start gap-2">
-									<MapPin class="w-4 h-4 text-zinc-500 flex-shrink-0 mt-0.5" />
-									<span class="text-white">{soumission.projet_adresse}</span>
+									<MapPin class="w-4 h-4 text-gray-500 dark:text-zinc-500 flex-shrink-0 mt-0.5" />
+									<span class="text-gray-900 dark:text-white">{soumission.projet_adresse}</span>
 								</div>
 								<div class="flex items-start gap-2">
-									<FileText class="w-4 h-4 text-zinc-500 flex-shrink-0 mt-0.5" />
-									<span class="text-white font-semibold">{soumission.projet_type}</span>
+									<FileText class="w-4 h-4 text-gray-500 dark:text-zinc-500 flex-shrink-0 mt-0.5" />
+									<span class="text-gray-900 dark:text-white font-semibold">{soumission.projet_type}</span>
 								</div>
-								<div class="pt-3 border-t border-zinc-800">
-									<p class="text-xs text-zinc-500 mb-1">{t.description}</p>
+								<div class="pt-3 border-t border-gray-200 dark:border-zinc-800">
+									<p class="text-xs text-gray-500 dark:text-zinc-500 mb-1">{t.description}</p>
 									<p class="text-zinc-200 text-sm whitespace-pre-wrap">{soumission.projet_description}</p>
 								</div>
 								{#if soumission.notes_client}
-									<div class="pt-3 border-t border-zinc-800">
-										<p class="text-xs text-zinc-500 mb-1">{t.clientNotes}</p>
+									<div class="pt-3 border-t border-gray-200 dark:border-zinc-800">
+										<p class="text-xs text-gray-500 dark:text-zinc-500 mb-1">{t.clientNotes}</p>
 										<p class="text-zinc-200 text-sm whitespace-pre-wrap">{soumission.notes_client}</p>
 									</div>
 								{/if}
 							</div>
 						</section>
 
-						<section class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-							<h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3">{t.adminNotes}</h2>
+						<section class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+							<h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-500 mb-3">{t.adminNotes}</h2>
 							<textarea
 								bind:value={admin_notes}
 								rows="4"
 								placeholder={t.adminNotesPh}
-								class="w-full px-3 py-2.5 bg-zinc-950 border border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-white placeholder-zinc-600 outline-none resize-none"
+								class="w-full px-3 py-2.5 bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 focus:border-[#febd17] rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 outline-none resize-none"
 							></textarea>
 							<button
 								type="button"
 								on:click={saveNotes}
 								disabled={saving}
-								class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm transition-colors disabled:opacity-50"
+								class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 text-gray-900 dark:text-white font-semibold text-sm transition-colors disabled:opacity-50"
 							>
 								<Save class="w-4 h-4" />
 								{saving ? t.saving : t.save}
@@ -322,8 +322,8 @@
 
 					<!-- Right: actions -->
 					<aside class="space-y-3">
-						<div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-							<h2 class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3">{t.actions}</h2>
+						<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-5">
+							<h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-500 mb-3">{t.actions}</h2>
 							<div class="space-y-2">
 								<button
 									type="button"
@@ -360,13 +360,13 @@
 								<button
 									type="button"
 									on:click={() => setStatus('archivee')}
-									class="w-full inline-flex items-center gap-2 px-3 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 font-semibold text-sm transition-colors"
+									class="w-full inline-flex items-center gap-2 px-3 py-2.5 rounded-lg bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 border border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 font-semibold text-sm transition-colors"
 								>
 									<Archive class="w-4 h-4" />
 									{t.archive}
 								</button>
 							</div>
-							<div class="mt-3 pt-3 border-t border-zinc-800">
+							<div class="mt-3 pt-3 border-t border-gray-200 dark:border-zinc-800">
 								<button
 									type="button"
 									on:click={handleDelete}
@@ -383,7 +383,7 @@
 		</main>
 	</div>
 {:else}
-	<div class="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-		<p class="text-zinc-500 text-sm">…</p>
+	<div class="min-h-screen bg-gray-50 dark:bg-white dark:bg-zinc-950 text-gray-900 dark:text-white flex items-center justify-center">
+		<p class="text-gray-500 dark:text-zinc-500 text-sm">…</p>
 	</div>
 {/if}

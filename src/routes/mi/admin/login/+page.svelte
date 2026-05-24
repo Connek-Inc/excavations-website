@@ -78,7 +78,7 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<div class="min-h-screen bg-zinc-950 relative overflow-hidden">
+<div class="min-h-screen bg-gray-50 dark:bg-white dark:bg-zinc-950 relative overflow-hidden">
 	<div
 		class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_50%,transparent_100%)] pointer-events-none"
 	></div>
@@ -89,11 +89,11 @@
 				<div class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-[#febd17] mb-4">
 					<ShieldCheck class="w-7 h-7 text-black" />
 				</div>
-				<h1 class="text-2xl font-bold text-white mb-1 tracking-tight">{t.title}</h1>
-				<p class="text-zinc-500 text-sm">{t.subtitle}</p>
+				<h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1 tracking-tight">{t.title}</h1>
+				<p class="text-gray-500 dark:text-zinc-500 text-sm">{t.subtitle}</p>
 			</div>
 
-			<div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
+			<div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-8">
 				<form on:submit={handleSubmit} class="space-y-5">
 					{#if errorMsg}
 						<div
@@ -105,10 +105,10 @@
 					{/if}
 
 					<div class="space-y-2">
-						<label for="email" class="block text-sm font-medium text-zinc-300">{t.email}</label>
+						<label for="email" class="block text-sm font-medium text-gray-700 dark:text-zinc-300">{t.email}</label>
 						<div class="relative">
 							<Mail
-								class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none"
+								class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-zinc-500 pointer-events-none"
 							/>
 							<input
 								id="email"
@@ -118,16 +118,16 @@
 								autocomplete="email"
 								placeholder={t.emailPh}
 								bind:value={email}
-								class="w-full pl-10 h-11 rounded-lg bg-zinc-950 border border-zinc-800 text-white placeholder:text-zinc-600 px-4 focus:outline-none focus:border-[#febd17]"
+								class="w-full pl-10 h-11 rounded-lg bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:text-zinc-600 px-4 focus:outline-none focus:border-[#febd17]"
 							/>
 						</div>
 					</div>
 
 					<div class="space-y-2">
-						<label for="password" class="block text-sm font-medium text-zinc-300">{t.password}</label>
+						<label for="password" class="block text-sm font-medium text-gray-700 dark:text-zinc-300">{t.password}</label>
 						<div class="relative">
 							<Lock
-								class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none"
+								class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-zinc-500 pointer-events-none"
 							/>
 							<input
 								id="password"
@@ -137,7 +137,7 @@
 								autocomplete="current-password"
 								placeholder="••••••••"
 								bind:value={password}
-								class="w-full pl-10 h-11 rounded-lg bg-zinc-950 border border-zinc-800 text-white placeholder:text-zinc-600 px-4 focus:outline-none focus:border-[#febd17]"
+								class="w-full pl-10 h-11 rounded-lg bg-white dark:bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:text-zinc-600 px-4 focus:outline-none focus:border-[#febd17]"
 							/>
 						</div>
 					</div>
@@ -158,7 +158,7 @@
 				</form>
 			</div>
 
-			<p class="text-center text-zinc-600 text-xs mt-6">{t.footer}</p>
+			<p class="text-center text-gray-400 dark:text-zinc-600 text-xs mt-6">{t.footer}</p>
 		</div>
 	</div>
 </div>
