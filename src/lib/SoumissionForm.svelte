@@ -11,7 +11,6 @@
 	} from 'lucide-svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import { language } from '$lib/store/store';
-	import { appendSoumission } from '$lib/admin/storage';
 
 	const DRAFT_KEY = 'mi_soumission_draft';
 
@@ -303,21 +302,38 @@
 	}
 
 	async function captureToServer(): Promise<boolean> {
+		// Posts the form to /api/connek/submission — the SvelteKit server
+		// route signs it with the partner's Connek API key (HMAC) and
+		// forwards to connek-api /api/v1/quotes/submission. Connek-api owns
+		// the entire side-effect chain from here: it mints the lite client,
+		// stores the quote, mints the magic-link token, and triggers the
+		// notification email. We just need the token back to redirect.
+		const nameParts = form.client_nom.trim().split(/\s+/);
+		const client_first_name = nameParts[0] ?? '';
+		const client_last_name = nameParts.slice(1).join(' ');
 		try {
-			const created = await appendSoumission({
-				client_nom: form.client_nom,
-				client_email: form.client_email,
-				client_telephone: form.client_telephone,
-				client_adresse: form.client_adresse || undefined,
-				projet_adresse: form.projet_adresse || undefined,
-				projet_type: form.projet_type || undefined,
-				projet_description: form.projet_description,
-				notes_client: form.notes_client || undefined,
-				source: 'public-form',
-				lang
+			const res = await fetch('/api/connek/submission', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					client_first_name,
+					client_last_name: client_last_name || undefined,
+					client_email: form.client_email,
+					client_phone: form.client_telephone,
+					client_address: form.client_adresse || undefined,
+					project_address: form.projet_adresse || undefined,
+					project_type: form.projet_type || undefined,
+					project_description: form.projet_description,
+					client_notes: form.notes_client || undefined,
+					expires_in_days: 30
+				})
 			});
-			if (created?.client_token) {
-				clientUrl = `/soumission/${created.client_token}`;
+			if (!res.ok) return false;
+			const data = (await res.json().catch(() => null)) as
+				| { ok: true; token: string; tracking_url: string }
+				| null;
+			if (data?.ok && data.token) {
+				clientUrl = data.tracking_url ?? `/soumission/${data.token}`;
 				return true;
 			}
 			return false;

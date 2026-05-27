@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { language } from '$lib/store/store';
-	import { appendSoumission } from '$lib/admin/storage';
 	import {
 		Droplets,
 		AlertOctagon,
@@ -255,18 +254,26 @@
 				problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
 			const urgLabel =
 				urgencies.find((u) => u.id === formData.urgencyLevel)?.labelFr || formData.urgencyLevel;
-			const created = await appendSoumission({
-				client_nom: formData.name,
-				client_email: formData.email,
-				client_telephone: formData.phone,
-				projet_type: `Urgence: ${probLabel}`,
-				projet_description: `Niveau d'urgence: ${urgLabel}\n\n${formData.messageText || '—'}`,
-				notes_client: formData.messageText || undefined,
-				source: 'urgences-form',
-				lang: ($language as 'fr' | 'en' | 'es') || 'fr',
-				niveau_urgence: urgLabel
+			const nameParts = formData.name.trim().split(/\s+/);
+			const client_first_name = nameParts[0] ?? '';
+			const client_last_name = nameParts.slice(1).join(' ');
+			const res = await fetch('/api/connek/submission', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					client_first_name,
+					client_last_name: client_last_name || undefined,
+					client_email: formData.email,
+					client_phone: formData.phone,
+					project_type: `Urgence: ${probLabel}`,
+					project_description: `Niveau d'urgence: ${urgLabel}\n\n${formData.messageText || '—'}`,
+					client_notes: formData.messageText || undefined,
+					expires_in_days: 14
+				})
 			});
-			return !!created?.id;
+			if (!res.ok) return false;
+			const data = (await res.json().catch(() => null)) as { ok?: boolean } | null;
+			return !!data?.ok;
 		} catch {
 			return false;
 		}
