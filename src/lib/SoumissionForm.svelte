@@ -14,7 +14,11 @@
 
 	const DRAFT_KEY = 'mi_soumission_draft';
 
-	type ProjetType =
+	// Project type accepts arbitrary strings now — Connek-driven catalogs
+	// may add anything. The static union is kept as a *fallback* literal
+	// list for SEO/translations, not a closed set.
+	type ProjetType = string;
+	type _StaticProjetType =
 		| 'Drain français'
 		| 'Excavation générale'
 		| 'Fondation'
@@ -126,7 +130,9 @@
 		if (saveTimeout) clearTimeout(saveTimeout);
 	});
 
-	const projetTypes: ProjetType[] = [
+	// Fallback list — used if the connek catalog hasn't been loaded yet (or
+	// the call fails). The form must work even when the partner isn't online.
+	const fallbackProjetTypes: ProjetType[] = [
 		'Drain français',
 		'Excavation générale',
 		'Fondation',
@@ -134,6 +140,28 @@
 		'Urgence',
 		'Autre'
 	];
+
+	// Dynamic types loaded from /api/connek/services (the business's actual
+	// catalog in Connek). Updates the dropdown reactively when the fetch
+	// completes — never blocks the form from rendering.
+	let dynamicProjetTypes: string[] = [];
+
+	onMount(async () => {
+		try {
+			const res = await fetch('/api/connek/services');
+			if (!res.ok) return;
+			const body = (await res.json()) as { data?: Array<{ name?: string | null }> };
+			const names = (body.data ?? [])
+				.map((s) => s.name?.trim())
+				.filter((n): n is string => !!n && n.length > 0);
+			if (names.length > 0) dynamicProjetTypes = names;
+		} catch {
+			/* keep fallback */
+		}
+	});
+
+	// Prefer the connek catalog when it loaded; fall back to the static list.
+	$: projetTypes = dynamicProjetTypes.length > 0 ? dynamicProjetTypes : fallbackProjetTypes;
 
 	$: lang = ($language as 'fr' | 'en' | 'es') || 'fr';
 	$: t = T[lang] || T.fr;
@@ -792,7 +820,7 @@
 						>
 							<option value="">{t.phProjectType}</option>
 							{#each projetTypes as pt}
-								<option value={pt}>{t.types[pt]}</option>
+								<option value={pt}>{t.types[pt] ?? pt}</option>
 							{/each}
 						</select>
 					</div>
