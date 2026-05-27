@@ -123,14 +123,6 @@
     const partners = [partner2, partner3, partner1];
     const certifications = [certif1, certif2, certif3, certif4];
 
-    // Featured services data (premium grid)
-    $: serviceData = [
-        { title: currentLang === 'fr' ? 'Drain Français' : currentLang === 'es' ? 'Drenaje Francés' : 'French Drain', desc: currentLang === 'fr' ? "L'expertise #1 au Québec pour protéger votre fondation contre l'eau." : currentLang === 'es' ? 'Expertise #1 en Quebec para proteger sus cimientos del agua.' : 'Quebec\'s #1 expertise to protect your foundation from water.', image: frenchdrain2, slug: 'drain-francais', priceFrom: '4 000$', tag: currentLang === 'fr' ? 'Populaire' : currentLang === 'es' ? 'Popular' : 'Popular' },
-        { title: 'Excavation', desc: currentLang === 'fr' ? 'Mini-pelles, excavatrices, terrains difficiles. On passe partout.' : currentLang === 'es' ? 'Mini-excavadoras, terrenos difíciles. Pasamos por todos lados.' : 'Mini-excavators, tough terrain. We get through anywhere.', image: excavation2, slug: 'excavation', priceFrom: '125$/h', tag: '' },
-        { title: currentLang === 'fr' ? 'Réparation Fissures' : currentLang === 'es' ? 'Reparación Grietas' : 'Crack Repair', desc: currentLang === 'fr' ? 'Injection époxy ou polyuréthane. Étanche à vie, garantie 10 ans.' : currentLang === 'es' ? 'Inyección epoxi o poliuretano. Estanco de por vida, garantía 10 años.' : 'Epoxy or polyurethane injection. Watertight for life, 10-year warranty.', image: fissure2, slug: 'reparation-fissures', priceFrom: '450$', tag: '' },
-        { title: currentLang === 'fr' ? 'Démolition' : currentLang === 'es' ? 'Demolición' : 'Demolition', desc: currentLang === 'fr' ? 'Maison, garage, piscine. Rapide, propre, écoresponsable.' : currentLang === 'es' ? 'Casa, garaje, piscina. Rápido, limpio, ecoresponsable.' : 'House, garage, pool. Fast, clean, eco-friendly.', image: demolition2, slug: 'demolition', priceFrom: '12 000$', tag: '' },
-        { title: currentLang === 'fr' ? 'Inspection Caméra' : currentLang === 'es' ? 'Inspección Cámara' : 'Camera Inspection', desc: currentLang === 'fr' ? 'Diagnostic HD sans excavation. Rapport vidéo complet inclus.' : currentLang === 'es' ? 'Diagnóstico HD sin excavación. Reporte de video incluido.' : 'HD diagnostic without excavation. Full video report included.', image: inspection2, slug: 'inspection-camera', priceFrom: '250$', tag: '' }
-    ];
 </script>
 
 <SEO lang={currentLang} path="/" jsonLd={homeJsonLd} />
@@ -469,107 +461,9 @@
         </div>
     </section>
 
-    <!-- 🎨 SERVICES — Premium Bento Grid (mobile-optimized) -->
-    <section class="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-white via-yellow-50/30 to-white dark:from-black dark:via-zinc-950 dark:to-black relative overflow-hidden" id="services" aria-labelledby="services-heading">
-        <!-- Background decoration -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-[#febd17] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
-
-        <div class="container max-w-7xl px-4 md:px-6 relative z-10">
-            <!-- Header -->
-            <div class="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#febd17]/10 border border-[#febd17]/30 mb-5">
-                    <span class="text-[#febd17] font-black tracking-[0.2em] uppercase text-[10px] md:text-xs">{texts.servicesCta}</span>
-                </div>
-                <h2 id="services-heading" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-black dark:text-white mb-4 leading-[1.05]">
-                    {currentLang === 'fr' ? 'Tout ce dont' : currentLang === 'es' ? 'Todo lo que' : 'Everything'}
-                    <span class="text-[#c9920f] dark:text-[#febd17]">
-                        {currentLang === 'fr' ? 'votre projet a besoin' : currentLang === 'es' ? 'tu proyecto necesita' : 'your project needs'}
-                    </span>
-                </h2>
-                <p class="text-base md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {currentLang === 'fr' ? 'Une équipe certifiée, des prix transparents, et 15 ans de garantie sur chaque travail.' : currentLang === 'es' ? 'Equipo certificado, precios transparentes, y garantía de 15 años en cada trabajo.' : 'A certified team, transparent pricing, and a 15-year warranty on every job.'}
-                </p>
-            </div>
-
-            <!-- Bento Grid: 1col mobile → 2col tablet → 3col desktop with featured first -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6">
-                {#each serviceData as svc, i}
-                    {@const isFeatured = i === 0}
-                    {@const colSpan = isFeatured ? 'sm:col-span-2 lg:col-span-3 lg:row-span-2' : 'lg:col-span-3 sm:col-span-1'}
-                    <a
-                        href={`/services/${svc.slug}`}
-                        class="group relative overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 transition-all duration-500 hover:shadow-2xl hover:shadow-yellow-500/20 hover:-translate-y-1 hover:border-[#febd17]/50 dark:hover:border-[#febd17]/50 {colSpan} {isFeatured ? 'min-h-[420px] md:min-h-[500px]' : 'min-h-[280px] md:min-h-[240px]'} flex flex-col"
-                        itemscope itemtype="https://schema.org/Service"
-                        style="animation: fadeInUp 0.6s ease-out {i * 0.08}s both;"
-                    >
-                        <!-- Tag (only on featured) -->
-                        {#if svc.tag}
-                            <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-[#febd17] text-black text-[10px] font-bold uppercase tracking-wider">
-                                {svc.tag}
-                            </div>
-                        {/if}
-
-                        <!-- Image with mobile-friendly overlay -->
-                        <div class="relative {isFeatured ? 'h-64 md:h-80' : 'h-44 md:h-40'} overflow-hidden">
-                            <img
-                                src={svc.image}
-                                alt={`${svc.title} — Mini Excavations Érable Québec`}
-                                class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
-                                loading="lazy"
-                                width={isFeatured ? "800" : "400"}
-                                height={isFeatured ? "500" : "300"}
-                                decoding="async"
-                                itemprop="image"
-                            />
-                            <!-- Bottom gradient for legibility -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                            <!-- Price badge bottom-right -->
-                            <div class="absolute bottom-3 right-3 px-3 py-1.5 rounded-md bg-black/70 backdrop-blur text-white text-xs font-semibold border border-white/10">
-                                {currentLang === 'fr' ? 'Dès' : currentLang === 'es' ? 'Desde' : 'From'} {svc.priceFrom}
-                            </div>
-                        </div>
-
-                        <!-- Content -->
-                        <div class="flex-1 flex flex-col p-5 md:p-6">
-                            <h3 class="text-xl md:text-2xl font-black text-black dark:text-white mb-2 leading-tight" itemprop="name">
-                                {svc.title}
-                            </h3>
-                            <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed flex-1" itemprop="description">
-                                {svc.desc}
-                            </p>
-
-                            <!-- CTA at bottom -->
-                            <div class="mt-4 flex items-center justify-between pt-4 border-t border-gray-100 dark:border-zinc-800">
-                                <span class="text-xs font-bold text-[#febd17] uppercase tracking-wider flex items-center gap-1.5">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                                    {currentLang === 'fr' ? 'Disponible' : currentLang === 'es' ? 'Disponible' : 'Available'}
-                                </span>
-                                <span class="inline-flex items-center gap-1 text-sm font-bold text-black dark:text-white group-hover:text-[#febd17] transition-colors">
-                                    {currentLang === 'fr' ? 'Voir détails' : currentLang === 'es' ? 'Ver detalles' : 'See details'}
-                                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                                </span>
-                            </div>
-                            <meta itemprop="areaServed" content="Québec, Montréal, Laval, Laurentides" />
-                            <meta itemprop="provider" content="Mini Excavations Érable" />
-                        </div>
-                    </a>
-                {/each}
-            </div>
-
-            <!-- View all + emergency CTA at bottom -->
-            <div class="mt-10 md:mt-14 flex flex-col sm:flex-row gap-3 justify-center items-center">
-                <a href="/services" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black font-semibold text-sm hover:bg-zinc-800 dark:hover:bg-gray-200 transition-colors">
-                    {currentLang === 'fr' ? 'Voir tous les services' : currentLang === 'es' ? 'Ver todos los servicios' : 'View all services'}
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-                <a href="/urgences" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-300 dark:border-zinc-700 text-black dark:text-white font-semibold text-sm hover:border-black dark:hover:border-white transition-colors">
-                    {currentLang === 'fr' ? 'Service d\'urgence 24/7' : currentLang === 'es' ? 'Servicio de urgencia 24/7' : '24/7 emergency service'}
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Live catalog pulled from Connek (the business' actual services). -->
+    <!-- 🎨 SERVICES — Live catalog from Connek API.
+         No static fallback: if the backend returns nothing, this section
+         renders nothing (handled inside ConnekServicesGrid). -->
     <ConnekServicesGrid />
 
     <!-- Inline CTA after Services -->
