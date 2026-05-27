@@ -63,19 +63,33 @@
 	// customer can use to view their quote / counter-offer / sign.
 	let clientUrl = '';
 
-	// Restore draft on mount
+	// Restore draft on mount + read a ?project_type=... query param so a
+	// "Demander une soumission" CTA from a service card lands here with the
+	// dropdown pre-selected. The query value wins over a saved draft so
+	// the user's intent on this navigation is respected.
 	onMount(() => {
 		try {
 			const raw = localStorage.getItem(DRAFT_KEY);
-			if (!raw) return;
-			const saved = JSON.parse(raw);
-			if (saved && typeof saved === 'object' && saved.form) {
-				const filled = Object.values(saved.form).some((v) => String(v || '').trim().length > 0);
-				if (filled) {
-					form = { ...form, ...saved.form };
-					draftRestored = true;
-					draftSavedAt = saved.at || '';
+			if (raw) {
+				const saved = JSON.parse(raw);
+				if (saved && typeof saved === 'object' && saved.form) {
+					const filled = Object.values(saved.form).some(
+						(v) => String(v || '').trim().length > 0
+					);
+					if (filled) {
+						form = { ...form, ...saved.form };
+						draftRestored = true;
+						draftSavedAt = saved.at || '';
+					}
 				}
+			}
+		} catch {}
+
+		try {
+			const params = new URLSearchParams(window.location.search);
+			const preset = params.get('project_type') ?? params.get('service');
+			if (preset && preset.trim()) {
+				form = { ...form, projet_type: preset.trim() };
 			}
 		} catch {}
 	});

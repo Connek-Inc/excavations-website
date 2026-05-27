@@ -23,6 +23,7 @@
     
     // Components
 	import SoumissionForm from '$lib/SoumissionForm.svelte';
+	import ConnekServicesGrid from '$lib/ConnekServicesGrid.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import Map from '$lib/map.svelte';
     import Blogs from './blog/blogs.svelte';
@@ -567,6 +568,9 @@
             </div>
         </div>
     </section>
+
+    <!-- Live catalog pulled from Connek (the business' actual services). -->
+    <ConnekServicesGrid />
 
     <!-- Inline CTA after Services -->
     <InlineCTA variant="banner" />
