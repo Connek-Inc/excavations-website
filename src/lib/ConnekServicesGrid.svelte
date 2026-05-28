@@ -27,19 +27,19 @@
 					: 'My services',
 		subtitle:
 			lang === 'fr'
-				? 'Cliquez sur un service pour faire une demande de soumission.'
+				? 'Cliquez sur un service pour en savoir plus.'
 				: lang === 'es'
-					? 'Haga clic en un servicio para solicitar una cotización.'
-					: 'Click a service to request a quote.',
+					? 'Haga clic en un servicio para más detalles.'
+					: 'Click a service to learn more.',
 		from: lang === 'fr' ? 'À partir de' : lang === 'es' ? 'Desde' : 'From',
 		duration:
 			lang === 'fr' ? 'min' : lang === 'es' ? 'min' : 'min',
 		quote:
 			lang === 'fr'
-				? 'Demander une soumission'
+				? 'En savoir plus'
 				: lang === 'es'
-					? 'Solicitar cotización'
-					: 'Request a quote',
+					? 'Ver más'
+					: 'Learn more',
 		empty:
 			lang === 'fr'
 				? 'Aucun service disponible pour le moment.'
@@ -71,6 +71,27 @@
 			loading = false;
 		}
 	});
+
+	// Tapping a service opens its description page when one exists; the SEO
+	// detail page's CTA then drives the submission. Services without a
+	// matching page fall straight through to the submission form, with the
+	// service preselected.
+	const SLUG_BY_NAME: Record<string, string> = {
+		'drain français': 'drain-francais',
+		excavation: 'excavation',
+		'réparation fissures': 'reparation-fissures',
+		'réparation de fissures': 'reparation-fissures',
+		démolition: 'demolition',
+		'inspection caméra': 'inspection-camera'
+	};
+
+	function hrefFor(name: string | null): string {
+		const clean = (name ?? '').trim();
+		const slug = SLUG_BY_NAME[clean.toLowerCase()];
+		return slug
+			? `/services/${slug}`
+			: `/soumission?project_type=${encodeURIComponent(clean)}`;
+	}
 </script>
 
 <section
@@ -98,7 +119,7 @@
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 				{#each services as svc (svc.id)}
 					<a
-						href={`/soumission?project_type=${encodeURIComponent(svc.name ?? '')}`}
+						href={hrefFor(svc.name)}
 						class="group block p-6 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl hover:border-[#febd17] hover:shadow-xl transition-all"
 					>
 						<div class="w-12 h-1 bg-[#febd17] rounded-full mb-4"></div>

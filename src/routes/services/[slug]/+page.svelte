@@ -20,6 +20,20 @@
 	$: pagePath = `/services/${service.slug}`;
 	$: pageUrl = `${SITE.url}${pagePath}`;
 
+	// Maps the SEO slug to the matching Connek service name so the
+	// "Soumission Gratuite" CTA lands on the submission form with the
+	// right service preselected (the form's dropdown is the Connek catalog).
+	const CONNEK_NAME_BY_SLUG: Record<string, string> = {
+		'drain-francais': 'Drain Français',
+		excavation: 'Excavation',
+		'reparation-fissures': 'Réparation Fissures',
+		demolition: 'Démolition',
+		'inspection-camera': 'Inspection Caméra'
+	};
+	$: soumissionHref = `/soumission?project_type=${encodeURIComponent(
+		CONNEK_NAME_BY_SLUG[service.slug] ?? service.h1[lang]
+	)}`;
+
 	$: faqSchema = {
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
@@ -117,7 +131,7 @@
 				</p>
 				<div class="mt-8 flex flex-col sm:flex-row gap-3">
 					<a
-						href="#contact-form"
+						href={soumissionHref}
 						class="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[#febd17] to-yellow-500 hover:from-yellow-400 hover:to-[#febd17] text-black font-black text-base shadow-2xl shadow-yellow-500/40 transition-all hover:scale-105"
 					>
 						<Calendar class="w-5 h-5" />
