@@ -363,8 +363,10 @@
 					client_email: form.client_email,
 					client_phone: form.client_telephone,
 					client_address: form.client_adresse || undefined,
-					project_address: form.projet_adresse || undefined,
-					project_type: form.projet_type || undefined,
+					// The service the visitor picked maps to the request category;
+					// the project address maps to the request location.
+					category: form.projet_type || undefined,
+					location: form.projet_adresse || undefined,
 					project_description: form.projet_description,
 					client_notes: form.notes_client || undefined,
 					expires_in_days: 30

@@ -22,8 +22,10 @@ export interface SubmissionPayload {
 	client_email: string;
 	client_phone: string; // backend requires ≥10 digits
 	client_address?: string;
-	project_address?: string;
-	project_type?: string;
+	// Project context — aligned with the requests model.
+	category?: string;
+	subcategory?: string;
+	location?: string; // project address
 	project_description: string;
 	client_notes?: string;
 	expires_in_days?: number;

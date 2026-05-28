@@ -265,7 +265,8 @@
 					client_last_name: client_last_name || undefined,
 					client_email: formData.email,
 					client_phone: formData.phone,
-					project_type: `Urgence: ${probLabel}`,
+					category: 'Urgence',
+					subcategory: probLabel,
 					project_description: `Niveau d'urgence: ${urgLabel}\n\n${formData.messageText || '—'}`,
 					client_notes: formData.messageText || undefined,
 					expires_in_days: 14

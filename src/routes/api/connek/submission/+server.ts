@@ -48,8 +48,9 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
 			client_email: payload.client_email!,
 			client_phone: payload.client_phone!,
 			client_address: payload.client_address,
-			project_address: payload.project_address,
-			project_type: payload.project_type,
+			category: payload.category,
+			subcategory: payload.subcategory,
+			location: payload.location,
 			project_description: payload.project_description!,
 			client_notes: payload.client_notes,
 			expires_in_days: payload.expires_in_days ?? 30
