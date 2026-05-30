@@ -37,7 +37,6 @@
 
 	let sending = false;
 	let errorMessage = '';
-	let mailtoFallback = '';
 
 	const problems = [
 		{
@@ -159,82 +158,11 @@
 		}, 250);
 	}
 
-	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const RESEND_ENDPOINT = '/api/send-email';
-	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
-	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-
-	function buildMailtoFallback() {
-		const probLabel = problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
-		const urgLabel = urgencies.find((u) => u.id === formData.urgencyLevel)?.labelFr || formData.urgencyLevel;
-		const subject = `URGENCE — ${formData.name} (${probLabel})`;
-		const body = [
-			`URGENCE — ${urgLabel}`,
-			'',
-			`Nom: ${formData.name}`,
-			`Courriel: ${formData.email}`,
-			`Téléphone: ${formData.phone}`,
-			'',
-			`Type de problème: ${probLabel}`,
-			`Niveau d'urgence: ${urgLabel}`,
-			'',
-			`Détails: ${formData.messageText || '—'}`
-		].join('\n');
-		return `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-	}
-
-	function buildClientAutoResponse(probLabel: string, urgLabel: string): string {
-		const lang = ($language as 'fr' | 'en' | 'es') || 'fr';
-		if (lang === 'en') {
-			return [
-				`Hello ${formData.name},`,
-				'',
-				"We have received your URGENT request at Mini Excavations Érable. Our team is reviewing it right now and will contact you as fast as possible.",
-				'',
-				`Problem: ${probLabel}`,
-				`Urgency level: ${urgLabel}`,
-				formData.messageText ? `Details: ${formData.messageText}` : '',
-				'',
-				'For an absolute emergency, call us directly at (514) 830-9973.',
-				'',
-				'Mini Excavations Érable — RBQ 5823-7736-01'
-			]
-				.filter(Boolean)
-				.join('\n');
-		}
-		if (lang === 'es') {
-			return [
-				`Hola ${formData.name},`,
-				'',
-				'Hemos recibido su solicitud URGENTE en Mini Excavations Érable. Nuestro equipo la está revisando ahora y le contactará lo más rápido posible.',
-				'',
-				`Problema: ${probLabel}`,
-				`Nivel de urgencia: ${urgLabel}`,
-				formData.messageText ? `Detalles: ${formData.messageText}` : '',
-				'',
-				'Para una urgencia absoluta, llámenos directamente al (514) 830-9973.',
-				'',
-				'Mini Excavations Érable — RBQ 5823-7736-01'
-			]
-				.filter(Boolean)
-				.join('\n');
-		}
-		return [
-			`Bonjour ${formData.name},`,
-			'',
-			"Nous avons bien reçu votre demande URGENTE chez Mini Excavations Érable. Notre équipe l'analyse en ce moment et vous contactera le plus rapidement possible.",
-			'',
-			`Problème: ${probLabel}`,
-			`Niveau d'urgence: ${urgLabel}`,
-			formData.messageText ? `Détails: ${formData.messageText}` : '',
-			'',
-			"Pour une urgence absolue, appelez-nous directement au (514) 830-9973.",
-			'',
-			'Mini Excavations Érable — RBQ 5823-7736-01'
-		]
-			.filter(Boolean)
-			.join('\n');
-	}
+	// All side-effects (DB row + Resend emails to client/business) live in
+	// connek-api. The form just POSTs to /api/connek/submission and trusts
+	// the backend. No mailto, no third-party form services — if the
+	// backend is down we'd rather surface an error + phone CTA than open
+	// the visitor's mail client behind their back.
 
 	function finishSuccess() {
 		step = 4;
@@ -267,13 +195,23 @@
 					client_phone: formData.phone,
 					category: 'Urgence',
 					subcategory: probLabel,
+					// This whole funnel is "URGENT" — the visitor picked an
+					// urgency level only to give the team more colour, but
+					// the request itself is always flagged at max so it
+					// jumps to the top of the inbox.
+					urgency: 'urgent',
 					project_description: `Niveau d'urgence: ${urgLabel}\n\n${formData.messageText || '—'}`,
 					client_notes: formData.messageText || undefined,
 					expires_in_days: 14
 				})
 			});
-			if (!res.ok) return false;
-			const data = (await res.json().catch(() => null)) as { ok?: boolean } | null;
+			const data = (await res.json().catch(() => null)) as
+				| { ok?: boolean; error?: string; message?: string }
+				| null;
+			if (!res.ok) {
+				if (data?.message) errorMessage = String(data.message);
+				return false;
+			}
 			return !!data?.ok;
 		} catch {
 			return false;
@@ -284,56 +222,22 @@
 		if (!isStep3Valid || sending) return;
 		sending = true;
 		errorMessage = '';
-		mailtoFallback = buildMailtoFallback();
 
-		// Primary: POST /api/soumissions — Express stores the row in MySQL
-		// and triggers Resend (admin + client copy) server-side.
+		// Only path: connek-api owns the lead (DB + Resend client+business
+		// emails). On failure we show an error — opening the visitor's mail
+		// client behind their back would make them think they submitted
+		// when they actually haven't, and the lead would be lost.
 		const ok = await captureUrgenceToServer();
 		if (ok) {
 			finishSuccess();
-			sending = false;
-			return;
+		} else if (!errorMessage) {
+			errorMessage =
+				($language as 'fr' | 'en' | 'es') === 'en'
+					? "Couldn't send your request. Please call (514) 830-9973."
+					: ($language as 'fr' | 'en' | 'es') === 'es'
+						? 'No pudimos enviar su solicitud. Por favor llame al (514) 830-9973.'
+						: "Impossible d'envoyer votre demande. Appelez le (514) 830-9973.";
 		}
-
-		// Fallback: Web3Forms (if Express is down)
-		const probLabel = problems.find((p) => p.id === formData.problemType)?.labelFr || formData.problemType;
-		const urgLabel = urgencies.find((u) => u.id === formData.urgencyLevel)?.labelFr || formData.urgencyLevel;
-		try {
-			const ctrl = new AbortController();
-			const timeoutId = setTimeout(() => ctrl.abort(), 8000);
-			const res = await fetch(WEB3FORMS_ENDPOINT, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-				signal: ctrl.signal,
-				body: JSON.stringify({
-					access_key: WEB3FORMS_KEY,
-					subject: `URGENCE — ${formData.name} (${probLabel})`,
-					from_name: `${formData.name} via excavationserable.com`,
-					replyto: formData.email,
-					cc: formData.email,
-					name: formData.name,
-					email: formData.email,
-					phone: formData.phone,
-					type_probleme: probLabel,
-					niveau_urgence: urgLabel,
-					description: formData.messageText || '—',
-					langue: ($language as 'fr' | 'en' | 'es') || 'fr',
-					confirmation_au_client: buildClientAutoResponse(probLabel, urgLabel)
-				})
-			});
-			clearTimeout(timeoutId);
-			const data = await res.json().catch(() => ({}));
-			const fallbackOk = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
-			if (fallbackOk) {
-				finishSuccess();
-				sending = false;
-				return;
-			}
-		} catch {}
-
-		// Final fallback: mailto
-		window.location.href = mailtoFallback;
-		setTimeout(() => finishSuccess(), 400);
 		sending = false;
 	}
 
@@ -670,19 +574,9 @@
 				>
 					<div class="flex items-start gap-2">
 						<AlertTriangle class="w-4 h-4 mt-0.5 flex-shrink-0" />
-						<div>
-							<p class="font-bold">{t.fallbackTitle}</p>
-							<p class="text-xs mt-0.5">{t.fallbackDesc}</p>
-						</div>
+						<p class="font-bold">{errorMessage}</p>
 					</div>
-					<div class="flex flex-col sm:flex-row gap-2">
-						<a
-							href={mailtoFallback}
-							class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
-						>
-							<Mail class="w-4 h-4" />
-							{t.fallbackBtn}
-						</a>
+					<div class="flex">
 						<a
 							href="tel:+15148309973"
 							class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-colors"

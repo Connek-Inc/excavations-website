@@ -28,6 +28,10 @@ export interface SubmissionPayload {
 	location?: string; // project address
 	project_description: string;
 	client_notes?: string;
+	// Optional severity flag persisted on the request row. The urgency
+	// funnel always sends "urgent" so emergencies jump to the top of the
+	// business' inbox.
+	urgency?: string;
 	expires_in_days?: number;
 }
 

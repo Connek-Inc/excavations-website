@@ -29,14 +29,12 @@
 	export let showHero: boolean = false;
 	export let showSidebar: boolean = true;
 
-	// Primary: same-origin /api/send-email (runs on Hostinger Node.js Web App
-	// using Resend with the server-side env var). Fallback: Web3Forms in case
-	// the Node runtime is sleeping / crashed.
-	const ADMIN_EMAIL = 'miniexcavationerable@gmail.com';
-	const RESEND_ENDPOINT = '/api/send-email';
-	const WEB3FORMS_KEY = '0a8cc60e-d18a-4a90-95f5-ed29eccf6651';
-	const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-
+	// Backend-only flow: the form POSTs to /api/connek/submission and
+	// connek-api owns the whole side-effect chain (DB row + Resend emails
+	// to client + business). No client-side email composition, no third-
+	// party form services. If the backend is unreachable we surface an
+	// error and a phone CTA — we never silently open the visitor's mail
+	// client, that's a footgun (user thinks they submitted, they didn't).
 	type Step = 'data' | 'success';
 	let step: Step = 'data';
 
@@ -54,7 +52,6 @@
 	let sending = false;
 	let errorKey: '' | 'network' | 'rejected' = '';
 	let errorRaw = '';
-	let mailtoFallback = '';
 	let draftRestored = false;
 	let draftSavedAt = '';
 	let saveTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -192,155 +189,24 @@
 
 	$: errorMsg = errorKey === 'network' ? t.errorNetwork : errorKey === 'rejected' ? t.errorRejected : errorRaw;
 
-	function buildMailtoFallback() {
-		const subject = `Nouveau lead: ${form.client_nom} — ${form.projet_type}`;
-		const body = [
-			`Nom: ${form.client_nom}`,
-			`Courriel: ${form.client_email}`,
-			`Téléphone: ${form.client_telephone}`,
-			`Adresse personnelle: ${form.client_adresse || '—'}`,
-			'',
-			`Adresse du projet: ${form.projet_adresse}`,
-			`Type de projet: ${form.projet_type}`,
-			'',
-			'Description:',
-			form.projet_description,
-			'',
-			`Notes: ${form.notes_client || '—'}`,
-			'',
-			`Langue du visiteur: ${lang}`
-		].join('\n');
-		return `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-	}
-
 	async function submitForm() {
 		if (!dataValid || sending) return;
 		sending = true;
 		errorKey = '';
 		errorRaw = '';
-		mailtoFallback = buildMailtoFallback();
 
-		// Primary path: POST to /api/soumissions. The Express server stores
-		// the row in MySQL and triggers Resend (admin + client copy) in one go.
+		// Only path: POST to /api/connek/submission. connek-api owns the
+		// whole side-effect chain (DB insert + Resend emails to client and
+		// business). On failure we surface the error — no mailto, no
+		// third-party form fallback (those bypass the DB and lose the lead).
 		const ok = await captureToServer();
-
 		if (ok) {
 			clearDraft();
 			step = 'success';
-			sending = false;
-			return;
+		} else if (!errorKey) {
+			errorKey = 'network';
 		}
-
-		// Fallback: Web3Forms (keeps email flowing if Express is sleeping/crashed)
-		try {
-			const ctrl = new AbortController();
-			const timeoutId = setTimeout(() => ctrl.abort(), 6000);
-			const res = await fetch(WEB3FORMS_ENDPOINT, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-				signal: ctrl.signal,
-				body: JSON.stringify({
-					access_key: WEB3FORMS_KEY,
-					subject: `Nouveau lead: ${form.client_nom} — ${form.projet_type || 'Soumission'}`,
-					from_name: `${form.client_nom} via excavationserable.com`,
-					replyto: form.client_email,
-					cc: form.client_email,
-					name: form.client_nom,
-					email: form.client_email,
-					phone: form.client_telephone,
-					adresse_personnelle: form.client_adresse || '—',
-					adresse_projet: form.projet_adresse || '—',
-					type_projet: form.projet_type || '—',
-					description: form.projet_description,
-					notes: form.notes_client || '—',
-					langue: lang,
-					confirmation_au_client: clientCopyMessage()
-				})
-			});
-			clearTimeout(timeoutId);
-			const data = await res.json().catch(() => ({}));
-			const fallbackOk = res.ok && (data?.success === true || data?.success === 'true' || data?.success === undefined);
-			if (fallbackOk) {
-				clearDraft();
-				step = 'success';
-				sending = false;
-				return;
-			}
-		} catch {}
-
-		// Final fallback: mailto opens the user's mail client as guaranteed delivery
-		clearDraft();
-		window.location.href = mailtoFallback;
-		setTimeout(() => { step = 'success'; }, 400);
 		sending = false;
-	}
-
-	function clientCopyMessage(): string {
-		const greeting =
-			lang === 'en'
-				? `Hello ${form.client_nom},`
-				: lang === 'es'
-					? `Hola ${form.client_nom},`
-					: `Bonjour ${form.client_nom},`;
-		const intro =
-			lang === 'en'
-				? "Thank you for contacting Mini Excavations Érable. We've received your quote request and our team will review it shortly. Below is a copy of the information you submitted."
-				: lang === 'es'
-					? 'Gracias por contactar a Mini Excavations Érable. Hemos recibido su solicitud de cotización y nuestro equipo la revisará pronto. A continuación encontrará una copia de los datos enviados.'
-					: "Merci d'avoir contacté Mini Excavations Érable. Nous avons bien reçu votre demande de soumission et notre équipe l'analysera sous peu. Vous trouverez ci-dessous une copie des informations envoyées.";
-		const labels =
-			lang === 'en'
-				? {
-						project: 'Project',
-						type: 'Type',
-						desc: 'Description',
-						notes: 'Notes',
-						address: 'Project address',
-						phone: 'Phone',
-						signoff: 'For an urgent matter, call us at',
-						team: 'Mini Excavations Érable — RBQ 5823-7736-01'
-					}
-				: lang === 'es'
-					? {
-							project: 'Proyecto',
-							type: 'Tipo',
-							desc: 'Descripción',
-							notes: 'Notas',
-							address: 'Dirección del proyecto',
-							phone: 'Teléfono',
-							signoff: 'Para una urgencia, llámenos al',
-							team: 'Mini Excavations Érable — RBQ 5823-7736-01'
-						}
-					: {
-							project: 'Projet',
-							type: 'Type',
-							desc: 'Description',
-							notes: 'Notes',
-							address: 'Adresse du projet',
-							phone: 'Téléphone',
-							signoff: 'Pour une urgence, appelez-nous au',
-							team: 'Mini Excavations Érable — RBQ 5823-7736-01'
-						};
-		return [
-			greeting,
-			'',
-			intro,
-			'',
-			`— ${labels.project} —`,
-			`${labels.type}: ${form.projet_type}`,
-			`${labels.address}: ${form.projet_adresse}`,
-			`${labels.phone}: ${form.client_telephone}`,
-			'',
-			`${labels.desc}:`,
-			form.projet_description,
-			form.notes_client ? `\n${labels.notes}: ${form.notes_client}` : '',
-			'',
-			`${labels.signoff} (514) 830-9973.`,
-			'',
-			labels.team
-		]
-			.filter(Boolean)
-			.join('\n');
 	}
 
 	async function captureToServer(): Promise<boolean> {
@@ -372,16 +238,27 @@
 					expires_in_days: 30
 				})
 			});
-			if (!res.ok) return false;
 			const data = (await res.json().catch(() => null)) as
 				| { ok: true; token: string; tracking_url: string }
+				| { error?: string; message?: string }
 				| null;
-			if (data?.ok && data.token) {
+			if (!res.ok) {
+				// Backend told us something — surface it. 4xx → rejected
+				// (form data the server didn't accept). 5xx → network-ish
+				// (connek-api down, Resend down, etc.); the lead is lost
+				// unless they call.
+				errorKey = res.status >= 500 ? 'network' : 'rejected';
+				if (data && 'message' in data && data.message) errorRaw = String(data.message);
+				return false;
+			}
+			if (data && 'ok' in data && data.ok && data.token) {
 				clientUrl = data.tracking_url ?? `/soumission/${data.token}`;
 				return true;
 			}
+			errorKey = 'rejected';
 			return false;
 		} catch {
+			errorKey = 'network';
 			return false;
 		}
 	}
@@ -868,17 +745,10 @@
 				{#if errorMsg}
 					<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-300 text-sm space-y-3">
 						<p>{errorMsg}</p>
-						{#if mailtoFallback}
-							<a
-								href={mailtoFallback}
-								class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#febd17] hover:bg-[#e5aa10] text-black font-semibold text-sm transition-colors"
-							>
-								<Mail class="h-4 w-4" /> {t.errorSendEmail}
-							</a>
-							<p class="text-gray-600 dark:text-zinc-400 text-xs">
-								{t.errorOrCall} <a href="tel:+15148309973" class="text-[#c9920f] dark:text-[#febd17] underline">(514) 830-9973</a>.
-							</p>
-						{/if}
+						<p class="text-gray-600 dark:text-zinc-400 text-xs">
+							{t.errorOrCall}
+							<a href="tel:+15148309973" class="text-[#c9920f] dark:text-[#febd17] underline">(514) 830-9973</a>.
+						</p>
 					</div>
 				{/if}
 
