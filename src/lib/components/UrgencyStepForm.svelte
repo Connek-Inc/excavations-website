@@ -205,14 +205,24 @@
 					expires_in_days: 14
 				})
 			});
+			// Express proxy reenvía el body de connek-api tal cual:
+			//   { quote_id, token, reference, ... }  ← éxito (HTTP 2xx + token)
+			//   { detail: { error: { code, message } } }  ← error con envelope
 			const data = (await res.json().catch(() => null)) as
-				| { ok?: boolean; error?: string; message?: string }
+				| { token?: string }
+				| { detail?: { error?: { message?: string } }; error?: { message?: string }; message?: string }
 				| null;
 			if (!res.ok) {
-				if (data?.message) errorMessage = String(data.message);
+				const errObj = data as {
+					detail?: { error?: { message?: string } };
+					error?: { message?: string };
+					message?: string;
+				} | null;
+				const msg = errObj?.detail?.error?.message ?? errObj?.error?.message ?? errObj?.message;
+				if (msg) errorMessage = String(msg);
 				return false;
 			}
-			return !!data?.ok;
+			return !!(data as { token?: string } | null)?.token;
 		} catch {
 			return false;
 		}

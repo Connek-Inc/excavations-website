@@ -238,9 +238,14 @@
 					expires_in_days: 30
 				})
 			});
+			// connek-api responde con la fila cruda del quote:
+			//   { quote_id, client_id, token, reference, status, ... }
+			// El Express proxy reenvía el body tal cual. La señal de éxito
+			// es: HTTP 2xx + `token` presente. No buscamos un wrapper
+			// `{ok:true}` porque el proxy es transparente.
 			const data = (await res.json().catch(() => null)) as
-				| { ok: true; token: string; tracking_url: string }
-				| { error?: string; message?: string }
+				| { token?: string; tracking_url?: string; reference?: string }
+				| { error?: { code?: string; message?: string }; message?: string }
 				| null;
 			if (!res.ok) {
 				// Backend told us something — surface it. 4xx → rejected
@@ -248,11 +253,14 @@
 				// (connek-api down, Resend down, etc.); the lead is lost
 				// unless they call.
 				errorKey = res.status >= 500 ? 'network' : 'rejected';
-				if (data && 'message' in data && data.message) errorRaw = String(data.message);
+				const errObj = data as { error?: { message?: string }; message?: string } | null;
+				const msg = errObj?.error?.message ?? errObj?.message;
+				if (msg) errorRaw = String(msg);
 				return false;
 			}
-			if (data && 'ok' in data && data.ok && data.token) {
-				clientUrl = data.tracking_url ?? `/soumission/${data.token}`;
+			const okData = data as { token?: string; tracking_url?: string } | null;
+			if (okData?.token) {
+				clientUrl = okData.tracking_url ?? `/soumission/${okData.token}`;
 				return true;
 			}
 			errorKey = 'rejected';
