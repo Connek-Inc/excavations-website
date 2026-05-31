@@ -22,19 +22,22 @@
 	import StickyCTA from '$lib/components/StickyCTA.svelte';
 	import ExitIntentModal from '$lib/components/ExitIntentModal.svelte';
 	import ConsentBanner from '$lib/components/ConsentBanner.svelte';
-	import { track } from '$lib/analytics/beacon';
 	import { PUBLIC_GA4_MEASUREMENT_ID } from '$env/static/public';
 
 	onMount(() => {
-		// Inject GA4 only if a measurement ID is configured.
-		// Google Ads (AW-…) is already loaded from app.html; GA4 (G-…) is separate.
-		if (PUBLIC_GA4_MEASUREMENT_ID && PUBLIC_GA4_MEASUREMENT_ID.startsWith('G-')) {
+		// GA4 solo si hay un ID válido. Rechazamos placeholders tipo
+		// "G-NOOP" / "G-XXXXXXXXXX" para no inyectar gtag con un ID
+		// inválido (eso genera la cookie `_ga_NOOP` con expiry roto y
+		// errores en consola sin trackear nada).
+		const ga = PUBLIC_GA4_MEASUREMENT_ID;
+		const gaValid = ga && /^G-[A-Z0-9]{6,}$/.test(ga) && !ga.includes('NOOP') && !ga.includes('XXXX');
+		if (gaValid) {
 			const s = document.createElement('script');
 			s.async = true;
-			s.src = `https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA4_MEASUREMENT_ID}`;
+			s.src = `https://www.googletagmanager.com/gtag/js?id=${ga}`;
 			document.head.appendChild(s);
 			// @ts-ignore
-			window.gtag && window.gtag('config', PUBLIC_GA4_MEASUREMENT_ID, { anonymize_ip: true });
+			window.gtag && window.gtag('config', ga, { anonymize_ip: true });
 		}
 
 		const savedTheme = localStorage.getItem('theme');
@@ -63,13 +66,9 @@
 
 	$: currentUrl = `${SITE.url}${$page.url.pathname.replace(/\/$/, '')}`;
 
-	// Track page views on every navigation (skip admin and soumission token pages).
-	$: {
-		const p = $page.url.pathname;
-		if (p && !p.startsWith('/mi/') && !p.startsWith('/soumission/')) {
-			track(p, { language: currentLang });
-		}
-	}
+	// Page-view tracking se removió cuando dropeamos el backend Express
+	// con MySQL. Si volvemos a querer analytics, hacerlo via gtag (GA4)
+	// directamente — no hay endpoint propio.
 
 	$: jsonLdSchemas = [
 		organizationJsonLd(),

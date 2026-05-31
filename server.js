@@ -173,6 +173,12 @@ if (hasBuild) {
 	});
 }
 
+// ─── Legacy no-op endpoints ──────────────────────────────────────────────────
+// /api/analytics/track existía en el Express viejo (escribía en MySQL).
+// Algún build cacheado del browser puede seguir llamándolo — respondemos
+// 204 silencioso en vez de 404/502 para que no salga rojo en devtools.
+app.post('/api/analytics/track', (_req, res) => res.status(204).end());
+
 // ─── 404 for unknown /api/* ──────────────────────────────────────────────────
 app.use('/api', (_req, res) => res.status(404).json({ error: 'not_found' }));
 
