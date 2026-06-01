@@ -1,0 +1,14 @@
+# Copia este archivo a google-ads.yaml y rellena tus credenciales.
+# NO subir google-ads.yaml al repositorio (ya está en .gitignore).
+
+developer_token: "TU_DEVELOPER_TOKEN"
+
+# OAuth2 (tipo "Desktop app" o "Web")
+client_id: "TU_CLIENT_ID.apps.googleusercontent.com"
+client_secret: "TU_CLIENT_SECRET"
+refresh_token: "TU_REFRESH_TOKEN"
+
+# Solo si gestionas la cuenta desde un MCC/manager (ID sin guiones):
+# login_customer_id: "1234567890"
+
+use_proto_plus: True
