@@ -1,0 +1,53 @@
+; ╔════════════════════════════════════════════════════════════════════════════
+; ║ systemd unit — excavationserable.com (server.js / Express)
+; ║
+; ║ Reemplaza el watchdog `scripts/keepalive.sh` que usábamos en Hostinger:
+; ║ systemd mantiene el proceso Node vivo, lo reinicia si crashea y lo
+; ║ levanta solo en cada boot del VPS. No hace falta cron ni LSAPI.
+; ║
+; ║ Instalar:
+; ║   sudo cp deploy/excavationserable.service /etc/systemd/system/
+; ║   sudo systemctl daemon-reload
+; ║   sudo systemctl enable --now excavationserable
+; ╚════════════════════════════════════════════════════════════════════════════
+[Unit]
+Description=excavationserable.com (SvelteKit static + Express Connek proxy)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+; Usuario sin privilegios dueño del repo (créalo: adduser deploy)
+User=deploy
+Group=deploy
+WorkingDirectory=/var/www/excavationserable.com
+
+; Node instalado vía NodeSource queda en /usr/bin/node.
+; Si usás nvm, cambiá la ruta por algo como:
+;   /home/deploy/.nvm/versions/node/v22.x.x/bin/node
+ExecStart=/usr/bin/node server.js
+
+; Las secrets (CONNEK_API_KEY_*) viven en el .env del repo, fuera de git.
+EnvironmentFile=/var/www/excavationserable.com/.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOST=127.0.0.1
+
+; Resiliencia: si el proceso muere, systemd lo relevanta a los 3s.
+Restart=always
+RestartSec=3
+StartLimitIntervalSec=0
+
+; Logs a journald → `journalctl -u excavationserable -f`
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=excavationserable
+
+; Endurecimiento básico
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
