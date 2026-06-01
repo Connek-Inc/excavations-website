@@ -173,6 +173,15 @@ if (hasBuild) {
 	});
 }
 
+// ─── Health check (keep-alive) ────────────────────────────────────────────────
+// Liveness endpoint baratito para un cron de uptime. Mantiene el worker Node
+// de LSAPI despierto SIN tocar el backend Connek. Hostinger duerme/recicla
+// este proceso cuando está idle; un cron que pinguea /api/health cada par de
+// minutos lo mantiene arriba y lo relevanta a los ~2 min de un crash.
+// OJO: hay que pinguear una ruta /api/* — la home la sirve LiteSpeed directo
+// desde build/ y NO despierta a Node.
+app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
+
 // ─── Legacy no-op endpoints ──────────────────────────────────────────────────
 // /api/analytics/track existía en el Express viejo (escribía en MySQL).
 // Algún build cacheado del browser puede seguir llamándolo — respondemos
