@@ -11,17 +11,17 @@
 	/>
 </svelte:head>
 
-<div class="min-h-screen bg-zinc-950 text-white">
-	<header class="border-b border-zinc-800 bg-zinc-950/95 backdrop-blur sticky top-0 z-30">
+<div class="min-h-screen bg-white text-black dark:bg-zinc-950 dark:text-white">
+	<header class="border-b border-gray-200 bg-white/95 dark:border-zinc-800 dark:bg-zinc-950/95 backdrop-blur sticky top-0 z-30">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 			<a
 				href="/"
-				class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-[#febd17] transition-colors"
+				class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#c9920f] dark:text-zinc-400 dark:hover:text-[#febd17] transition-colors"
 			>
 				<ArrowLeft class="h-4 w-4" /> Retour au site
 			</a>
-			<div class="hidden sm:flex items-center gap-2 text-xs text-zinc-500">
-				<Shield class="h-3.5 w-3.5 text-[#febd17]" />
+			<div class="hidden sm:flex items-center gap-2 text-xs text-gray-500 dark:text-zinc-500">
+				<Shield class="h-3.5 w-3.5 text-[#c9920f] dark:text-[#febd17]" />
 				RBQ 5823-7736-01
 			</div>
 		</div>
