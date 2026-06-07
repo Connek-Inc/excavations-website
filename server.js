@@ -25,6 +25,7 @@ import { createHash, createHmac } from 'node:crypto';
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { renderSubmission } from './email-templates.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,6 +57,15 @@ app.use(express.json({ limit: '1mb' }));
 const CONNEK_BASE = process.env.CONNEK_API_BASE_URL || 'https://api.dev.connek.ca';
 const CONNEK_KEY_ID = process.env.CONNEK_API_KEY_ID || '';
 const CONNEK_KEY_SECRET = process.env.CONNEK_API_KEY_SECRET || '';
+
+// ─── Fallback email sender (Resend) ─────────────────────────────────────────
+// connek-workers POSTs here when it can't deliver a submission email after its
+// own retries. We re-send via our own Resend key (shared with connek-workers).
+// Auth is a shared secret in the X-Fallback-Secret header — without it the
+// endpoint refuses, so this can't be abused as an open relay.
+const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const FALLBACK_SECRET = process.env.FALLBACK_SHARED_SECRET || '';
+const FALLBACK_FROM = process.env.FALLBACK_FROM || 'Connek <team@connek.ca>';
 
 function signConnek(method, signedPath, bodyStr) {
 	const ts = Math.floor(Date.now() / 1000);
@@ -140,6 +150,61 @@ app.post('/api/connek/quote/:token/sign', (req, res) =>
 		tokenOnly: true
 	})
 );
+
+// POST /api/fallback/email — last-resort sender for connek-workers.
+// Body: { to, subject?, kind?: 'submission_client'|'submission_business',
+//         data?: {...}, html?, from? }. Provide `html` to relay as-is, or
+// `kind`+`data` to render the submission template here. Requires the shared
+// secret header so it can't be used as an open relay.
+app.post('/api/fallback/email', async (req, res) => {
+	if (!FALLBACK_SECRET || req.get('X-Fallback-Secret') !== FALLBACK_SECRET) {
+		return res.status(401).json({ ok: false, error: 'unauthorized' });
+	}
+	if (!RESEND_API_KEY) {
+		return res.status(500).json({ ok: false, error: 'resend_not_configured' });
+	}
+
+	const { to, subject, html, kind, data, from } = req.body ?? {};
+	if (!to) return res.status(400).json({ ok: false, error: 'missing_to' });
+
+	let finalHtml;
+	let finalSubject = subject;
+	if (kind) {
+		// Prefer excavations' own template for known kinds (submissions).
+		const rendered = renderSubmission(kind, data ?? {});
+		finalHtml = rendered.html;
+		finalSubject = finalSubject || rendered.subject;
+	} else {
+		finalHtml = html; // relay pre-rendered HTML as-is
+	}
+	if (!finalHtml) return res.status(400).json({ ok: false, error: 'missing_html_or_kind' });
+
+	try {
+		const upstream = await fetch('https://api.resend.com/emails', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${RESEND_API_KEY}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				from: from || FALLBACK_FROM,
+				to: Array.isArray(to) ? to : [to],
+				subject: finalSubject || 'Connek',
+				html: finalHtml
+			})
+		});
+		const body = await upstream.json().catch(() => ({}));
+		if (!upstream.ok) {
+			console.error('[fallback email] resend error', upstream.status, body);
+			return res.status(502).json({ ok: false, error: 'resend_failed', detail: body });
+		}
+		console.log(`[fallback email] sent id=${body?.id} to=${JSON.stringify(to)} kind=${kind || '(html)'}`);
+		return res.json({ ok: true, id: body?.id });
+	} catch (err) {
+		console.error('[fallback email] error', err);
+		return res.status(502).json({ ok: false, error: String(err?.message ?? err) });
+	}
+});
 
 // ─── Static SvelteKit build ─────────────────────────────────────────────────
 const buildDir = path.join(__dirname, 'build');
