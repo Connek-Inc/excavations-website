@@ -72,6 +72,11 @@ const FALLBACK_FROM = process.env.FALLBACK_FROM || 'Connek <team@connek.ca>';
 // igual desde aquí, que es donde se origina la submission). Reusa Resend.
 const BUSINESS_NAME = process.env.BUSINESS_NAME || 'Mini Excavations Érable';
 const BUSINESS_NOTIFY_EMAIL = process.env.BUSINESS_NOTIFY_EMAIL || '';
+// Dirección verificada en Resend (el dominio connek.ca está verificado). El
+// NOMBRE visible del remitente es el del negocio (no "Connek"), para que el
+// cliente vea que lo atiende la empresa.
+const FROM_ADDR = process.env.FROM_EMAIL || 'team@connek.ca';
+const businessFrom = () => `${BUSINESS_NAME} <${FROM_ADDR}>`;
 
 function signConnek(method, signedPath, bodyStr) {
 	const ts = Math.floor(Date.now() / 1000);
@@ -115,11 +120,13 @@ async function connekProxy(req, res, { method, backendPath, tokenOnly = false })
 }
 
 // Send one email via the Resend REST API. Throws on non-2xx.
-async function sendViaResend({ to, subject, html, from }) {
+async function sendViaResend({ to, subject, html, from, replyTo }) {
+	const payload = { from: from || FALLBACK_FROM, to: Array.isArray(to) ? to : [to], subject, html };
+	if (replyTo) payload.reply_to = replyTo;
 	const r = await fetch('https://api.resend.com/emails', {
 		method: 'POST',
 		headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-		body: JSON.stringify({ from: from || FALLBACK_FROM, to: Array.isArray(to) ? to : [to], subject, html })
+		body: JSON.stringify(payload)
 	});
 	const body = await r.json().catch(() => ({}));
 	if (!r.ok) throw new Error(`resend ${r.status}: ${JSON.stringify(body).slice(0, 200)}`);
@@ -148,7 +155,11 @@ async function sendSubmissionEmails(b, upstream) {
 				token,
 				reference
 			});
-			const id = await sendViaResend({ to: b.client_email, subject: r.subject, html: r.html });
+			const id = await sendViaResend({
+				to: b.client_email, subject: r.subject, html: r.html,
+				from: businessFrom(),                      // remitente = el negocio, no "Connek"
+				replyTo: BUSINESS_NOTIFY_EMAIL || undefined // si el cliente responde → va al negocio
+			});
 			console.log(`[submission email] client=${b.client_email} ref=${reference} id=${id}`);
 		} catch (e) {
 			console.error('[submission email] client falló:', e?.message ?? e);
@@ -166,7 +177,11 @@ async function sendSubmissionEmails(b, upstream) {
 				project_description: b.project_description,
 				reference
 			});
-			const id = await sendViaResend({ to: BUSINESS_NOTIFY_EMAIL, subject: r.subject, html: r.html });
+			const id = await sendViaResend({
+				to: BUSINESS_NOTIFY_EMAIL, subject: r.subject, html: r.html,
+				from: businessFrom(),                  // remitente = el negocio
+				replyTo: b.client_email || undefined    // el negocio responde → directo al cliente
+			});
 			console.log(`[submission email] business=${BUSINESS_NOTIFY_EMAIL} ref=${reference} id=${id}`);
 		} catch (e) {
 			console.error('[submission email] business falló:', e?.message ?? e);
