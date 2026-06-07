@@ -67,6 +67,12 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const FALLBACK_SECRET = process.env.FALLBACK_SHARED_SECRET || '';
 const FALLBACK_FROM = process.env.FALLBACK_FROM || 'Connek <team@connek.ca>';
 
+// Excavations envía las notificaciones de submission directamente (mecanismo de
+// emergencia/garantía: si connek-workers / la cola no entrega, el correo sale
+// igual desde aquí, que es donde se origina la submission). Reusa Resend.
+const BUSINESS_NAME = process.env.BUSINESS_NAME || 'Mini Excavations Érable';
+const BUSINESS_NOTIFY_EMAIL = process.env.BUSINESS_NOTIFY_EMAIL || '';
+
 function signConnek(method, signedPath, bodyStr) {
 	const ts = Math.floor(Date.now() / 1000);
 	const bodySha = createHash('sha256').update(bodyStr, 'utf8').digest('hex');
@@ -108,6 +114,66 @@ async function connekProxy(req, res, { method, backendPath, tokenOnly = false })
 	}
 }
 
+// Send one email via the Resend REST API. Throws on non-2xx.
+async function sendViaResend({ to, subject, html, from }) {
+	const r = await fetch('https://api.resend.com/emails', {
+		method: 'POST',
+		headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+		body: JSON.stringify({ from: from || FALLBACK_FROM, to: Array.isArray(to) ? to : [to], subject, html })
+	});
+	const body = await r.json().catch(() => ({}));
+	if (!r.ok) throw new Error(`resend ${r.status}: ${JSON.stringify(body).slice(0, 200)}`);
+	return body?.id;
+}
+
+// Emergency/guaranteed submission notification: sent straight from excavations
+// so the lead is NEVER lost even if connek-workers / the queue is down. Renders
+// the local templates from the form body + the connek-api response (reference,
+// token). Best-effort: failures are logged, never block the form response.
+async function sendSubmissionEmails(b, upstream) {
+	if (!RESEND_API_KEY) {
+		console.warn('[submission email] RESEND_API_KEY no configurada — no se envía');
+		return;
+	}
+	const reference = upstream?.reference ?? upstream?.quote_number ?? '';
+	const token = upstream?.token ?? '';
+
+	if (b?.client_email) {
+		try {
+			const r = renderSubmission('submission_client', {
+				client_first_name: b.client_first_name,
+				business_name: BUSINESS_NAME,
+				category: b.category,
+				project_description: b.project_description,
+				token,
+				reference
+			});
+			const id = await sendViaResend({ to: b.client_email, subject: r.subject, html: r.html });
+			console.log(`[submission email] client=${b.client_email} ref=${reference} id=${id}`);
+		} catch (e) {
+			console.error('[submission email] client falló:', e?.message ?? e);
+		}
+	}
+
+	if (BUSINESS_NOTIFY_EMAIL) {
+		try {
+			const r = renderSubmission('submission_business', {
+				client_first_name: b.client_first_name,
+				client_email: b.client_email,
+				client_phone: b.client_phone,
+				project_address: b.location,
+				category: b.category,
+				project_description: b.project_description,
+				reference
+			});
+			const id = await sendViaResend({ to: BUSINESS_NOTIFY_EMAIL, subject: r.subject, html: r.html });
+			console.log(`[submission email] business=${BUSINESS_NOTIFY_EMAIL} ref=${reference} id=${id}`);
+		} catch (e) {
+			console.error('[submission email] business falló:', e?.message ?? e);
+		}
+	}
+}
+
 // GET /api/connek/services — list public-visible services
 app.get('/api/connek/services', (req, res) =>
 	connekProxy(req, res, { method: 'GET', backendPath: '/api/v1/services' })
@@ -118,10 +184,44 @@ app.get('/api/connek/business', (req, res) =>
 	connekProxy(req, res, { method: 'GET', backendPath: '/api/v1/business/profile' })
 );
 
-// POST /api/connek/submission — landing-page quote submission form
-app.post('/api/connek/submission', (req, res) =>
-	connekProxy(req, res, { method: 'POST', backendPath: '/api/v1/quotes/submission' })
-);
+// POST /api/connek/submission — landing-page quote submission form.
+// Proxies to connek-api (creates the quote/lead) AND sends the notification
+// emails directly from excavations — the emergency/guarantee path: the business
+// + client get notified even if connek-workers / the queue is down.
+app.post('/api/connek/submission', async (req, res) => {
+	const body = req.body ?? {};
+	const backendPath = '/api/v1/quotes/submission';
+	const bodyStr = JSON.stringify(body);
+
+	let status = 500;
+	let text = JSON.stringify({ error: 'config_missing', message: 'CONNEK_API_KEY_* not configured' });
+	let upstream = null;
+
+	if (CONNEK_KEY_ID && CONNEK_KEY_SECRET) {
+		const headers = {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			...signConnek('POST', backendPath, bodyStr)
+		};
+		try {
+			const r = await fetch(`${CONNEK_BASE}${backendPath}`, { method: 'POST', headers, body: bodyStr });
+			status = r.status;
+			text = await r.text();
+			try { upstream = JSON.parse(text); } catch { /* upstream returned non-JSON; keep raw */ }
+		} catch (err) {
+			console.error('[connek proxy] submission', err);
+			status = 502;
+			text = JSON.stringify({ error: 'upstream_unavailable', message: String(err?.message ?? err) });
+		}
+	}
+
+	// Emergency send — fire-and-forget so a slow/failing email never blocks the
+	// form response. `upstream` may be null if connek-api was down; we still
+	// notify the business with the form data so the lead isn't lost.
+	sendSubmissionEmails(body, upstream).catch((e) => console.error('[submission email]', e));
+
+	res.status(status).type('application/json').send(text);
+});
 
 // GET /api/connek/quote/:token — client opens their quote via magic link
 // (token-only; partner SECRET not used)
