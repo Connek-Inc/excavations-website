@@ -378,8 +378,8 @@ function Navbar({ current, navigate }: { current: Page; navigate: (p: Page) => v
       <nav className={`transition-all duration-300 ${scrolled ? "bg-background/97 backdrop-blur-md border-b border-border shadow-lg" : "bg-background/80 backdrop-blur-sm border-b border-border/40"}`}>
         <div className="max-w-screen-xl mx-auto px-6 h-[60px] flex items-center justify-between">
           <button onClick={() => navigate("home")} className="group flex items-center gap-3">
-            <div className="bg-white px-1.5 py-0.5 shrink-0">
-              <img src={logoImg} alt="Mini Excavations Érable" className="h-10 w-auto" />
+            <div className="shrink-0">
+              <img src={logoImg} alt="Mini Excavations Érable" className="h-10 w-auto brightness-0 invert" />
             </div>
             <div className="leading-none hidden sm:block">
               <div className="text-sm font-black text-foreground group-hover:text-primary transition-colors" style={{ fontFamily: FONT_DISPLAY, letterSpacing: "0.06em" }}>
@@ -498,8 +498,8 @@ function Footer({ navigate }: { navigate: (p: Page) => void }) {
       <div className="max-w-screen-xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
           <div className="mb-5">
-            <div className="bg-white inline-block px-2 py-1 mb-2">
-              <img src={logoImg} alt="Mini Excavations Érable" className="h-12 w-auto" />
+            <div className="inline-block mb-2">
+              <img src={logoImg} alt="Mini Excavations Érable" className="h-12 w-auto brightness-0 invert" />
             </div>
             <div className="text-xs text-muted-foreground" style={{ fontFamily: FONT_MONO }}>Mini Excavations Érable Inc.</div>
           </div>
@@ -949,8 +949,8 @@ function HomePage({ navigate }: { navigate: (p: Page) => void }) {
         <div className="relative z-10 max-w-screen-xl mx-auto px-6 pt-36 pb-20 w-full">
           {/* Top label row */}
           <div className="flex items-center gap-6 mb-10">
-            <div className="bg-white px-2 py-1 shrink-0">
-              <img src={logoImg} alt="Mini Excavations Érable" className="h-14 w-auto" />
+            <div className="shrink-0">
+              <img src={logoImg} alt="Mini Excavations Érable" className="h-14 w-auto brightness-0 invert" />
             </div>
             <div>
               <p className="text-xs text-primary tracking-[0.25em] uppercase mb-0.5" style={{ fontFamily: FONT_MONO }}>
