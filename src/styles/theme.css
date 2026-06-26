@@ -1,0 +1,161 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #0C0C0C;
+  --foreground: #F2F0EC;
+  --card: #141414;
+  --card-foreground: #F2F0EC;
+  --popover: #141414;
+  --popover-foreground: #F2F0EC;
+  --primary: #C8821A;
+  --primary-foreground: #0C0C0C;
+  --secondary: #1A1A1A;
+  --secondary-foreground: #F2F0EC;
+  --muted: #1E1E1E;
+  --muted-foreground: #757570;
+  --accent: #C8821A;
+  --accent-foreground: #0C0C0C;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.07);
+  --input: transparent;
+  --input-background: #1E1E1E;
+  --switch-background: #2a2a2a;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #C8821A;
+  --chart-1: #C8821A;
+  --chart-2: #5B8DB8;
+  --chart-3: #6DBF7E;
+  --chart-4: #E06C6C;
+  --chart-5: #B88FD4;
+  --radius: 0px;
+  --sidebar: #0D0D0D;
+  --sidebar-foreground: #EDEDE9;
+  --sidebar-primary: #C8821A;
+  --sidebar-primary-foreground: #111111;
+  --sidebar-accent: #1A1A1A;
+  --sidebar-accent-foreground: #EDEDE9;
+  --sidebar-border: rgba(255, 255, 255, 0.07);
+  --sidebar-ring: #C8821A;
+}
+
+.dark {
+  --background: #0C0C0C;
+  --foreground: #F2F0EC;
+  --card: #141414;
+  --card-foreground: #F2F0EC;
+  --popover: #141414;
+  --popover-foreground: #F2F0EC;
+  --primary: #C8821A;
+  --primary-foreground: #0C0C0C;
+  --secondary: #1A1A1A;
+  --secondary-foreground: #F2F0EC;
+  --muted: #1E1E1E;
+  --muted-foreground: #757570;
+  --accent: #C8821A;
+  --accent-foreground: #0C0C0C;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.07);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #C8821A;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: #C8821A;
+  --chart-2: #5B8DB8;
+  --chart-3: #6DBF7E;
+  --chart-4: #E06C6C;
+  --chart-5: #B88FD4;
+  --sidebar: #0D0D0D;
+  --sidebar-foreground: #EDEDE9;
+  --sidebar-primary: #C8821A;
+  --sidebar-primary-foreground: #111111;
+  --sidebar-accent: #1A1A1A;
+  --sidebar-accent-foreground: #EDEDE9;
+  --sidebar-border: rgba(255, 255, 255, 0.07);
+  --sidebar-ring: #C8821A;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input, textarea, select {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+    font-family: 'DM Sans', sans-serif;
+  }
+}
