@@ -30,7 +30,7 @@ app.set('trust proxy', 1);
 app.use(express.json({ limit: '1mb' }));
 
 // ─── Connek + Resend config (server-only) ───────────────────────────────────
-const CONNEK_BASE = process.env.CONNEK_API_BASE_URL || 'https://api.connek.ca';
+const CONNEK_BASE = process.env.CONNEK_API_BASE_URL || 'https://api.dev.connek.ca';
 const CONNEK_KEY_ID = process.env.CONNEK_API_KEY_ID || '';
 const CONNEK_KEY_SECRET = process.env.CONNEK_API_KEY_SECRET || '';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
@@ -38,7 +38,8 @@ const BUSINESS_NAME = process.env.BUSINESS_NAME || 'Mini Excavations Érable';
 const BUSINESS_NOTIFY_EMAIL = process.env.BUSINESS_NOTIFY_EMAIL || '';
 const FROM_ADDR = process.env.FROM_EMAIL || 'team@connek.ca';
 const businessFrom = () => `${BUSINESS_NAME} <${FROM_ADDR}>`;
-const SUBMISSION_PATH = '/api/v1/quotes/submission';
+// api.dev.connek.ca (public-key) expone /v1/leads → crea el lead en Connek.
+const SUBMISSION_PATH = '/v1/leads';
 
 // HMAC: canonical = METHOD\nPATH\nUNIX_SECONDS\nSHA256_HEX(body)
 function signConnek(method, signedPath, bodyStr) {
@@ -117,7 +118,7 @@ app.post('/api/lead', async (req, res) => {
 		phone ? `Téléphone: ${phone}` : null
 	].filter(Boolean);
 	let description = descLines.join('\n');
-	if (description.length < 5) description = `${description} — demande web`;
+	if (description.length < 10) description = `${description} — demande web`;
 
 	// Forward to Connek (best-effort — the email below is the guaranteed path).
 	// The endpoint requires email + a 10-digit phone; skip the call otherwise.
@@ -128,13 +129,12 @@ app.post('/api/lead', async (req, res) => {
 		const firstName = parts.shift() || '';
 		const lastName = parts.join(' ');
 		const payload = {
-			client_first_name: firstName.length >= 2 ? firstName : String(name).trim(),
-			client_last_name: lastName || undefined,
-			client_email: email,
-			client_phone: phone,
-			project_description: description,
-			category: service || undefined,
-			location: zone || undefined
+			title: `Soumission web — ${service || 'Excavation'}`.slice(0, 200),
+			description,
+			first_name: firstName.length >= 2 ? firstName : String(name).trim(),
+			last_name: lastName || undefined,
+			email,
+			phone: phone || undefined
 		};
 		const bodyStr = JSON.stringify(payload);
 		try {
